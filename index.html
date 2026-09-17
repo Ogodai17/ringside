@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ringside — ONE Championship Predictions</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0c;
+  --surface: #141418;
+  --surface-raised: #1c1c22;
+  --surface-hover: #24242c;
+  --border: #2a2a34;
+  --text: #e8e6e3;
+  --text-dim: #8a8a96;
+  --text-muted: #5a5a66;
+  --accent: #c8362e;
+  --accent-glow: rgba(200, 54, 46, 0.15);
+  --gold: #d4a843;
+  --gold-dim: rgba(212, 168, 67, 0.12);
+  --green: #3cb860;
+  --green-dim: rgba(60, 184, 96, 0.12);
+  --blue: #4a8fe7;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f2f0ed; --surface: #fff; --surface-raised: #f7f6f4;
+    --surface-hover: #eeedea; --border: #d8d6d2; --text: #1a1a1e;
+    --text-dim: #6a6a72; --text-muted: #9a9aa2; --accent: #b82e27;
+    --accent-glow: rgba(184,46,39,0.08); --gold: #b08a2e;
+    --gold-dim: rgba(176,138,46,0.08); --green: #2e9a4e;
+    --green-dim: rgba(46,154,78,0.08); --blue: #3a7ad4;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a0a0c; --surface: #141418; --surface-raised: #1c1c22;
+  --surface-hover: #24242c; --border: #2a2a34; --text: #e8e6e3;
+  --text-dim: #8a8a96; --text-muted: #5a5a66; --accent: #c8362e;
+  --accent-glow: rgba(200,54,46,0.15); --gold: #d4a843;
+  --gold-dim: rgba(212,168,67,0.12); --green: #3cb860;
+  --green-dim: rgba(60,184,96,0.12); --blue: #4a8fe7;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.5; min-height:100vh; }
+h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
+.app { max-width:720px; margin:0 auto; padding:0 16px; }
+
+.header { display:flex; align-items:center; justify-content:space-between; padding:20px 0; border-bottom:1px solid var(--border); }
+.logo { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+.logo span { color:var(--accent); }
+.balance-pill { display:flex; align-items:center; gap:8px; background:var(--gold-dim); border:1px solid rgba(212,168,67,0.25); border-radius:100px; padding:6px 14px 6px 10px; font-size:14px; font-weight:600; color:var(--gold); }
+.coin-icon { width:18px; height:18px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--bg); }
+
+.nav { display:flex; gap:4px; padding:16px 0; overflow-x:auto; }
+.nav button { background:none; border:1px solid var(--border); color:var(--text-dim); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:500; padding:7px 16px; border-radius:8px; cursor:pointer; white-space:nowrap; transition:all .15s; }
+.nav button:hover { background:var(--surface-hover); color:var(--text); }
+.nav button.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+.connect-bar { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; margin:16px 0; display:flex; align-items:center; justify-content:space-between; font-size:13px; color:var(--text-dim); }
+.connect-btn { background:var(--surface-raised); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:12px; font-weight:600; color:var(--text); cursor:pointer; font-family:'Space Grotesk',sans-serif; }
+.connect-btn:hover { background:var(--surface-hover); }
+
+#ubi-banner { display:none; background:var(--gold-dim); border:1px solid rgba(212,168,67,0.25); border-radius:10px; padding:12px 16px; margin:12px 0; font-size:13px; color:var(--gold); text-align:center; cursor:pointer; }
+#ubi-banner strong { font-weight:700; }
+
+/* Event picker */
+.event-picker { display:flex; gap:8px; padding:16px 0 4px; overflow-x:auto; }
+.event-tab { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; cursor:pointer; min-width:180px; transition:all .15s; flex-shrink:0; }
+.event-tab:hover { border-color:var(--text-muted); }
+.event-tab.active { border-color:var(--accent); background:var(--accent-glow); }
+.event-tab .ev-name { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; letter-spacing:-0.2px; }
+.event-tab .ev-date { font-size:11px; color:var(--text-dim); margin-top:2px; }
+.event-tab .ev-venue { font-size:11px; color:var(--text-muted); }
+
+.event-header { padding:20px 0 8px; }
+.event-header h2 { font-size:20px; font-weight:700; letter-spacing:-0.3px; }
+.event-meta { font-size:13px; color:var(--text-dim); margin-top:4px; }
+
+/* Fight cards */
+.fight-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; margin:12px 0; overflow:hidden; transition:border-color .15s; }
+.fight-card:hover { border-color:var(--text-muted); }
+.fight-card.expanded { border-color:var(--accent); }
+.fight-main { padding:16px 20px; cursor:pointer; display:flex; flex-direction:column; gap:12px; }
+.fight-label { font-size:11px; font-weight:600; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase; }
+.fight-discipline { display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; margin-left:6px; vertical-align:middle; }
+.disc-mma { background:rgba(74,143,231,0.15); color:var(--blue); }
+.disc-mt { background:rgba(200,54,46,0.15); color:var(--accent); }
+.disc-kb { background:rgba(212,168,67,0.15); color:var(--gold); }
+.fighters-row { display:flex; align-items:center; gap:12px; }
+.fighter { flex:1; display:flex; flex-direction:column; gap:2px; }
+.fighter.right { text-align:right; align-items:flex-end; }
+.fighter-name { font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; letter-spacing:-0.2px; }
+.fighter-record { font-size:12px; color:var(--text-dim); }
+.vs-badge { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted); background:var(--surface-raised); border-radius:6px; padding:4px 8px; flex-shrink:0; }
+.fight-odds { display:flex; gap:8px; }
+.odd-btn { flex:1; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:10px; cursor:pointer; transition:all .15s; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.odd-btn:hover { background:var(--surface-hover); border-color:var(--text-muted); }
+.odd-btn.selected { background:var(--accent-glow); border-color:var(--accent); }
+.odd-btn .label { font-size:11px; color:var(--text-dim); }
+.odd-btn .value { font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; color:var(--text); }
+.odd-btn.selected .value { color:var(--accent); }
+.expand-hint { font-size:11px; color:var(--text-muted); text-align:center; }
+
+.fight-markets { display:none; padding:0 20px 16px; flex-direction:column; gap:14px; }
+.fight-card.expanded .fight-markets { display:flex; }
+.market-group h4 { font-size:12px; font-weight:600; color:var(--text-dim); margin-bottom:8px; }
+.market-options { display:flex; flex-wrap:wrap; gap:6px; }
+.market-btn { background:var(--surface-raised); border:1px solid var(--border); border-radius:6px; padding:6px 12px; cursor:pointer; font-size:12px; font-weight:500; color:var(--text-dim); transition:all .15s; }
+.market-btn:hover { background:var(--surface-hover); color:var(--text); }
+.market-btn.selected { background:var(--accent-glow); border-color:var(--accent); color:var(--accent); }
+
+/* Bet slip */
+.bet-slip { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border); padding:16px; z-index:100; box-shadow:0 -8px 32px rgba(0,0,0,0.4); }
+.bet-slip.visible { display:block; }
+.bet-slip-inner { max-width:720px; margin:0 auto; }
+.bet-slip-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.bet-slip-header h3 { font-size:15px; font-weight:700; }
+.bet-slip-close { background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer; padding:4px; }
+.bet-slip-pick { font-size:13px; color:var(--text-dim); margin-bottom:12px; }
+.bet-slip-pick strong { color:var(--text); }
+.stake-row { display:flex; gap:8px; align-items:center; }
+.stake-input { flex:1; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:16px; font-family:'Space Grotesk',sans-serif; font-weight:600; color:var(--text); outline:none; }
+.stake-input:focus { border-color:var(--accent); }
+.stake-presets { display:flex; gap:4px; }
+.stake-preset { background:var(--surface-raised); border:1px solid var(--border); border-radius:6px; padding:8px 10px; font-size:12px; font-weight:600; color:var(--text-dim); cursor:pointer; font-family:'Space Grotesk',sans-serif; }
+.stake-preset:hover { background:var(--surface-hover); color:var(--text); }
+.place-bet-btn { width:100%; margin-top:12px; background:var(--accent); border:none; border-radius:8px; padding:12px; font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; color:#fff; cursor:pointer; transition:opacity .15s; }
+.place-bet-btn:hover { opacity:0.9; }
+.place-bet-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.payout-line { display:flex; justify-content:space-between; margin-top:8px; font-size:13px; color:var(--text-dim); }
+.payout-line .amount { color:var(--green); font-weight:600; font-family:'Space Grotesk',sans-serif; }
+
+/* Leaderboard & My Bets */
+.section-title { font-size:18px; font-weight:700; padding:28px 0 12px; letter-spacing:-0.3px; }
+.leaderboard { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:80px; }
+.lb-row { display:flex; align-items:center; padding:12px 20px; gap:12px; border-bottom:1px solid var(--border); }
+.lb-row:last-child { border-bottom:none; }
+.lb-rank { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--text-muted); width:28px; text-align:center; }
+.lb-row:nth-child(1) .lb-rank { color:var(--gold); }
+.lb-row:nth-child(2) .lb-rank { color:var(--text-dim); }
+.lb-row:nth-child(3) .lb-rank { color:var(--accent); }
+.lb-avatar { width:32px; height:32px; border-radius:50%; background:var(--surface-raised); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; color:var(--text-dim); }
+.lb-name { flex:1; font-size:14px; font-weight:500; }
+.lb-balance { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700; color:var(--gold); }
+.lb-record { font-size:12px; color:var(--text-dim); width:60px; text-align:right; }
+
+.bet-history-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 18px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; }
+.bet-history-info { font-size:13px; }
+.bet-history-info strong { display:block; font-size:14px; }
+.bet-history-info .bet-detail { color:var(--text-dim); margin-top:2px; }
+.bet-history-result { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; }
+.bet-history-result.pending { color:var(--blue); }
+.bet-history-result.won { color:var(--green); }
+.bet-history-result.lost { color:var(--accent); }
+
+.toast { position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-100px); background:var(--green); color:#fff; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:600; font-family:'Space Grotesk',sans-serif; z-index:200; transition:transform .3s ease; pointer-events:none; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+.empty-state { text-align:center; color:var(--text-muted); padding:40px 0; }
+@media (max-width:500px) {
+  .fighters-row { gap:8px; }
+  .fighter-name { font-size:14px; }
+  .stake-presets { display:none; }
+  .event-tab { min-width:160px; padding:8px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo">ring<span>side</span></div>
+    <div class="balance-pill"><div class="coin-icon">R</div><span id="balanceDisplay">5,000</span></div>
+  </header>
+  <nav class="nav">
+    <button class="active" data-tab="fights">Upcoming</button>
+    <button data-tab="mybets">My Picks</button>
+    <button data-tab="leaderboard">Leaderboard</button>
+  </nav>
+  <div class="connect-bar">
+    <span>Playing as guest — picks stay on this device</span>
+    <button class="connect-btn" onclick="alert('Wallet connect coming soon')">Connect wallet</button>
+  </div>
+  <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 R.</div>
+
+  <div id="tab-fights">
+    <div class="event-picker" id="eventPicker"></div>
+    <div class="event-header" id="eventHeader"></div>
+    <div id="fight-cards"></div>
+  </div>
+  <div id="tab-mybets" style="display:none">
+    <h3 class="section-title">My Picks</h3>
+    <div id="my-bets-list"></div>
+  </div>
+  <div id="tab-leaderboard" style="display:none">
+    <h3 class="section-title">All-time Leaderboard</h3>
+    <div class="leaderboard" id="leaderboard"></div>
+  </div>
+</div>
+
+<div class="bet-slip" id="betSlip">
+  <div class="bet-slip-inner">
+    <div class="bet-slip-header"><h3>Place Pick</h3><button class="bet-slip-close" onclick="closeBetSlip()">&times;</button></div>
+    <div class="bet-slip-pick" id="betSlipPick"></div>
+    <div class="stake-row">
+      <input type="number" class="stake-input" id="stakeInput" placeholder="Stake" min="1" oninput="updatePayout()">
+      <div class="stake-presets">
+        <button class="stake-preset" onclick="setStake(100)">100</button>
+        <button class="stake-preset" onclick="setStake(500)">500</button>
+        <button class="stake-preset" onclick="setStake(0,true)">All</button>
+      </div>
+    </div>
+    <div class="payout-line"><span>Potential payout</span><span class="amount" id="payoutDisplay">—</span></div>
+    <button class="place-bet-btn" id="placeBetBtn" onclick="placeBet()" disabled>Place Pick</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
+try { const s = JSON.parse(localStorage.getItem('ringside_state')||'{}'); balance=s.balance??5000; bets=s.bets??[]; lastUBIClaim=s.lastUBIClaim??null; } catch(e){}
+
+const events = [
+  {
+    name: "ONE Fight Night 48",
+    subtitle: "Erdogan vs. Elliott",
+    date: "Oct 2, 2026",
+    venue: "Lumpinee Stadium, Bangkok",
+    fights: [
+      { id:101, label:"Main Event — Heavyweight MMA", disc:"mma",
+        a:{name:"Shamil Erdogan",record:"13-0-0",flag:"🇹🇷"},
+        b:{name:"Paul Elliott",record:"10-3-0",flag:"🇬🇧"},
+        oddsA:1.45, oddsB:2.75,
+        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3","Rd 4","Rd 5"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:102, label:"Featherweight Muay Thai", disc:"mt",
+        a:{name:"Luke Lessei",record:"9-3-0",flag:"🇺🇸"},
+        b:{name:"Charlie Guest",record:"11-4-0",flag:"🇬🇧"},
+        oddsA:1.85, oddsB:1.95,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:103, label:"Bantamweight Muay Thai", disc:"mt",
+        a:{name:"Nakrob Fairtex",record:"79-15-3",flag:"🇹🇭"},
+        b:{name:"Parham Gheirati",record:"33-8-0",flag:"🇮🇷"},
+        oddsA:1.60, oddsB:2.35,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:104, label:"Featherweight Muay Thai", disc:"mt",
+        a:{name:"Arian Esparza",record:"8-2-0",flag:"🇺🇸"},
+        b:{name:"Sam Fitzgerald",record:"14-5-0",flag:"🇬🇧"},
+        oddsA:2.10, oddsB:1.75,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:105, label:"Flyweight MMA", disc:"mma",
+        a:{name:"Joshua Perreira",record:"6-0-0",flag:"🇺🇸"},
+        b:{name:"Antonio Cesar",record:"12-4-0",flag:"🇧🇷"},
+        oddsA:1.70, oddsB:2.15,
+        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:106, label:"Strawweight MMA", disc:"mma",
+        a:{name:"Lee Seung Cheol",record:"9-2-0",flag:"🇰🇷"},
+        b:{name:"Karen Ghazaryan",record:"11-3-0",flag:"🇦🇲"},
+        oddsA:1.90, oddsB:1.90,
+        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      }
+    ]
+  },
+  {
+    name: "ONE Samurai 4",
+    subtitle: "Haggerty vs. Akimoto",
+    date: "Oct 17, 2026",
+    venue: "Ariake Arena, Tokyo",
+    fights: [
+      { id:201, label:"Main Event — BW Kickboxing World Title", disc:"kb",
+        a:{name:"Jonathan Haggerty",record:"10-3-0",flag:"🇬🇧"},
+        b:{name:"Hiroki Akimoto",record:"9-4-0",flag:"🇯🇵"},
+        oddsA:1.55, oddsB:2.45,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3","Rd 4","Rd 5"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:202, label:"Co-Main — AW Muay Thai World Title", disc:"mt",
+        a:{name:"Nadaka Yoshinari",record:"42-2-0",flag:"🇯🇵"},
+        b:{name:"Rifdean Masdor",record:"7-1-0",flag:"🇲🇾"},
+        oddsA:1.30, oddsB:3.50,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3","Rd 4","Rd 5"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:203, label:"Welterweight Kickboxing", disc:"kb",
+        a:{name:"Rukiya Anpo",record:"42-9-0",flag:"🇯🇵"},
+        b:{name:"Bogdan Shumarov",record:"28-6-0",flag:"🇷🇺"},
+        oddsA:1.75, oddsB:2.10,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:204, label:"Lightweight Kickboxing", disc:"kb",
+        a:{name:"Marat Grigorian",record:"75-14-1",flag:"🇦🇲"},
+        b:{name:"Chao Luo",record:"32-8-0",flag:"🇨🇳"},
+        oddsA:1.50, oddsB:2.60,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:205, label:"Lightweight Kickboxing", disc:"kb",
+        a:{name:"Masaaki Noiri",record:"44-11-0",flag:"🇯🇵"},
+        b:{name:"Mohammed Siasarani",record:"22-5-0",flag:"🇮🇷"},
+        oddsA:1.65, oddsB:2.25,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:206, label:"Strawweight MMA", disc:"mma",
+        a:{name:"Itsuki Hirata",record:"9-3-0",flag:"🇯🇵"},
+        b:{name:"Jihin Radzuan",record:"8-5-0",flag:"🇲🇾"},
+        oddsA:1.60, oddsB:2.35,
+        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      },
+      { id:207, label:"Bantamweight Kickboxing", disc:"kb",
+        a:{name:"Yuki Yoza",record:"18-5-0",flag:"🇯🇵"},
+        b:{name:"Nabil Anane",record:"42-7-0",flag:"🇫🇷"},
+        oddsA:2.20, oddsB:1.70,
+        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
+      }
+    ]
+  }
+];
+
+const leaderboardData = [
+  {name:'MuayThaiMax',balance:24800,record:'31-12'},
+  {name:'BangkokBets',balance:18200,record:'22-9'},
+  {name:'ONEfanatic',balance:15600,record:'28-16'},
+  {name:'RodtangSZN',balance:11400,record:'19-14'},
+  {name:'LinekHammer',balance:9850,record:'15-8'},
+  {name:'PacioFan63',balance:7200,record:'12-10'},
+  {name:'CombatPicks',balance:5900,record:'18-20'},
+  {name:'Guest_you',balance:balance,record:'0-0'},
+];
+
+function save(){try{localStorage.setItem('ringside_state',JSON.stringify({balance,bets,lastUBIClaim}))}catch(e){}}
+function updateBal(){document.getElementById('balanceDisplay').textContent=balance.toLocaleString();}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+function discClass(d){return d==='mma'?'disc-mma':d==='mt'?'disc-mt':'disc-kb';}
+function discLabel(d){return d==='mma'?'MMA':d==='mt'?'Muay Thai':'Kickboxing';}
+
+function renderEventPicker(){
+  document.getElementById('eventPicker').innerHTML = events.map((e,i)=>`
+    <div class="event-tab ${i===activeEventIdx?'active':''}" onclick="switchEvent(${i})">
+      <div class="ev-name">${e.name}</div>
+      <div class="ev-date">${e.date}</div>
+      <div class="ev-venue">${e.venue}</div>
+    </div>`).join('');
+}
+
+function switchEvent(i){activeEventIdx=i;renderEventPicker();renderFights();}
+
+function renderFights(){
+  const ev = events[activeEventIdx];
+  document.getElementById('eventHeader').innerHTML=`<h2>${ev.name}: ${ev.subtitle}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
+  document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>`
+    <div class="fight-card" id="fight-${f.id}">
+      <div class="fight-main" onclick="toggleFight(${f.id})">
+        <div class="fight-label">${f.label} <span class="fight-discipline ${discClass(f.disc)}">${discLabel(f.disc)}</span></div>
+        <div class="fighters-row">
+          <div class="fighter">
+            <div class="fighter-name">${f.a.flag} ${f.a.name}</div>
+            <div class="fighter-record">${f.a.record}</div>
+          </div>
+          <div class="vs-badge">vs</div>
+          <div class="fighter right">
+            <div class="fighter-name">${f.b.name} ${f.b.flag}</div>
+            <div class="fighter-record">${f.b.record}</div>
+          </div>
+        </div>
+        <div class="fight-odds">
+          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'A')">
+            <span class="label">${f.a.name.split(' ').pop()}</span>
+            <span class="value">${f.oddsA.toFixed(2)}</span>
+          </button>
+          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'B')">
+            <span class="label">${f.b.name.split(' ').pop()}</span>
+            <span class="value">${f.oddsB.toFixed(2)}</span>
+          </button>
+        </div>
+        <div class="expand-hint">Tap for more markets</div>
+      </div>
+      <div class="fight-markets">
+        <div class="market-group"><h4>Method of Victory</h4>
+          <div class="market-options">${f.methods.map(m=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'method','${m}',${f.methods.length>2?2.8:1.9})">${m}</button>`).join('')}</div>
+        </div>
+        <div class="market-group"><h4>Round</h4>
+          <div class="market-options">${f.rounds.map(r=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'round','${r}',${f.rounds.length>=5?5.0:3.5})">${r}</button>`).join('')}</div>
+        </div>
+        <div class="market-group"><h4>Distance</h4>
+          <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleFight(id){document.getElementById('fight-'+id).classList.toggle('expanded');}
+
+function findFight(id){for(const ev of events)for(const f of ev.fights)if(f.id===id)return f;return null;}
+
+function selectWinner(fightId,side){
+  const f=findFight(fightId);if(!f)return;
+  const fighter=side==='A'?f.a:f.b;
+  selectedPick={fightId,type:'winner',pick:fighter.name,odds:side==='A'?f.oddsA:f.oddsB,label:`${f.a.name} vs ${f.b.name}`};
+  openBetSlip();
+}
+function selectMarket(fightId,type,pick,odds){
+  const f=findFight(fightId);if(!f)return;
+  selectedPick={fightId,type,pick,odds,label:`${f.a.name} vs ${f.b.name}`};
+  openBetSlip();
+}
+function openBetSlip(){
+  if(!selectedPick)return;
+  document.getElementById('betSlipPick').innerHTML=`<strong>${selectedPick.pick}</strong> · ${selectedPick.type} @ ${selectedPick.odds.toFixed(2)}x<br>${selectedPick.label}`;
+  document.getElementById('stakeInput').value='';
+  document.getElementById('payoutDisplay').textContent='—';
+  document.getElementById('placeBetBtn').disabled=true;
+  document.getElementById('betSlip').classList.add('visible');
+}
+function closeBetSlip(){document.getElementById('betSlip').classList.remove('visible');selectedPick=null;}
+function setStake(a,all){document.getElementById('stakeInput').value=all?balance:a;updatePayout();}
+function updatePayout(){
+  const s=parseInt(document.getElementById('stakeInput').value)||0;
+  const btn=document.getElementById('placeBetBtn');
+  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=Math.floor(s*selectedPick.odds).toLocaleString()+' R';btn.disabled=false;}
+  else{document.getElementById('payoutDisplay').textContent='—';btn.disabled=true;}
+}
+function placeBet(){
+  const s=parseInt(document.getElementById('stakeInput').value)||0;
+  if(s<=0||s>balance||!selectedPick)return;
+  balance-=s;
+  bets.push({...selectedPick,stake:s,payout:Math.floor(s*selectedPick.odds),result:'pending',time:Date.now()});
+  updateBal();closeBetSlip();showToast(`Placed ${s} R on ${selectedPick.pick}`);save();checkUBI();
+}
+
+document.querySelectorAll('.nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const t=btn.dataset.tab;
+    document.getElementById('tab-fights').style.display=t==='fights'?'':'none';
+    document.getElementById('tab-mybets').style.display=t==='mybets'?'':'none';
+    document.getElementById('tab-leaderboard').style.display=t==='leaderboard'?'':'none';
+    if(t==='mybets')renderMyBets();
+    if(t==='leaderboard')renderLeaderboard();
+  });
+});
+
+function renderMyBets(){
+  const l=document.getElementById('my-bets-list');
+  if(!bets.length){l.innerHTML='<div class="empty-state">No picks yet. Go make some calls.</div>';return;}
+  l.innerHTML=bets.slice().reverse().map(b=>`
+    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${b.type} · ${b.stake} R @ ${b.odds.toFixed(2)}x</div></div>
+    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
+}
+function renderLeaderboard(){
+  leaderboardData[leaderboardData.length-1].balance=balance;
+  const s=[...leaderboardData].sort((a,b)=>b.balance-a.balance);
+  document.getElementById('leaderboard').innerHTML=s.map((p,i)=>`
+    <div class="lb-row"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${p.name.charAt(0)}</div>
+    <div class="lb-name">${p.name}</div><div class="lb-balance">${p.balance.toLocaleString()} R</div>
+    <div class="lb-record">${p.record}</div></div>`).join('');
+}
+function checkUBI(){
+  const b=document.getElementById('ubi-banner'),today=new Date().toDateString();
+  b.style.display=(balance<300&&lastUBIClaim!==today)?'block':'none';
+}
+function claimUBI(){balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 R daily top-up');}
+
+renderEventPicker();renderFights();updateBal();checkUBI();
+</script>
+</body>
+</html>
