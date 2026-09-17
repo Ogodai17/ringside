@@ -1,0 +1,322 @@
+{
+  "scraped_at": "2026-09-17T10:12:55Z",
+  "source": "onefc.com",
+  "event_count": 3,
+  "events": [
+    {
+      "name": "ONE Friday Fights 171 & The Inner Circle 31",
+      "subtitle": "",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-171/",
+      "fight_count": 13,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Flyweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "All Athletes",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Klarob NuiCafeboran",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/klarob-nuicafeboran/",
+            "record": ""
+          },
+          "main_event": true
+        },
+        {
+          "id": 2,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Sornsueknoi FA Group",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/sornsueknoi-fa-group/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Petsuphan Lookmuangpet",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/petsuphan-lookmuangpet/",
+            "record": ""
+          }
+        },
+        {
+          "id": 3,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Mahar Thway",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/mahar-thway/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Anusorn Jitmuangnon",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/anusorn-jitmuangnon/",
+            "record": ""
+          }
+        },
+        {
+          "id": 4,
+          "label": "Strawweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Petmontri Petsupanun",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/petmontri-petsupanun/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Antonia Prifti",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/antonia-prifti/",
+            "record": ""
+          }
+        },
+        {
+          "id": 5,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Ameline Gerson",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/ameline-gerson/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Alex Usieto",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/alex-usieto/",
+            "record": ""
+          }
+        },
+        {
+          "id": 6,
+          "label": "Lightweight MMA",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Hlaing Htet Aung",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/hlaing-htet-aung/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Connor Tymon",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/connor-tymon/",
+            "record": ""
+          }
+        },
+        {
+          "id": 7,
+          "label": "Flyweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Alex Bigander",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/alex-bigander/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Khaidarbeg Gazuev",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/khaidarbeg-gazuev/",
+            "record": ""
+          }
+        },
+        {
+          "id": 8,
+          "label": "Flyweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Ryusuke Onodera",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/ryusuke-onodera/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Edilson Rodrigues",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/edilson-rodrigues/",
+            "record": ""
+          }
+        },
+        {
+          "id": 9,
+          "label": "Bantamweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Retsu Sashida",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/retsu-sashida/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Kiamran Nabati",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/kiamran-nabati/",
+            "record": ""
+          }
+        },
+        {
+          "id": 10,
+          "label": "Bantamweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Nontachai Jitmuangnon",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/nontachai-jitmuangnon/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Yamin PK Saenchai",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/yamin-pk-saenchai/",
+            "record": ""
+          }
+        },
+        {
+          "id": 11,
+          "label": "Strawweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Alexey Balyko",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/alexey-balyko/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Petsiam T2A Waterubon",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/petsiam-jor-patreeyakelasiamsurin/",
+            "record": ""
+          }
+        },
+        {
+          "id": 12,
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Wang Zhongxian",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/wang-zhongxian/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Gabriele Moram",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/gabriele-moram/",
+            "record": ""
+          }
+        },
+        {
+          "id": 13,
+          "label": "Bantamweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Cynthia Flores",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/cynthia-flores/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Velihan Palit",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/velihan-palit/",
+            "record": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ONE Friday Fights 172 & The Inner Circle 32",
+      "subtitle": "",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-172/",
+      "fight_count": 1,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Flyweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "All Athletes",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Panpayak Jitmuangnon",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/panpayak/",
+            "record": ""
+          },
+          "main_event": true
+        }
+      ]
+    },
+    {
+      "name": "ONE Friday Fights 173 & The Inner Circle 33",
+      "subtitle": "",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-173/",
+      "fight_count": 1,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Lightweight Muay Thai World Championship",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "All Athletes",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Regian Eersel",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/regian-eersel/",
+            "record": ""
+          },
+          "main_event": true
+        }
+      ]
+    }
+  ]
+}
