@@ -1,18 +1,18 @@
 {
-  "scraped_at": "2026-09-24T10:13:08Z",
+  "scraped_at": "2026-09-28T10:14:36Z",
   "source": "onefc.com",
-  "event_count": 3,
+  "event_count": 2,
   "events": [
     {
-      "name": "ONE Friday Fights 172 & The Inner Circle 32",
+      "name": "ONE Friday Fights 173 & The Inner Circle 33",
       "subtitle": "",
       "venue": "Lumpinee Stadium, Bangkok",
-      "url": "https://www.onefc.com/events/one-friday-fights-172/",
-      "fight_count": 15,
+      "url": "https://www.onefc.com/events/one-friday-fights-173/",
+      "fight_count": 14,
       "fights": [
         {
           "id": 1,
-          "label": "Bantamweight Muay Thai",
+          "label": "Flyweight Muay Thai",
           "discipline": "mt",
           "fighter_a": {
             "name": "All Athletes",
@@ -22,30 +22,30 @@
             "record": ""
           },
           "fighter_b": {
-            "name": "Superlek Jitmuangnon",
+            "name": "Buakaew Sor Sor Pakorn",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/superlek-jitmuangnon/",
+            "profile": "https://www.onefc.com/athletes/buakaew-sor-sor-pakorn/",
             "record": ""
           },
           "main_event": true
         },
         {
           "id": 2,
-          "label": "Flyweight Kickboxing",
-          "discipline": "kb",
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
           "fighter_a": {
-            "name": "Othman Rhouni",
+            "name": "Nat Khat Min",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/othman-rhouni/",
+            "profile": "https://www.onefc.com/athletes/nat-khat-min/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Yodkatanyu Jitmuangnon",
+            "name": "Tonglampoon FA Group",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/yodkatanyu-jitmuangnon/",
+            "profile": "https://www.onefc.com/athletes/tonglampoon-maimornforest/",
             "record": ""
           }
         },
@@ -54,266 +54,143 @@
           "label": "Strawweight Muay Thai",
           "discipline": "mt",
           "fighter_a": {
-            "name": "Liu Junchao",
+            "name": "Dionatha Santos Tobias",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/liu-junchao/",
+            "profile": "https://www.onefc.com/athletes/dionatha-santos-tobias/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Teeyai Torfunfarm",
+            "name": "Payakrut Suajantokmuaythai",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/teeyai-torfunfarm/",
+            "profile": "https://www.onefc.com/athletes/payakrut-suajantokmuaythai/",
             "record": ""
           }
         },
         {
           "id": 4,
-          "label": "Flyweight Muay Thai",
+          "label": "Atomweight Muay Thai",
           "discipline": "mt",
           "fighter_a": {
-            "name": "Mungkorn Sor Sombatfarm",
+            "name": "Andrii Mezentsev",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/mungkorn-sor-sombatfarm/",
+            "profile": "https://www.onefc.com/athletes/andrii-mezentsev/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Nuapayak Jitmuangnon",
+            "name": "Nongkhailek Dr.Knotmuaythai",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/nuapayak-jitmuangnon/",
+            "profile": "https://www.onefc.com/athletes/nongkhailek-dr-knotmuaythai/",
             "record": ""
           }
         },
         {
           "id": 5,
-          "label": "Lightweight MMA",
-          "discipline": "mma",
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
           "fighter_a": {
-            "name": "Suajan Sor Isarachot",
+            "name": "Cal Cook",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/suajan-sor-isarachot/",
+            "profile": "https://www.onefc.com/athletes/cal-cook/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Sarmad Jahanara",
+            "name": "Gaichon Sor Prawatmuang",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/sarmad-jahanara/",
+            "profile": "https://www.onefc.com/athletes/gaichon-sor-prawatmuang/",
             "record": ""
           }
         },
         {
           "id": 6,
-          "label": "Strawweight Muay Thai",
-          "discipline": "mt",
+          "label": "Flyweight MMA",
+          "discipline": "mma",
           "fighter_a": {
-            "name": "Basir Saraliev",
+            "name": "Tandiao Por Prawit",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/basir-saraliev/",
+            "profile": "https://www.onefc.com/athletes/tandiao-por-prawit/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Ma Zhenzhao",
+            "name": "Imran Satiev",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/ma-zhenzhao/",
+            "profile": "https://www.onefc.com/athletes/imran-satiev/",
             "record": ""
           }
         },
         {
           "id": 7,
-          "label": "Featherweight MMA",
-          "discipline": "mma",
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
           "fighter_a": {
-            "name": "Samransing Sitchalongsak",
+            "name": "Babar Ali",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/samransing-sitchalongsak/",
+            "profile": "https://www.onefc.com/athletes/babar-ali/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Leevi Heino",
+            "name": "Joanne La",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/leevi-heino/",
+            "profile": "https://www.onefc.com/athletes/joanne-la/",
             "record": ""
           }
         },
         {
           "id": 8,
-          "label": "Featherweight Kickboxing",
-          "discipline": "kb",
+          "label": "Bantamweight MMA",
+          "discipline": "mma",
           "fighter_a": {
-            "name": "Khurshed Gafurov",
+            "name": "Yara Saleh",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/khurshed-gafurov/",
+            "profile": "https://www.onefc.com/athletes/yara-saleh/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Bevan Ali Oguz",
+            "name": "Youssef Ramadan",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/bevan-ali-oguz/",
+            "profile": "https://www.onefc.com/athletes/youssef-ramadan/",
             "record": ""
           }
         },
         {
           "id": 9,
-          "label": "Bantamweight Kickboxing",
-          "discipline": "kb",
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
           "fighter_a": {
-            "name": "Yuya Shibata",
+            "name": "Jongjun Park",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/yuya-shibata/",
+            "profile": "https://www.onefc.com/athletes/jongjun-park/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Duangbuppha O Sansuk",
+            "name": "Kevin Oyervides",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/duangbuppha-o-sansuk/",
+            "profile": "https://www.onefc.com/athletes/kevin-oyervides/",
             "record": ""
           }
         },
         {
           "id": 10,
-          "label": "Atomweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Yutaro Hori",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/yutaro-hori/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Tangtang Sor Dechapan",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/tangtang-suansunandhagym/",
-            "record": ""
-          }
-        },
-        {
-          "id": 11,
-          "label": "Flyweight Kickboxing",
-          "discipline": "kb",
-          "fighter_a": {
-            "name": "Trieu Thi Phuong Thuy",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/trieu-thi-phuong-thuy/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Panpayak Jitmuangnon",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/panpayak/",
-            "record": ""
-          }
-        },
-        {
-          "id": 12,
-          "label": "Flyweight Kickboxing",
-          "discipline": "kb",
-          "fighter_a": {
-            "name": "Lamnamoonlek Torfunfarm",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/lamnamoonlek-tded99/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Kongthoranee Sor Sommai",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/kongthoranee-sor-sommai/",
-            "record": ""
-          }
-        },
-        {
-          "id": 13,
-          "label": "Flyweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Yuan Pengjie",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/yuan-pengjie/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Zoe Neuschwander",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/zoe-neuschwander/",
-            "record": ""
-          }
-        },
-        {
-          "id": 14,
-          "label": "Featherweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Susanti Ndapataka",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/susanti-ndapataka/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Enzo Kartoum",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/enzo-kartoum/",
-            "record": ""
-          }
-        },
-        {
-          "id": 15,
-          "label": "Strawweight Kickboxing",
-          "discipline": "kb",
-          "fighter_a": {
-            "name": "Konstantin Shakhtarin",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/konstantin-shakhtarin/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Arsen Soiyrkas",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/arsen-soiyrkas/",
-            "record": ""
-          }
-        }
-      ]
-    },
-    {
-      "name": "ONE Friday Fights 173 & The Inner Circle 33",
-      "subtitle": "",
-      "venue": "Lumpinee Stadium, Bangkok",
-      "url": "https://www.onefc.com/events/one-friday-fights-173/",
-      "fight_count": 1,
-      "fights": [
-        {
-          "id": 1,
           "label": "Lightweight Muay Thai World Championship",
           "discipline": "mt",
           "fighter_a": {
-            "name": "All Athletes",
+            "name": "Hiroyuki",
             "country": "",
             "flag": "",
-            "profile": "https://www.onefc.com/athletes/",
+            "profile": "https://www.onefc.com/athletes/hiroyuki/",
             "record": ""
           },
           "fighter_b": {
@@ -322,8 +199,83 @@
             "flag": "",
             "profile": "https://www.onefc.com/athletes/regian-eersel/",
             "record": ""
+          }
+        },
+        {
+          "id": 11,
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "George Jarvis",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/george-jarvis/",
+            "record": ""
           },
-          "main_event": true
+          "fighter_b": {
+            "name": "Duangdawnoi Looksaikongdin",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/duangdawnoi/",
+            "record": ""
+          }
+        },
+        {
+          "id": 12,
+          "label": "Bantamweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Aline Seiberth",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/aline-seiberth/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Dzhamil Osmanov",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/dzhamil-osmanov/",
+            "record": ""
+          }
+        },
+        {
+          "id": 13,
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Ben Woolliss",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/ben-woolliss/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Mia Trevorrow",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/mia-trevorrow/",
+            "record": ""
+          }
+        },
+        {
+          "id": 14,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Sheila Barrios",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/sheila-barrios/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Fahlap Toyotarayong",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/fahlap-toyotarayong/",
+            "record": ""
+          }
         }
       ]
     },
