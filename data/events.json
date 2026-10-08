@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-05T10:16:12Z",
+  "scraped_at": "2026-10-08T10:15:34Z",
   "source": "onefc.com",
   "event_count": 3,
   "events": [
@@ -351,7 +351,7 @@
       "subtitle": "",
       "venue": "Ariake Arena, Tokyo",
       "url": "https://www.onefc.com/events/one-samurai-4/",
-      "fight_count": 9,
+      "fight_count": 12,
       "fights": [
         {
           "id": 1,
@@ -508,8 +508,8 @@
         },
         {
           "id": 9,
-          "label": "Strawweight Kickboxing",
-          "discipline": "kb",
+          "label": "Lightweight MMA",
+          "discipline": "mma",
           "fighter_a": {
             "name": "Sinsamut Klinmee",
             "country": "",
@@ -518,10 +518,67 @@
             "record": ""
           },
           "fighter_b": {
+            "name": "Shozo Isojima",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/shozo-isojima/",
+            "record": ""
+          }
+        },
+        {
+          "id": 10,
+          "label": "Strawweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Kota Abe",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/kota-abe/",
+            "record": ""
+          },
+          "fighter_b": {
             "name": "Toki Tamaru",
             "country": "",
             "flag": "",
             "profile": "https://www.onefc.com/athletes/toki-tamaru/",
+            "record": ""
+          }
+        },
+        {
+          "id": 11,
+          "label": "Flyweight MMA",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Shoma Okumura",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/shoma-okumura/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Yu Takeuchi",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/yu-takeuchi/",
+            "record": ""
+          }
+        },
+        {
+          "id": 12,
+          "label": "Lightweight Submission Grappling",
+          "discipline": "grappling",
+          "fighter_a": {
+            "name": "Ryoto Nishiyama",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/ryoto-nishiyama/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Yoshinari Fukushima",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/yoshinari-fukushima/",
             "record": ""
           }
         }
