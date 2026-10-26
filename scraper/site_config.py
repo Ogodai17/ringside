@@ -95,8 +95,8 @@ def social_image_tags(cfg: dict) -> str:
 
 def manifest(cfg: dict) -> str:
     return json.dumps({
-        "name": "Ringside — Fight Predictions",
-        "short_name": "Ringside",
+        "name": "Pick A Fight — Fight Predictions",
+        "short_name": "Pick A Fight",
         "description": "Free UFC & ONE Championship fight pick'em with fake money.",
         "start_url": "./",
         "scope": "./",

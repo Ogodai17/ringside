@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Ringside odds model — sets realistic winner odds on every fight.
+Pick A Fight odds model — sets realistic winner odds on every fight.
 
 Odds are computed ONCE here and stored in the data files
 (fight["odds"] = [odds_a, odds_b], fight["p_a"] = win chance for A),

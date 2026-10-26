@@ -6,26 +6,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{GA_HEAD}}
 {{SOCIAL_HEAD}}
-<title>Ringside — UFC & ONE Championship Fight Predictions</title>
+<title>Pick A Fight — Free UFC & ONE Championship Fight Predictions</title>
 <meta name="description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money. Test your MMA and combat sports IQ.">
 <meta name="keywords" content="UFC predictions, ONE Championship predictions, fight predictions, MMA picks, Muay Thai predictions, combat sports game, UFC betting game, fight picks, UFC picks">
-<meta name="author" content="Ringside">
+<meta name="author" content="Pick A Fight">
 <link rel="canonical" href="{{SITE_URL}}">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Ringside — UFC & ONE Championship Fight Predictions">
+<meta property="og:title" content="Pick A Fight — Free UFC & ONE Championship Fight Predictions">
 <meta property="og:description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.">
 <meta property="og:url" content="{{SITE_URL}}">
-<meta property="og:site_name" content="Ringside">
+<meta property="og:site_name" content="Pick A Fight">
 <!-- Twitter Card -->
-<meta name="twitter:title" content="Ringside — UFC & ONE Championship Fight Predictions">
+<meta name="twitter:title" content="Pick A Fight — Free UFC & ONE Championship Fight Predictions">
 <meta name="twitter:description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Ringside",
+  "name": "Pick A Fight",
   "url": "{{SITE_URL}}",
   "description": "Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.",
   "applicationCategory": "GameApplication",
@@ -37,7 +37,7 @@
   },
   "author": {
     "@type": "Organization",
-    "name": "Ringside"
+    "name": "Pick A Fight"
   }
 }
 </script>
@@ -232,7 +232,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 <body>
 <div class="app">
   <header class="header">
-    <div class="logo">ring<span>side</span></div>
+    <div class="logo">pick a <span>fight</span></div>
     <div class="balance-pill"><div class="coin-icon">R</div><span id="balanceDisplay">5,000</span></div>
   </header>
   <nav class="nav">
@@ -535,8 +535,8 @@ function drawPickCard(ev, picks){
   const F='"Space Grotesk", "Inter", system-ui, sans-serif';
   x.fillStyle='#0a0a0c'; x.fillRect(0,0,W,H);
   x.fillStyle='#c8362e'; x.fillRect(0,0,W,14);
-  x.font=`700 54px ${F}`; x.fillStyle='#e8e6e3'; x.fillText('ring',70,120);
-  x.fillStyle='#c8362e'; x.fillText('side',70+x.measureText('ring').width,120);
+  x.font=`700 54px ${F}`; x.fillStyle='#e8e6e3'; x.fillText('pick a ',70,120);
+  x.fillStyle='#c8362e'; x.fillText('fight',70+x.measureText('pick a ').width,120);
   x.fillStyle='#8a8a96'; x.font=`500 30px ${F}`; x.fillText('MY PICKS',70,185);
   x.fillStyle='#e8e6e3'; x.font=`700 46px ${F}`;
   x.fillText(fitText(x,unesc(ev.name+(ev.subtitle?': '+ev.subtitle:'')),W-140),70,250);
@@ -570,7 +570,7 @@ async function sharePicks(){
   try{ await document.fonts?.ready; }catch(e){}
   const canvas=drawPickCard(ev,picks);
   const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));
-  const name=`ringside-picks-${unesc(ev.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}.png`;
+  const name=`pickafight-${unesc(ev.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}.png`;
   const text=`My picks for ${unesc(ev.name)} — think you can call it better? ${SITE_URL}`;
   const file=blob && new File([blob],name,{type:'image/png'});
   try{
@@ -695,7 +695,7 @@ function claimUBI(){balance+=300;lastUBIClaim=new Date().toDateString();updateBa
 loadEvents().then(()=>checkUBI());
 </script>
 <footer style="border-top:1px solid var(--border);margin-top:40px;padding:24px 16px;text-align:center;color:var(--text-muted);font-size:13px;">
-  <a href="index.html" style="color:var(--accent);text-decoration:none">Ringside</a> · <a href="about.html" style="color:var(--accent);text-decoration:none">About</a> · <a href="privacy.html" style="color:var(--accent);text-decoration:none">Privacy</a> · <a href="contact.html" style="color:var(--accent);text-decoration:none">Contact</a>
+  <a href="index.html" style="color:var(--accent);text-decoration:none">Pick A Fight</a> · <a href="about.html" style="color:var(--accent);text-decoration:none">About</a> · <a href="privacy.html" style="color:var(--accent);text-decoration:none">Privacy</a> · <a href="contact.html" style="color:var(--accent);text-decoration:none">Contact</a>
 </footer>
 </body>
 </html>

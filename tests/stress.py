@@ -1,5 +1,5 @@
 """
-Ringside stress test — runs the real built site in headless Chrome.
+Pick A Fight stress test — runs the real built site in headless Chrome.
 
 Usage: python3 tests/stress.py . [--shots <dir>]   (from the repo root)
 Needs: pip install playwright && python -m playwright install chromium

@@ -1,6 +1,6 @@
 {
-  "name": "Ringside \u2014 Fight Predictions",
-  "short_name": "Ringside",
+  "name": "Pick A Fight \u2014 Fight Predictions",
+  "short_name": "Pick A Fight",
   "description": "Free UFC & ONE Championship fight pick'em with fake money.",
   "start_url": "./",
   "scope": "./",

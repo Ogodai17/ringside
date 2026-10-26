@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Ringside UFC Scraper — pulls UFC fight cards from ESPN's public data feed
+Pick A Fight UFC Scraper — pulls UFC fight cards from ESPN's public data feed
 (site.api.espn.com) and writes data/ufc_events.json in the same format as
 the ONE scraper.
 
@@ -24,7 +24,7 @@ from zoneinfo import ZoneInfo
 import requests
 
 SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/mma/ufc/scoreboard"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Ringside fight predictions; +https://github.com/Ogodai17/ringside)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Pick A Fight predictions; +https://github.com/Ogodai17/ringside)"}
 EASTERN = ZoneInfo("America/New_York")  # ESPN keys UFC dates to US Eastern
 
 COUNTRY_FLAGS = {
@@ -321,7 +321,7 @@ def main():
     parser.add_argument("--enrich", action="store_true", help="(no-op; ESPN already includes records/countries)")
     args = parser.parse_args()
 
-    print("=== Ringside UFC Scraper (ESPN feed) ===")
+    print("=== Pick A Fight UFC Scraper (ESPN feed) ===")
     cal = get_calendar()
     if not cal:
         print("[!] Could not load the UFC calendar from ESPN.", file=sys.stderr)

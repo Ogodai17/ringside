@@ -178,12 +178,12 @@ def analysis_paragraphs(fight: dict) -> list[str]:
     oa, ob = fight_odds(fight)
     fav, fav_p, fav_o = (na, p, oa) if p >= 0.5 else (nb, 1 - p, ob)
     if not (ra or rb):
-        out.append("With no records on file for either fighter, Ringside prices this as close to even.")
+        out.append("With no records on file for either fighter, Pick A Fight prices this as close to even.")
     else:
         phrase = favorite_phrase(p)
-        lead = (f"Ringside's record-based model calls this {phrase}, leaning {fav}"
+        lead = (f"Pick A Fight's record-based model calls this {phrase}, leaning {fav}"
                 if phrase == "a near coin flip" else
-                f"Ringside's record-based model makes {fav} {phrase}")
+                f"Pick A Fight's record-based model makes {fav} {phrase}")
         out.append(f"{lead} ({round(fav_p * 100)}% to win, odds {fav_o:.2f}). It only looks at records — "
                    f"opposition quality, styles, layoffs and weight cuts aren't in it, which is where upsets come from.")
     return out
@@ -275,7 +275,7 @@ def page_head(title: str, desc: str, url: str, jsonld: str, og_type: str = "arti
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
-<meta property="og:site_name" content="Ringside">
+<meta property="og:site_name" content="Pick A Fight">
 {SOCIAL_IMAGE}
 <script type="application/ld+json">{jsonld}</script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -286,7 +286,7 @@ def page_head(title: str, desc: str, url: str, jsonld: str, og_type: str = "arti
 def page_footer(prefix: str) -> str:
     return f"""
   <div class="footer">
-    <a href="{prefix}index.html">Ringside</a> · <a href="{prefix}previews/index.html">All previews</a> · <a href="{prefix}about.html">About</a> · <a href="{prefix}privacy.html">Privacy</a> · <a href="{prefix}contact.html">Contact</a>
+    <a href="{prefix}index.html">Pick A Fight</a> · <a href="{prefix}previews/index.html">All previews</a> · <a href="{prefix}about.html">About</a> · <a href="{prefix}privacy.html">Privacy</a> · <a href="{prefix}contact.html">Contact</a>
   </div>
 </div>
 </body>
@@ -355,10 +355,10 @@ def build_preview_html(event: dict, idx: int) -> str:
 
     meta_date = f'<p class="event-date">{h(fmt_date(event.get("date", "")))}</p>' if event.get("date") else ""
     meta_venue = f'<p class="event-venue">{h(event.get("venue", ""))}</p>' if event.get("venue") else ""
-    return page_head(f"{h(title_full)} Predictions &amp; Odds | Ringside", desc, url, jsonld) + f"""
+    return page_head(f"{h(title_full)} Predictions &amp; Odds | Pick A Fight", desc, url, jsonld) + f"""
 <body>
 <div class="page">
-  <div class="page-header"><a href="../index.html">Ringside</a></div>
+  <div class="page-header"><a href="../index.html">Pick A Fight</a></div>
 
   <h1>{h(title_full)}</h1>
   <div class="event-meta">
@@ -368,7 +368,7 @@ def build_preview_html(event: dict, idx: int) -> str:
   </div>
 
   <div class="cta-banner">
-    <a href="../index.html">Make Your Predictions on Ringside &rarr;</a>
+    <a href="../index.html">Make Your Predictions on Pick A Fight &rarr;</a>
     <p>Free to play — pick winners, methods, and rounds with fake money.</p>
   </div>
 
@@ -376,7 +376,7 @@ def build_preview_html(event: dict, idx: int) -> str:
   {''.join(cards)}
 
   <div class="cta-banner">
-    <a href="../index.html">Ready to make your picks? Play on Ringside &rarr;</a>
+    <a href="../index.html">Ready to make your picks? Play on Pick A Fight &rarr;</a>
     <p>5,000 R starting balance. No real money. Just bragging rights.</p>
   </div>
 """ + page_footer("../")
@@ -393,7 +393,7 @@ def build_matchup_html(event: dict, fight: dict, event_file: str) -> str:
     p = win_chance(fight)
     when = fmt_date(event.get("date", ""))
     desc = h(f"{vs} prediction and odds for {ev_title}" + (f" ({when})" if when else "") +
-             f". Records, win chances and a free pick'em on Ringside.")
+             f". Records, win chances and a free pick'em on Pick A Fight.")
     ld = {
         "@context": "https://schema.org", "@type": "SportsEvent",
         "name": f"{vs} — {ev_title}", "url": url, "sport": "Mixed Martial Arts",
@@ -414,7 +414,7 @@ def build_matchup_html(event: dict, fight: dict, event_file: str) -> str:
         row("Win rate", pct(ra), pct(rb)),
         row("Pro fights", sum(ra) if ra else "—", sum(rb) if rb else "—"),
         row("Country", h(fa.get("country") or "—"), h(fb.get("country") or "—")),
-        row("Ringside odds", f"{oa:.2f}", f"{ob:.2f}"),
+        row("Pick A Fight odds", f"{oa:.2f}", f"{ob:.2f}"),
         row("Win chance", f"{round(p * 100)}%", f"{100 - round(p * 100)}%"),
     ]
     if any(isinstance(x.get("finish_rate"), int) for x in (fa, fb)):
@@ -424,10 +424,10 @@ def build_matchup_html(event: dict, fight: dict, event_file: str) -> str:
     related = "".join(f'<a href="../{event_file}">{h(o["fighter_a"]["name"])} vs {h(o["fighter_b"]["name"])} <span style="color:var(--text-muted)">· {h(o.get("label",""))}</span></a>' for o in others)
     tag = "Main Event" if fight.get("main_event") else "Co-Main Event"
 
-    return page_head(f"{h(vs)} Prediction &amp; Odds | Ringside", desc, url, safe_jsonld(ld)) + f"""
+    return page_head(f"{h(vs)} Prediction &amp; Odds | Pick A Fight", desc, url, safe_jsonld(ld)) + f"""
 <body>
 <div class="page">
-  <div class="page-header"><a href="../../index.html">Ringside</a></div>
+  <div class="page-header"><a href="../../index.html">Pick A Fight</a></div>
 
   <h1>{h(vs)} Prediction</h1>
   <div class="event-meta">
@@ -451,7 +451,7 @@ def build_matchup_html(event: dict, fight: dict, event_file: str) -> str:
   </div>
 
   <div class="cta-banner">
-    <a href="../../index.html">Make your {h(vs)} pick on Ringside &rarr;</a>
+    <a href="../../index.html">Make your {h(vs)} pick on Pick A Fight &rarr;</a>
     <p>Free pick'em with fake money — winner, method, round. No sign-up.</p>
   </div>
 
@@ -552,7 +552,7 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {GA_HEAD}
 {SOCIAL_IMAGE}
-<title>Fight Previews — Ringside</title>
+<title>Fight Previews — Pick A Fight</title>
 <meta name="description" content="Fight predictions and analysis for upcoming UFC and ONE Championship events. Free picks and breakdowns for every bout.">
 <link rel="canonical" href="{BASE}previews/">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -587,7 +587,7 @@ h1 {{ font-size:28px; margin:0 0 8px; }}
 </head>
 <body>
 <div class="page">
-  <div class="page-header"><a href="../index.html">Ringside</a></div>
+  <div class="page-header"><a href="../index.html">Pick A Fight</a></div>
 
   <h1>Fight Previews</h1>
   <p class="tagline">Analysis and predictions for every bout.</p>
@@ -597,7 +597,7 @@ h1 {{ font-size:28px; margin:0 0 8px; }}
   </div>
 
   <div class="footer">
-    <a href="../index.html">Ringside</a> · <a href="../about.html">About</a> · <a href="../privacy.html">Privacy</a> · <a href="../contact.html">Contact</a>
+    <a href="../index.html">Pick A Fight</a> · <a href="../about.html">About</a> · <a href="../privacy.html">Privacy</a> · <a href="../contact.html">Contact</a>
   </div>
 </div>
 </body>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Ringside Scraper — pulls upcoming ONE Championship fight cards
+Pick A Fight Scraper — pulls upcoming ONE Championship fight cards
 from onefc.com and outputs events.json for the frontend.
 
 Run locally:
@@ -428,7 +428,7 @@ def main():
     parser.add_argument("--max", type=int, default=4, help="Max events to scrape")
     args = parser.parse_args()
 
-    print("=== Ringside Scraper ===")
+    print("=== Pick A Fight Scraper ===")
     print(f"Fetching {EVENTS_URL}...")
 
     listing = fetch(EVENTS_URL)
