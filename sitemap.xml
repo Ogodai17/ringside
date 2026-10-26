@@ -31,12 +31,42 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-moicano-vs-nolan.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ogodai17.github.io/ringside/previews/one-friday-fights-177-the-inner-circle-37.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ogodai17.github.io/ringside/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-bonfim-vs-brady.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-334-gane-vs-hokit.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-procházka-vs-stirling.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-333-volkanovski-vs-evloev.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-buckley-vs-malott.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
