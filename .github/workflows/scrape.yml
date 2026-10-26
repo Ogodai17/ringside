@@ -27,10 +27,13 @@ jobs:
       - name: Run scraper
         run: python scraper/scrape.py --out data --enrich --max 4
 
+      - name: Generate fight previews
+        run: python scraper/generate_previews.py --data data/events.json --out previews
+
       - name: Commit updated data
         run: |
           git config user.name "Ringside Bot"
           git config user.email "bot@ringside.dev"
-          git add data/events.json
+          git add data/events.json previews/
           git diff --staged --quiet || git commit -m "Update fight card data $(date -u +%Y-%m-%d)"
           git push

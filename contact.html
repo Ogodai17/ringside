@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Ringside</title>
+<meta name="description" content="Get in touch with the Ringside team — feedback, bug reports, partnership inquiries.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0c; --surface: #141418; --surface-raised: #1c1c22;
+  --border: #2a2a34; --text: #e8e6e3; --text-dim: #8a8a96;
+  --text-muted: #5a5a66; --accent: #c8362e; --gold: #d4a843;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f2f0ed; --surface: #fff; --surface-raised: #f7f6f4;
+    --border: #d8d6d2; --text: #1a1a1e; --text-dim: #6a6a72;
+    --text-muted: #9a9aa2; --accent: #b82e27; --gold: #b08a2e;
+  }
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.7; min-height:100vh; }
+h1,h2,h3 { font-family:'Space Grotesk',system-ui,sans-serif; }
+.page { max-width:720px; margin:0 auto; padding:0 16px; }
+.page-header { padding:20px 0; border-bottom:1px solid var(--border); margin-bottom:32px; }
+.page-header a { color:var(--accent); text-decoration:none; font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700; font-size:20px; }
+.page-header a:hover { opacity:0.8; }
+h1 { font-size:28px; margin:0 0 8px; }
+.tagline { color:var(--gold); font-size:16px; margin-bottom:32px; font-family:'Space Grotesk',system-ui,sans-serif; }
+h2 { font-size:18px; margin:28px 0 12px; color:var(--gold); }
+p { margin-bottom:16px; color:var(--text-dim); }
+.contact-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; margin:16px 0; }
+.contact-card h3 { font-size:15px; margin-bottom:8px; }
+.contact-card p { font-size:14px; margin:0; }
+.contact-card a { color:var(--accent); text-decoration:none; }
+.contact-card a:hover { text-decoration:underline; }
+.footer { border-top:1px solid var(--border); margin-top:48px; padding:24px 0; text-align:center; color:var(--text-muted); font-size:13px; }
+.footer a { color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header"><a href="index.html">Ringside</a></div>
+
+  <h1>Contact</h1>
+  <p class="tagline">We'd love to hear from you.</p>
+
+  <p>Whether you found a bug, have a feature request, or want to talk about a partnership — drop us a line.</p>
+
+  <div class="contact-card">
+    <h3>General Inquiries</h3>
+    <p>For feedback, suggestions, or questions about Ringside:<br>
+    <a href="mailto:ringside@proton.me">ringside@proton.me</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3>Bug Reports</h3>
+    <p>Found something broken? Open an issue on our <a href="https://github.com/ogodai17/ringside/issues">GitHub repo</a> or email us with details about what happened and what you expected.</p>
+  </div>
+
+  <div class="contact-card">
+    <h3>Partnerships &amp; Advertising</h3>
+    <p>Interested in sponsoring or advertising on Ringside? Reach out at <a href="mailto:ringside@proton.me">ringside@proton.me</a> with "Partnership" in the subject line.</p>
+  </div>
+
+  <h2>Response Time</h2>
+  <p>We're a small team, so please allow 1–2 business days for a reply. GitHub issues are usually the fastest way to get a response on technical problems.</p>
+
+  <div class="footer">
+    <a href="index.html">Ringside</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="contact.html">Contact</a>
+  </div>
+</div>
+</body>
+</html>
