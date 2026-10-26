@@ -14,6 +14,7 @@ on:
       - site_config.json
       - "templates/**"
       - "scraper/**"
+      - "tests/**"
 
 permissions:
   contents: write
@@ -60,10 +61,20 @@ jobs:
           git diff --staged --quiet || git commit -m "Update fight card data $(date -u +%Y-%m-%d)"
           git push
 
+      # Headless-Chrome stress test of the built site (42 checks). Runs after
+      # the commit so a test problem never blocks fresh fight data.
+      - name: Test site
+        id: sitetest
+        continue-on-error: true
+        run: |
+          pip install -q playwright
+          python -m playwright install --with-deps chromium > /dev/null
+          python tests/stress.py .
+
       # Turn the run red (GitHub emails you) if a scraper failed, after
       # everything else has been saved.
       - name: Flag scraper failures
-        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure'
+        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure' || steps.sitetest.outcome == 'failure'
         run: |
-          echo "::error::Scraper failure — ONE: ${{ steps.one.outcome }}, UFC: ${{ steps.ufc.outcome }}. Previous data was kept. Check the step logs above."
+          echo "::error::Failure — ONE scraper: ${{ steps.one.outcome }}, UFC scraper: ${{ steps.ufc.outcome }}, site test: ${{ steps.sitetest.outcome }}. Check the step logs above."
           exit 1
