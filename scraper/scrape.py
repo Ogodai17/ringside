@@ -127,9 +127,14 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
     # Fighter pairs — find all athlete profile links
     athlete_links = []
     for a in soup.find_all("a", href=True):
+        href = a["href"].rstrip("/")
+        # Skip the generic "/athletes" directory link
+        if href.endswith("/athletes") or href == "/athletes":
+            continue
         if "/athletes/" in a["href"]:
             name = a.get_text(strip=True)
-            if name and len(name) > 1:
+            # Skip empty, single-char, or generic nav text
+            if name and len(name) > 1 and name.lower() not in ("all athletes", "athletes", "view all"):
                 athlete_links.append({"name": name, "href": a["href"]})
 
     # Deduplicate preserving order

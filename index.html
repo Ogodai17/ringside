@@ -220,102 +220,62 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 try { const s = JSON.parse(localStorage.getItem('ringside_state')||'{}'); balance=s.balance??5000; bets=s.bets??[]; lastUBIClaim=s.lastUBIClaim??null; } catch(e){}
 
-const events = [
-  {
-    name: "ONE Fight Night 48",
-    subtitle: "Erdogan vs. Elliott",
-    date: "Oct 2, 2026",
-    venue: "Lumpinee Stadium, Bangkok",
-    fights: [
-      { id:101, label:"Main Event — Heavyweight MMA", disc:"mma",
-        a:{name:"Shamil Erdogan",record:"13-0-0",flag:"🇹🇷"},
-        b:{name:"Paul Elliott",record:"10-3-0",flag:"🇬🇧"},
-        oddsA:1.45, oddsB:2.75,
-        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3","Rd 4","Rd 5"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:102, label:"Featherweight Muay Thai", disc:"mt",
-        a:{name:"Luke Lessei",record:"9-3-0",flag:"🇺🇸"},
-        b:{name:"Charlie Guest",record:"11-4-0",flag:"🇬🇧"},
-        oddsA:1.85, oddsB:1.95,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:103, label:"Bantamweight Muay Thai", disc:"mt",
-        a:{name:"Nakrob Fairtex",record:"79-15-3",flag:"🇹🇭"},
-        b:{name:"Parham Gheirati",record:"33-8-0",flag:"🇮🇷"},
-        oddsA:1.60, oddsB:2.35,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:104, label:"Featherweight Muay Thai", disc:"mt",
-        a:{name:"Arian Esparza",record:"8-2-0",flag:"🇺🇸"},
-        b:{name:"Sam Fitzgerald",record:"14-5-0",flag:"🇬🇧"},
-        oddsA:2.10, oddsB:1.75,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:105, label:"Flyweight MMA", disc:"mma",
-        a:{name:"Joshua Perreira",record:"6-0-0",flag:"🇺🇸"},
-        b:{name:"Antonio Cesar",record:"12-4-0",flag:"🇧🇷"},
-        oddsA:1.70, oddsB:2.15,
-        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:106, label:"Strawweight MMA", disc:"mma",
-        a:{name:"Lee Seung Cheol",record:"9-2-0",flag:"🇰🇷"},
-        b:{name:"Karen Ghazaryan",record:"11-3-0",flag:"🇦🇲"},
-        oddsA:1.90, oddsB:1.90,
-        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      }
-    ]
-  },
-  {
-    name: "ONE Samurai 4",
-    subtitle: "Haggerty vs. Akimoto",
-    date: "Oct 17, 2026",
-    venue: "Ariake Arena, Tokyo",
-    fights: [
-      { id:201, label:"Main Event — BW Kickboxing World Title", disc:"kb",
-        a:{name:"Jonathan Haggerty",record:"10-3-0",flag:"🇬🇧"},
-        b:{name:"Hiroki Akimoto",record:"9-4-0",flag:"🇯🇵"},
-        oddsA:1.55, oddsB:2.45,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3","Rd 4","Rd 5"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:202, label:"Co-Main — AW Muay Thai World Title", disc:"mt",
-        a:{name:"Nadaka Yoshinari",record:"42-2-0",flag:"🇯🇵"},
-        b:{name:"Rifdean Masdor",record:"7-1-0",flag:"🇲🇾"},
-        oddsA:1.30, oddsB:3.50,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3","Rd 4","Rd 5"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:203, label:"Welterweight Kickboxing", disc:"kb",
-        a:{name:"Rukiya Anpo",record:"42-9-0",flag:"🇯🇵"},
-        b:{name:"Bogdan Shumarov",record:"28-6-0",flag:"🇷🇺"},
-        oddsA:1.75, oddsB:2.10,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:204, label:"Lightweight Kickboxing", disc:"kb",
-        a:{name:"Marat Grigorian",record:"75-14-1",flag:"🇦🇲"},
-        b:{name:"Chao Luo",record:"32-8-0",flag:"🇨🇳"},
-        oddsA:1.50, oddsB:2.60,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:205, label:"Lightweight Kickboxing", disc:"kb",
-        a:{name:"Masaaki Noiri",record:"44-11-0",flag:"🇯🇵"},
-        b:{name:"Mohammed Siasarani",record:"22-5-0",flag:"🇮🇷"},
-        oddsA:1.65, oddsB:2.25,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:206, label:"Strawweight MMA", disc:"mma",
-        a:{name:"Itsuki Hirata",record:"9-3-0",flag:"🇯🇵"},
-        b:{name:"Jihin Radzuan",record:"8-5-0",flag:"🇲🇾"},
-        oddsA:1.60, oddsB:2.35,
-        methods:["KO/TKO","Submission","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      },
-      { id:207, label:"Bantamweight Kickboxing", disc:"kb",
-        a:{name:"Yuki Yoza",record:"18-5-0",flag:"🇯🇵"},
-        b:{name:"Nabil Anane",record:"42-7-0",flag:"🇫🇷"},
-        oddsA:2.20, oddsB:1.70,
-        methods:["KO/TKO","Decision"], rounds:["Rd 1","Rd 2","Rd 3"], distance:["Goes the distance","Doesn't go the distance"]
-      }
-    ]
+let events = [];
+
+/* ── Map scraped JSON into frontend fight format ── */
+function hashName(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+function genOdds(a,b){
+  const seed=(hashName(a)^hashName(b))%100;
+  const fav=1.20+(seed%40)/100;          // 1.20–1.59
+  const dog=+(4.5-fav*1.05).toFixed(2);  // roughly inverse
+  return seed%2===0?[+fav.toFixed(2),dog]:[dog,+fav.toFixed(2)];
+}
+function mapFight(f,evIdx){
+  const disc = f.discipline==='mt'?'mt':f.discipline==='kb'||f.discipline==='kickboxing'?'kb':f.discipline==='grappling'?'grappling':'mma';
+  const isMMA = disc==='mma'||disc==='grappling';
+  const isTitle = f.main_event || (f.label||'').toLowerCase().includes('world');
+  const [oddsA,oddsB] = genOdds(f.fighter_a.name, f.fighter_b.name);
+  const maxRd = isTitle?5:3;
+  const rounds = Array.from({length:maxRd},(_,i)=>`Rd ${i+1}`);
+  const methods = isMMA?["KO/TKO","Submission","Decision"]:["KO/TKO","Decision"];
+  return {
+    id: evIdx*100 + f.id,
+    label: f.label||`Bout ${f.id}`,
+    disc,
+    a:{ name:f.fighter_a.name, record:f.fighter_a.record||"", flag:f.fighter_a.flag||"" },
+    b:{ name:f.fighter_b.name, record:f.fighter_b.record||"", flag:f.fighter_b.flag||"" },
+    oddsA, oddsB,
+    methods, rounds,
+    distance:["Goes the distance","Doesn't go the distance"]
+  };
+}
+function mapEvent(ev,idx){
+  return {
+    name: ev.name,
+    subtitle: ev.subtitle||"",
+    date: "Upcoming",
+    venue: ev.venue||"TBD",
+    fights: ev.fights.map(f=>mapFight(f,idx+1))
+  };
+}
+
+async function loadEvents(){
+  try {
+    const r = await fetch('data/events.json');
+    if(!r.ok) throw new Error(r.status);
+    const json = await r.json();
+    if(json.events && json.events.length){
+      events = json.events.map((ev,i)=>mapEvent(ev,i));
+    }
+  } catch(e){
+    console.warn('Could not load events.json, using empty card',e);
+    events = [{name:"No Events Loaded",subtitle:"Scraper hasn't run yet",date:"—",venue:"—",fights:[]}];
   }
-];
+  renderEventPicker();
+  renderFights();
+  renderLeaderboard();
+  updateBal();
+}
 
 const leaderboardData = [
   {name:'MuayThaiMax',balance:24800,record:'31-12'},
@@ -332,8 +292,8 @@ function save(){try{localStorage.setItem('ringside_state',JSON.stringify({balanc
 function updateBal(){document.getElementById('balanceDisplay').textContent=balance.toLocaleString();}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
-function discClass(d){return d==='mma'?'disc-mma':d==='mt'?'disc-mt':'disc-kb';}
-function discLabel(d){return d==='mma'?'MMA':d==='mt'?'Muay Thai':'Kickboxing';}
+function discClass(d){return d==='mma'||d==='grappling'?'disc-mma':d==='mt'?'disc-mt':'disc-kb';}
+function discLabel(d){return d==='mma'?'MMA':d==='mt'?'Muay Thai':d==='grappling'?'Grappling':'Kickboxing';}
 
 function renderEventPicker(){
   document.getElementById('eventPicker').innerHTML = events.map((e,i)=>`
@@ -463,7 +423,7 @@ function checkUBI(){
 }
 function claimUBI(){balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 R daily top-up');}
 
-renderEventPicker();renderFights();updateBal();checkUBI();
+loadEvents().then(()=>checkUBI());
 </script>
 </body>
 </html>
