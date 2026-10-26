@@ -15,6 +15,7 @@ on:
       - "templates/**"
       - "scraper/**"
       - "tests/**"
+      - "supabase/**"
 
 permissions:
   contents: write
@@ -63,6 +64,26 @@ jobs:
           git add -A data/ previews/ sitemap.xml index.html about.html contact.html privacy.html 404.html manifest.webmanifest CNAME 2>/dev/null || git add -A data/ previews/ sitemap.xml index.html about.html contact.html privacy.html 404.html manifest.webmanifest
           git diff --staged --quiet || git commit -m "Update fight card data $(date -u +%Y-%m-%d)"
           git push
+
+      # Free Supabase projects pause after a week without traffic; one tiny
+      # read a day keeps the community scorecard database awake.
+      - name: Keep scorecard database awake
+        continue-on-error: true
+        run: |
+          python - <<'EOF'
+          import json, sys, urllib.request
+          sys.path.insert(0, "scraper")
+          import site_config
+          api = site_config.score_api(site_config.load())
+          if not api:
+              print("scorecards not configured — skipping"); raise SystemExit
+          h = {"apikey": api["key"], "Content-Type": "application/json"}
+          if api["key"].startswith("eyJ"):
+              h["Authorization"] = "Bearer " + api["key"]
+          req = urllib.request.Request(api["url"] + "/rest/v1/rpc/score_summary", method="POST",
+                                       data=json.dumps({"p_fights": ["fkeepalive"]}).encode(), headers=h)
+          print("ping:", urllib.request.urlopen(req, timeout=20).status)
+          EOF
 
       # Headless-Chrome stress test of the built site (42 checks). Runs after
       # the commit so a test problem never blocks fresh fight data.

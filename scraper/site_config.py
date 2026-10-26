@@ -20,6 +20,8 @@ DEFAULTS = {
     "adsense_slot_top": "",
     "adsense_slot_bottom": "",
     "affiliate_url": "",
+    "scorecards_url": "",
+    "scorecards_publishable_key": "",
 }
 
 
@@ -108,3 +110,30 @@ def manifest(cfg: dict) -> str:
             {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
         ],
     }, indent=2)
+
+
+def score_api(cfg: dict):
+    """Community scorecard database (Supabase) for the browser, or None.
+
+    Only the PUBLISHABLE key may ever go here — it's designed to be public.
+    A secret / service_role key would give every visitor full database
+    access, so the build refuses to run if one is pasted by mistake.
+    """
+    url, key = cfg.get("scorecards_url", ""), cfg.get("scorecards_publishable_key", "")
+    if not (url and key):
+        return None
+    looks_secret = not (key.startswith("sb_publishable_") or key.startswith("eyJ"))
+    if key.startswith("eyJ"):
+        import base64
+        try:
+            payload = key.split(".")[1]
+            payload += "=" * (-len(payload) % 4)
+            looks_secret = json.loads(base64.urlsafe_b64decode(payload)).get("role") != "anon"
+        except Exception:
+            looks_secret = True
+    if looks_secret:
+        raise SystemExit("REFUSING TO BUILD: scorecards_publishable_key looks like a SECRET key. "
+                         "Use the publishable (sb_publishable_...) or anon key only.")
+    if not url.startswith("https://"):
+        raise SystemExit("scorecards_url must start with https://")
+    return {"url": url.rstrip("/"), "key": key}

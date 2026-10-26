@@ -439,10 +439,151 @@ def t_static_and_meta(browser):
     ctx.close(); srv.shutdown()
 
 
+def _decision_fight(site):
+    """Find a finished UFC decision fight in the data, return (event name, fighter a, winner side)."""
+    j = json.loads((site / "data" / "ufc_events.json").read_text())
+    for e in j["events"]:
+        for f in e["fights"]:
+            r = f.get("result") or {}
+            if r.get("method") == "Decision" and r.get("winner") in ("a", "b"):
+                return e["name"], e.get("subtitle", ""), f["fighter_a"]["name"], r["winner"]
+    return None
+
+
+def t_scorecard_solo(browser):
+    site = make_site()
+    found = _decision_fight(site)
+    if not check(found is not None, "Test data has a finished decision fight", "none found"):
+        return
+    ev_name, ev_sub, a_name, winner = found
+    pg = Page(browser, site, viewport=(390, 900))
+    idx = pg.js("(n)=>events.findIndex(e=>e.fights.some(f=>unesc(f.a.name)===n))", a_name)
+    pg.js(f"switchEvent({idx})")
+    fid = pg.js("(n)=>events[activeEventIdx].fights.find(f=>unesc(f.a.name)===n).id", a_name)
+    btn = f"#scw-{fid} .sc-toggle"
+    check(pg.p.locator(btn).count() == 1, "Finished fights show a 'Score this fight' button", "")
+    pg.p.click(btn)
+    rows = pg.p.locator(f"#scw-{fid} .sc-row").count()
+    check(rows in (3, 5), "Scorecard shows one row per scheduled round", f"{rows} rows")
+    # Score every round for the official LOSER -> should say "Robbery?"
+    loser_pick = "b109" if winner == "a" else "a109"
+    for r in range(1, rows + 1):
+        pg.js(f"scorePick('{fid}',{r},'{loser_pick}')")
+    txt = pg.js(f"document.getElementById('scw-{fid}').innerText")
+    check("Robbery?" in txt and "Official:" in txt, "Disagreeing with the judges is called out", txt[:200])
+    # flip to agree
+    win_pick = "a109" if winner == "a" else "b109"
+    for r in range(1, rows + 1):
+        pg.js(f"scorePick('{fid}',{r},'{win_pick}')")
+    txt = pg.js(f"document.getElementById('scw-{fid}').innerText")
+    check("agree with the judges" in txt, "Agreeing with the judges is recognised", txt[:200])
+    total = pg.js(f"myTotals(events[activeEventIdx].fights.find(f=>f.id==='{fid}'), events[activeEventIdx]).text")
+    check(total.startswith(f"{10*rows}-{9*rows}") or total.startswith(f"{9*rows}-{10*rows}"), "Card totals add up like a judge's", total)
+    # tapping the same pick again clears it
+    pg.js(f"scorePick('{fid}',1,'{win_pick}')")
+    check(pg.js(f"!cards['{fid}']['1']"), "Tapping a selected score clears it", "")
+    pg.reload()
+    check(pg.js(f"!!cards['{fid}'] && cards['{fid}']['2']==='{win_pick}'"), "Scorecard survives a reload", "")
+    pg.p.click('[data-tab="stats"]'); pg.p.wait_for_timeout(100)
+    st = pg.js("document.getElementById('stats-panel').innerText")
+    check("Fights you scored" in st, "My Stats counts scored fights", st[:160])
+    overflow = pg.js("document.documentElement.scrollWidth - window.innerWidth")
+    check(overflow <= 1, "Scorecard fits a phone screen", f"{overflow}px overflow")
+    if SHOTS:
+        pg.p.click('[data-tab="fights"]'); pg.js(f"switchEvent({idx})"); pg.js(f"toggleCard('{fid}')")
+        pg.p.locator(f"#scw-{fid}").scroll_into_view_if_needed(); pg.p.wait_for_timeout(150)
+        pg.p.screenshot(path=str(SHOTS / "scorecard_390.png"))
+    check(not pg.errors, "No JS errors while scoring", "; ".join(pg.errors[:2]))
+    pg.close()
+
+
+def t_scorecard_one(browser):
+    def mutate(d):
+        p = d / "data" / "events.json"; j = json.loads(p.read_text())
+        e = j["events"][0]; e["status"] = "completed"; e["date"] = "2026-01-01"
+        e["fights"][0]["result"] = {"winner": "a", "method": "Decision", "round": None}
+        p.write_text(json.dumps(j))
+    pg = Page(browser, make_site(mutate))
+    idx = pg.js("events.findIndex(e=>e.promotion==='ONE' && e.status==='completed')")
+    pg.js(f"switchEvent({idx})")
+    fid = pg.js("events[activeEventIdx].fights[0].id")
+    pg.js(f"toggleCard('{fid}')")
+    n = pg.p.locator(f"#scw-{fid} .sc-verdict .sc-btn").count()
+    check(n == 6, "ONE fights get a whole-fight verdict (not rounds)", f"{n} verdict buttons")
+    pg.js(f"scorePick('{fid}',0,'b3')")
+    txt = pg.js(f"document.getElementById('scw-{fid}').innerText")
+    check("dominant" in txt and "Robbery?" in txt, "ONE verdict compares with the official result", txt[:200])
+    check(not pg.errors, "No JS errors on ONE scorecards", "; ".join(pg.errors[:2]))
+    pg.close()
+
+
+def t_scorecard_community(browser):
+    site = make_site()
+    found = _decision_fight(site)
+    if not found:
+        return
+    _, _, a_name, winner = found
+    html = (site / "index.html").read_text()
+    html = html.replace("const SCORE_API = null", 'const SCORE_API = {"url":"https://fake-db.test","key":"sb_publishable_test"}')
+    (site / "index.html").write_text(html)
+    calls = []
+    srv, url = serve(site)
+    ctx = browser.new_context(viewport={"width": 390, "height": 900}); p = ctx.new_page(); errs = []
+    p.on("pageerror", lambda e: errs.append(str(e)))
+    fid_holder = {}
+    def handle(route):
+        req = route.request; body = json.loads(req.post_data or "{}")
+        calls.append((req.url.rsplit("/", 1)[-1], body, req.headers.get("apikey")))
+        fid = fid_holder.get("id")
+        if req.url.endswith("score_summary"):
+            data = [{"fight_key": fid, "round": 1, "pick": "b109" if winner == "a" else "a109", "n": 14},
+                    {"fight_key": fid, "round": 1, "pick": "a109" if winner == "a" else "b109", "n": 4}] if fid else []
+        elif req.url.endswith("fan_verdicts"):
+            loser = "b" if winner == "a" else "a"
+            data = [{"fight_key": fid, "winner": loser, "n": 15}, {"fight_key": fid, "winner": winner, "n": 3}] if fid else []
+        else:
+            data = ""
+        route.fulfill(status=200, content_type="application/json", body=json.dumps(data))
+    p.route("https://fake-db.test/**", handle)
+    p.goto(url + "index.html"); p.wait_for_timeout(600)
+    idx = p.evaluate("(n)=>events.findIndex(e=>e.fights.some(f=>unesc(f.a.name)===n))", a_name)
+    fid = p.evaluate(f"(n)=>events[{idx}].fights.find(f=>unesc(f.a.name)===n).id", a_name)
+    fid_holder["id"] = fid
+    p.evaluate(f"switchEvent({idx})"); p.wait_for_timeout(500)
+    badge = p.evaluate(f"document.querySelector('#fight-{fid} .fan-badge')?.innerText||''")
+    check("robbery" in badge.lower(), "Robbery badge appears when most fans disagree with a decision", badge or "no badge")
+    p.evaluate(f"toggleCard('{fid}')")
+    txt = p.evaluate(f"document.getElementById('scw-{fid}').innerText")
+    check("Fans:" in txt and "83%" in txt and "18 cards" in txt, "Scorecard shows fan consensus and card count", txt[:220])
+    check(p.locator(f"#scw-{fid} .sc-fans").count() >= 1, "Per-round fan split bars render", "")
+    p.evaluate(f"scorePick('{fid}',2,'a109')"); p.wait_for_timeout(300)
+    sub = [c for c in calls if c[0] == "submit_score"]
+    ok = sub and sub[-1][1].get("p_fight") == fid and sub[-1][1].get("p_round") == 2 and sub[-1][1].get("p_pick") == "a109" \
+         and len(sub[-1][1].get("p_device", "")) == 36 and sub[-1][2] == "sb_publishable_test"
+    check(bool(ok), "Picks are sent to the community database correctly", str(sub[-1:] if sub else "no submit call"))
+    check(not errs, "No JS errors with community data", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_secret_key_guard(browser):
+    sys.path.insert(0, str(REPO / "scraper"))
+    import site_config
+    bad = []
+    for key in ["sb_secret_abc123", "random-string", "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.x"]:
+        try:
+            site_config.score_api({"scorecards_url": "https://x.supabase.co", "scorecards_publishable_key": key})
+            bad.append(key[:12])
+        except SystemExit:
+            pass
+    ok_pub = site_config.score_api({"scorecards_url": "https://x.supabase.co", "scorecards_publishable_key": "sb_publishable_ok"})
+    check(not bad and ok_pub, "Build refuses secret database keys, accepts publishable", f"accepted: {bad}")
+
+
 def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
              t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
-             t_odds, t_share_and_stats, t_static_and_meta]
+             t_odds, t_share_and_stats, t_static_and_meta,
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
         browser = pw.chromium.launch()

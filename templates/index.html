@@ -182,6 +182,33 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 
 .share-btn { margin-top:10px; background:transparent; border:1px solid var(--border); color:var(--text); border-radius:8px; padding:7px 14px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Space Grotesk',sans-serif; }
 .share-btn:hover { border-color:var(--accent); color:var(--accent); }
+/* People's Scorecard */
+.sc-wrap { padding:0 16px 14px; }
+.sc-toggle { width:100%; display:flex; justify-content:space-between; align-items:center; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; font-family:'Space Grotesk',sans-serif; }
+.sc-toggle span { color:var(--text-muted); font-size:11px; }
+.sc-body { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+.sc-names { display:flex; justify-content:space-between; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:0 2px 0 32px; }
+.sc-names span:first-child { color:var(--accent); } .sc-names span:last-child { color:var(--gold); }
+.sc-row { display:grid; grid-template-columns:28px 1fr; gap:4px 4px; align-items:center; }
+.sc-row:has(.sc-verdict) { grid-template-columns:1fr; }
+.sc-row .sc-names { padding:0 2px; }
+.sc-rl { font-size:12px; font-weight:700; color:var(--text-muted); }
+.sc-btns { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px; }
+.sc-verdict { grid-template-columns:repeat(6,minmax(0,1fr)); }
+.sc-btn { min-width:0; padding:8px 0; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text-dim); font-size:12px; font-weight:600; cursor:pointer; font-family:'Space Grotesk',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sc-btn.a.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+.sc-btn.b.on { background:var(--gold); border-color:var(--gold); color:#1a1a1a; }
+.sc-btn.e.on { background:var(--text-dim); border-color:var(--text-dim); color:var(--bg); }
+.sc-fans { grid-column:2; } .sc-row:has(.sc-verdict) .sc-fans { grid-column:1; }
+.sc-bar { display:flex; height:6px; border-radius:4px; overflow:hidden; background:var(--surface-raised); }
+.sc-bar .sa { background:var(--accent); } .sc-bar .sb { background:var(--gold); } .sc-bar .se { background:var(--border); }
+.sc-fans-l { display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top:2px; }
+.sc-note { font-size:12px; color:var(--text-muted); }
+.sc-summary { border-top:1px solid var(--border); padding-top:8px; font-size:13px; display:flex; flex-direction:column; gap:3px; }
+.sc-dim { color:var(--text-muted); font-size:12px; }
+.sc-agree { color:var(--green); font-weight:600; } .sc-disagree, .sc-rob { color:var(--accent); font-weight:600; }
+.fan-badge { display:inline-block; margin-left:6px; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; text-transform:none; letter-spacing:0; }
+.fan-badge.rob { background:var(--accent); color:#fff; } .fan-badge.split { background:var(--gold-dim); color:var(--gold); }
 /* My Stats */
 .stat-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-bottom:12px; }
 @media (min-width:600px){ .stat-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
@@ -284,6 +311,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = {{AFFILIATE_URL_JSON}};
 const SITE_URL = {{SITE_URL_JSON}};
+const SCORE_API = {{SCORE_API_JSON}};  // {url,key} when the community database is connected, else null
 function loadState(){
   let s = {};
   try { s = JSON.parse(localStorage.getItem('ringside_state')||'{}') || {}; } catch(e){ s = {}; }
@@ -328,7 +356,7 @@ function fightKey(ev,f){return 'f'+hashName(`${ev.promotion||'ONE'}|${ev.name}|$
 function mapFight(f,ev){
   const disc = f.discipline==='mt'?'mt':f.discipline==='kb'||f.discipline==='kickboxing'?'kb':f.discipline==='grappling'?'grappling':'mma';
   const isMMA = disc==='mma'||disc==='grappling';
-  const isTitle = f.main_event || (f.label||'').toLowerCase().includes('world');
+  const isTitle = /5 rds|world champ|title/i.test(f.label||'');
   // Odds come from scraper/odds.py (fighter records); hash odds only as a fallback
   const [oddsA,oddsB] = (Array.isArray(f.odds)&&f.odds.length===2&&f.odds.every(x=>Number.isFinite(x)&&x>1))
     ? f.odds : genOdds(f.fighter_a.name, f.fighter_b.name);
@@ -484,7 +512,7 @@ function renderFights(){
     return `
     <div class="fight-card ${done?'fight-completed':''}" id="fight-${f.id}">
       <div class="fight-main" onclick="toggleFight('${f.id}')">
-        <div class="fight-label">${f.label} <span class="fight-discipline ${discClass(f.disc)}">${discLabel(f.disc)}</span></div>
+        <div class="fight-label">${f.label} <span class="fight-discipline ${discClass(f.disc)}">${discLabel(f.disc)}</span>${fanBadge(f)}</div>
         ${resultBadge}
         <div class="fighters-row">
           <div class="fighter ${res.winner==='a'?'fighter-won':''}">
@@ -521,8 +549,10 @@ function renderFights(){
           <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
         </div>
       </div>`}
+      ${done?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
     </div>`;
   }).join('');
+  loadCommunity(ev);
 }
 
 /* ── Shareable pick card: draws your picks for this event as an image ── */
@@ -579,6 +609,166 @@ async function sharePicks(){
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
   try{ await navigator.clipboard?.writeText(text); showToast('Image saved · caption copied'); }catch(e){ showToast('Image saved'); }
+}
+
+/* ── People's Scorecard ─────────────────────────────────────────────
+   UFC-style fights: score each round (10-9, 10-8, 10-10) like a judge.
+   ONE fights: ONE's judges score the whole fight, so fans give one verdict
+   (who won, and how clearly). Your card is saved on this device; when the
+   community database is connected (SCORE_API) every pick is pooled and the
+   card shows how fans scored it — and whether the judges got robbed. */
+const FAN_MIN = 10;                         // cards needed before calling robbery
+let cards = {};                             // { fightId: { "1":"a109", "0":"b2", ... } }
+try { const c = JSON.parse(localStorage.getItem('paf_cards')||'{}'); if(c && typeof c==='object') cards=c; } catch(e){}
+function saveCards(){ try{ localStorage.setItem('paf_cards', JSON.stringify(cards)); }catch(e){} }
+function deviceId(){
+  let id=null; try{ id=localStorage.getItem('paf_device'); }catch(e){}
+  if(!id || !/^[0-9a-f-]{36}$/.test(id)){
+    id = (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx'.replace(/x/g,()=>(Math.random()*16|0).toString(16)));
+    try{ localStorage.setItem('paf_device', id); }catch(e){}
+  }
+  return id;
+}
+const openCards = new Set();
+const community = {};                       // fightId -> { rounds:{r:{pick:n}}, verdict:{a,b,draw} }
+const ROUND_PICKS = [['a108','10-8'],['a109','10-9'],['even','10-10'],['b109','10-9'],['b108','10-8']];
+const VERDICT_PICKS = [['a3','Dominant'],['a2','Clear'],['a1','Close'],['b1','Close'],['b2','Clear'],['b3','Dominant']];
+const isWholeFight = ev => ev.promotion==='ONE';
+function roundsToScore(f){
+  const sched = /5 rds|world champ|title/i.test(f.label||'') ? 5 : 3;
+  const r = f.result;
+  return (r && r.round && r.method!=='Decision') ? Math.min(r.round, sched) : sched;
+}
+function lastName(n){ const p=unesc(n).trim().split(/\s+/); return esc(p[p.length-1]||n); }
+function myTotals(f, ev){
+  const c = cards[f.id]||{};
+  if(isWholeFight(ev)){ const v=c['0']; return v ? {winner: v==='draw'?'draw':v[0], text: v==='draw'?'Draw':`${v[0]==='a'?f.a.name:f.b.name} (${{1:'close',2:'clear',3:'dominant'}[v[1]]})`, complete:true} : null; }
+  const n = roundsToScore(f); let pa=0,pb=0,done=0;
+  for(let r=1;r<=n;r++){ const v=c[r]; if(!v) continue; done++;
+    pa += v==='b109'?9:v==='b108'?8:10; pb += v==='a109'?9:v==='a108'?8:10; }
+  if(!done) return null;
+  const winner = pa>pb?'a':pb>pa?'b':'draw';
+  return { winner, pa, pb, done, n, complete: done===n,
+           text: `${pa}-${pb} ${winner==='a'?f.a.name:winner==='b'?f.b.name:'Draw'}` };
+}
+function fanShare(f){
+  const v = community[f.id]?.verdict; if(!v) return null;
+  const n=(v.a||0)+(v.b||0)+(v.draw||0); if(!n) return null;
+  return { n, a:(v.a||0)/n, b:(v.b||0)/n, draw:(v.draw||0)/n };
+}
+/* Robbery meter: only for decisions, only with enough fan cards */
+function robbery(f){
+  const r=f.result, s=fanShare(f);
+  if(!r || r.method!=='Decision' || !s || s.n<FAN_MIN || (r.winner!=='a'&&r.winner!=='b')) return null;
+  const forLoser = r.winner==='a' ? s.b : s.a;
+  if(forLoser>=0.6) return {level:'robbery', pct:Math.round(forLoser*100)};
+  if(forLoser>=0.4) return {level:'split', pct:Math.round(forLoser*100)};
+  return {level:'agree', pct:Math.round((1-forLoser)*100)};
+}
+function fanBadge(f){
+  const rb=robbery(f); if(!rb) return '';
+  if(rb.level==='robbery') return ` <span class="fan-badge rob">Fans say robbery · ${rb.pct}%</span>`;
+  if(rb.level==='split') return ` <span class="fan-badge split">Split with fans</span>`;
+  return '';
+}
+function pickBtn(f, round, val, label, side){
+  const on = (cards[f.id]||{})[round]===val;
+  return `<button class="sc-btn ${side} ${on?'on':''}" onclick="event.stopPropagation();scorePick('${f.id}',${round},'${val}')">${label}</button>`;
+}
+function communityRound(f, round){
+  const rd = community[f.id]?.rounds?.[round]; if(!rd) return '';
+  const n = Object.values(rd).reduce((a,b)=>a+b,0); if(!n) return '';
+  let a=0,b=0; for(const [k,v] of Object.entries(rd)){ if(k[0]==='a') a+=v; else if(k[0]==='b') b+=v; }
+  const pa=Math.round(100*a/n), pb=Math.round(100*b/n), pe=100-pa-pb;
+  return `<div class="sc-fans" title="${n} fan cards"><div class="sc-bar"><span class="sa" style="width:${pa}%"></span><span class="se" style="width:${pe}%"></span><span class="sb" style="width:${pb}%"></span></div><div class="sc-fans-l"><span>${pa}%</span><span>fans · ${n}</span><span>${pb}%</span></div></div>`;
+}
+function scorecardHtml(f, ev){
+  const open = openCards.has(f.id);
+  const mine = myTotals(f, ev);
+  const head = `<button class="sc-toggle" onclick="event.stopPropagation();toggleCard('${f.id}')">${open?'Hide scorecard':(mine?`Your card: ${mine.text}`:'Score this fight')}<span>${open?'▲':'▼'}</span></button>`;
+  if(!open) return head;
+  let rows='';
+  if(isWholeFight(ev)){
+    rows = `<p class="sc-note">ONE judges score the whole fight, not round by round. Who won, and how clearly?</p>
+      <div class="sc-row"><div class="sc-names"><span>${lastName(f.a.name)}</span><span>${lastName(f.b.name)}</span></div>
+      <div class="sc-btns sc-verdict">${VERDICT_PICKS.map(([v,l])=>pickBtn(f,0,v,l,v[0])).join('')}</div>${communityRound(f,0)}</div>`;
+  } else {
+    const n = roundsToScore(f);
+    rows = `<div class="sc-names"><span>${lastName(f.a.name)}</span><span>${lastName(f.b.name)}</span></div>`;
+    for(let r=1;r<=n;r++){
+      rows += `<div class="sc-row"><div class="sc-rl">R${r}</div><div class="sc-btns">${ROUND_PICKS.map(([v,l])=>pickBtn(f,r,v,l,v==='even'?'e':v[0])).join('')}</div>${communityRound(f,r)}</div>`;
+    }
+    if(f.result && f.result.method!=='Decision' && f.result.round) rows += `<p class="sc-note">Ended in round ${f.result.round} — score the rounds you saw.</p>`;
+  }
+  // Official vs you vs fans
+  const r=f.result, lines=[];
+  if(mine) lines.push(`<div><b>You:</b> ${mine.text}${mine.complete===false?` <span class="sc-dim">(${mine.done}/${mine.n} rounds)</span>`:''}</div>`);
+  if(r){
+    const off = r.winner==='a'?f.a.name:r.winner==='b'?f.b.name:'Draw';
+    lines.push(`<div><b>Official:</b> ${off}${r.method?` by ${esc(r.method)}`:''}</div>`);
+    if(mine && mine.complete && r.method==='Decision'){
+      lines.push(mine.winner===r.winner ? `<div class="sc-agree">You agree with the judges.</div>`
+        : `<div class="sc-disagree">You'd have given it to ${mine.winner==='draw'?'nobody — a draw':(mine.winner==='a'?f.a.name:f.b.name)}. Robbery?</div>`);
+    }
+  } else lines.push(`<div class="sc-dim">Official result not in yet — your card is saved.</div>`);
+  const s=fanShare(f);
+  if(s){
+    const lead = s.a>=s.b ? [f.a.name,s.a] : [f.b.name,s.b];
+    lines.push(`<div><b>Fans:</b> ${Math.round(lead[1]*100)}% scored it for ${lead[0]} <span class="sc-dim">(${s.n} cards)</span></div>`);
+    const rb=robbery(f);
+    if(rb && rb.level==='robbery') lines.push(`<div class="sc-rob">Robbery meter: ${rb.pct}% of fans had the other guy winning.</div>`);
+  } else if(SCORE_API) lines.push(`<div class="sc-dim">Be one of the first fan cards on this fight.</div>`);
+  else lines.push(`<div class="sc-dim">Community scorecards are coming soon.</div>`);
+  return head + `<div class="sc-body">${rows}<div class="sc-summary">${lines.join('')}</div></div>`;
+}
+function rerenderCard(id){
+  const ev=events[activeEventIdx]; const f=ev && ev.fights.find(x=>x.id===id); const el=document.getElementById('scw-'+id);
+  if(f && el) el.innerHTML = scorecardHtml(f, ev);
+}
+function toggleCard(id){ openCards.has(id)?openCards.delete(id):openCards.add(id); rerenderCard(id); }
+function scorePick(id, round, val){
+  const c = cards[id] = cards[id] || {};
+  const clearing = c[round]===val;
+  if(clearing) delete c[round]; else c[round]=val;
+  if(!Object.keys(c).length) delete cards[id];
+  saveCards(); rerenderCard(id);
+  submitPick(id, round, clearing?'clear':val);
+}
+function apiHeaders(){
+  const h={'apikey':SCORE_API.key,'Content-Type':'application/json'};
+  if(/^eyJ/.test(SCORE_API.key)) h['Authorization']='Bearer '+SCORE_API.key;   // legacy anon keys only
+  return h;
+}
+async function submitPick(id, round, pick){
+  if(!SCORE_API) return;
+  try{
+    const r = await fetch(SCORE_API.url.replace(/\/$/,'')+'/rest/v1/rpc/submit_score',{method:'POST',headers:apiHeaders(),
+      body:JSON.stringify({p_fight:id,p_round:round,p_device:deviceId(),p_pick:pick})});
+    if(!r.ok) throw new Error(r.status);
+    setTimeout(()=>{ delete loadedFor[id]; loadCommunity(events[activeEventIdx], true); }, 400);
+  }catch(e){ showToast('Saved on this device — fan scores are offline right now'); }
+}
+const loadedFor = {};
+async function loadCommunity(ev, force){
+  if(!SCORE_API || !ev) return;
+  const ids = ev.fights.filter(f=>f.result || eventLocked(ev)).map(f=>f.id).filter(id=>force || !loadedFor[id]);
+  if(!ids.length) return;
+  ids.forEach(id=>loadedFor[id]=true);
+  const base=SCORE_API.url.replace(/\/$/,'')+'/rest/v1/rpc/';
+  try{
+    const [sum, ver] = await Promise.all([
+      fetch(base+'score_summary',{method:'POST',headers:apiHeaders(),body:JSON.stringify({p_fights:ids})}).then(r=>r.ok?r.json():[]),
+      fetch(base+'fan_verdicts',{method:'POST',headers:apiHeaders(),body:JSON.stringify({p_fights:ids})}).then(r=>r.ok?r.json():[]),
+    ]);
+    ids.forEach(id=>community[id]={rounds:{},verdict:{}});
+    for(const row of (Array.isArray(sum)?sum:[])){ const c=community[row.fight_key]; if(!c) continue;
+      (c.rounds[row.round] = c.rounds[row.round]||{})[row.pick] = Number(row.n)||0; }
+    for(const row of (Array.isArray(ver)?ver:[])){ const c=community[row.fight_key]; if(!c) continue; c.verdict[row.winner]=Number(row.n)||0; }
+    if(events[activeEventIdx]===ev){
+      ids.forEach(rerenderCard);
+      ev.fights.forEach(f=>{ const lab=document.querySelector(`#fight-${f.id} .fight-label`); if(lab){ lab.querySelectorAll('.fan-badge').forEach(b=>b.remove()); lab.insertAdjacentHTML('beforeend', fanBadge(f)); } });
+    }
+  }catch(e){ ids.forEach(id=>delete loadedFor[id]); }
 }
 
 function toggleFight(id){document.getElementById('fight-'+id).classList.toggle('expanded');}
@@ -662,7 +852,17 @@ function computeStats(){
   for(const b of settled){ const m=b.type||'winner'; byMarket[m]=byMarket[m]||{w:0,n:0}; byMarket[m].n++; if(b.result==='won') byMarket[m].w++; }
   return { total:bets.length, pending:bets.filter(b=>b.result==='pending').length, settled:settled.length,
     won:won.length, hit: settled.length? Math.round(100*won.length/settled.length):null, profit,
-    streak, streakKind:kind, best, upsets: won.filter(b=>b.odds>=2).length, byMarket };
+    streak, streakKind:kind, best, upsets: won.filter(b=>b.odds>=2).length, byMarket, ...judgeStats() };
+}
+/* How often your scorecards match the judges on decisions */
+function judgeStats(){
+  let scored=0, decided=0, agreed=0;
+  for(const ev of events) for(const f of ev.fights){
+    if(!cards[f.id]) continue; scored++;
+    const m=myTotals(f,ev), r=f.result;
+    if(m && m.complete && r && r.method==='Decision' && (r.winner==='a'||r.winner==='b')){ decided++; if(m.winner===r.winner) agreed++; }
+  }
+  return { scored, decided, agreed };
 }
 function renderStats(){
   const s=computeStats(), el=document.getElementById('stats-panel');
@@ -680,6 +880,8 @@ function renderStats(){
     <div class="stat-card">
       <div class="mk-row"><span>Picks made</span><span>${s.total}</span></div>
       <div class="mk-row"><span>Settled / pending</span><span>${s.settled} / ${s.pending}</span></div>
+      ${s.scored?`<div class="mk-row"><span>Fights you scored</span><span>${s.scored}</span></div>`:''}
+      ${s.decided?`<div class="mk-row"><span>Agreed with the judges</span><span>${s.agreed}/${s.decided} decisions</span></div>`:''}
       ${s.best?`<div class="mk-row"><span>Best hit</span><span>${s.best.pick} +${(s.best.payout-s.best.stake).toLocaleString()} R</span></div>`:''}
       ${markets}
     </div>
