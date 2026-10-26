@@ -1,13 +1,363 @@
 {
-  "scraped_at": "2026-10-22T14:54:46Z",
+  "scraped_at": "2026-10-26T16:36:03Z",
   "source": "onefc.com",
-  "event_count": 2,
+  "event_count": 3,
   "events": [
+    {
+      "name": "ONE Friday Fights 176 & The Inner Circle 36",
+      "subtitle": "",
+      "date": "2026-09-01",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-176/",
+      "status": "completed",
+      "fight_count": 14,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Flyweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Rambong Sor Therapat",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/rambong-sor-therapat/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Jacob Thompson",
+            "country": "United Kingdom",
+            "flag": "🇬🇧",
+            "profile": "https://www.onefc.com/athletes/jacob-thompson/",
+            "record": ""
+          },
+          "main_event": true,
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 2,
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Khunsuk T1 Fight Academy",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/khunsuk-sor-dechapan/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "YodUdon K Tongtalingchan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/yodudon-bs-muaythai/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 3,
+          "label": "Flyweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Sitthichai Sor Dechapan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/sitthichai-sor-dechapan/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Arthur Evan",
+            "country": "France",
+            "flag": "🇫🇷",
+            "profile": "https://www.onefc.com/athletes/arthur-evan/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 4,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Caviar Pudprachachuen",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/caviar-pudprachachuen/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Klapichit K Tongtalingchan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/klapichit-k-tongtalingchan/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 5,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Denchailek Sor Dechapan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/denchailek-sor-dechapan/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Adham Ruziev",
+            "country": "Indonesia",
+            "flag": "🇮🇩",
+            "profile": "https://www.onefc.com/athletes/adham-ruziev/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 6,
+          "label": "Featherweight MMA",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Ethan Brockett",
+            "country": "New Zealand",
+            "flag": "🇳🇿",
+            "profile": "https://www.onefc.com/athletes/ethan-brockett/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Pedro Duarte",
+            "country": "Indonesia",
+            "flag": "🇮🇩",
+            "profile": "https://www.onefc.com/athletes/pedro-duarte/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 7,
+          "label": "Strawweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Nihad Taghizade",
+            "country": "Azerbaijan",
+            "flag": "🇦🇿",
+            "profile": "https://www.onefc.com/athletes/nihad-taghizade/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Yumeto Mizuno",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/yumeto-mizuno/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 8,
+          "label": "Flyweight MMA",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Prashanth Guda",
+            "country": "New Zealand",
+            "flag": "🇳🇿",
+            "profile": "https://www.onefc.com/athletes/prashanth-guda/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Oga Akita",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/oga-akita/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 9,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Superbest Winnermuaythai",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/superbest-winnermuaythai/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Raize",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/raize/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 10,
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Numsurin Chor Ketwina",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/numsurin-chor-ketwina/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Akram Hamidi",
+            "country": "France",
+            "flag": "🇫🇷",
+            "profile": "https://www.onefc.com/athletes/akram-hamidi/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 11,
+          "label": "Flyweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Xavier Gonzalez",
+            "country": "Indonesia",
+            "flag": "🇮🇩",
+            "profile": "https://www.onefc.com/athletes/xavier-gonzalez/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Exza Wankhongohm",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/exza-wankhongohm/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 12,
+          "label": "Bantamweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Tomyamkoong Bhumjaithai",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/tomyamkoong-bhumjaithai/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Yassir Rassafi",
+            "country": "Morocco",
+            "flag": "🇲🇦",
+            "profile": "https://www.onefc.com/athletes/yassir-rassafi/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 13,
+          "label": "Featherweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Petkhaokradong Lukjaomaesaithong",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/petkhaokradong/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Abdelali Zahidi",
+            "country": "Morocco",
+            "flag": "🇲🇦",
+            "profile": "https://www.onefc.com/athletes/abdelali-zahidi/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        },
+        {
+          "id": 14,
+          "label": "Bantamweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Evan Gambuto",
+            "country": "France",
+            "flag": "🇫🇷",
+            "profile": "https://www.onefc.com/athletes/evan-gambuto/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Ranma",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/ranma/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          }
+        }
+      ]
+    },
     {
       "name": "ONE Friday Fights 177 & The Inner Circle 37",
       "subtitle": "",
+      "date": "2026-09-01",
       "venue": "Lumpinee Stadium, Bangkok",
       "url": "https://www.onefc.com/events/one-friday-fights-177/",
+      "status": "completed",
       "fight_count": 1,
       "fights": [
         {
@@ -15,67 +365,84 @@
           "label": "Lightweight MMA World Championship",
           "discipline": "mma",
           "fighter_a": {
-            "name": "All Athletes",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/",
-            "record": ""
-          },
-          "fighter_b": {
             "name": "Christian Lee",
-            "country": "",
-            "flag": "",
+            "country": "United States",
+            "flag": "🇺🇸",
             "profile": "https://www.onefc.com/athletes/christian-lee/",
             "record": ""
           },
-          "main_event": true
+          "fighter_b": {
+            "name": "Tye Ruotolo",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
+            "record": ""
+          },
+          "main_event": true,
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": null
+          }
         }
       ]
     },
     {
       "name": "ONE Fight Night 49",
-      "subtitle": "Gabriel Vs. Rasulov",
+      "subtitle": "Gabriel Vs. Magomedov",
+      "date": "2025-12-10",
       "venue": "Lumpinee Stadium, Bangkok",
       "url": "https://www.onefc.com/events/onefightnight49/",
-      "fight_count": 8,
+      "status": "completed",
+      "fight_count": 9,
       "fights": [
         {
           "id": 1,
           "label": "Lightweight MMA",
           "discipline": "mma",
           "fighter_a": {
-            "name": "All Athletes",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/",
-            "record": ""
-          },
-          "fighter_b": {
             "name": "Lucas Gabriel",
-            "country": "",
-            "flag": "",
+            "country": "Thailand",
+            "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/lucas-gabriel/",
             "record": ""
           },
-          "main_event": true
+          "fighter_b": {
+            "name": "Magomed Magomedov",
+            "country": "Russia",
+            "flag": "🇷🇺",
+            "profile": "https://www.onefc.com/athletes/magomed-magomedov-3/",
+            "record": ""
+          },
+          "main_event": true,
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
+          }
         },
         {
           "id": 2,
           "label": "Flyweight Kickboxing",
           "discipline": "kb",
           "fighter_a": {
-            "name": "Alibeg Rasulov",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/alibeg-rasulov/",
+            "name": "Kongthoranee Sor Sommai",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/kongthoranee-sor-sommai/",
             "record": ""
           },
           "fighter_b": {
             "name": "Taiki Naito",
-            "country": "",
-            "flag": "",
+            "country": "Japan",
+            "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/taiki-naito/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         },
         {
@@ -83,18 +450,23 @@
           "label": "Strawweight MMA",
           "discipline": "mma",
           "fighter_a": {
-            "name": "Johan Estupinan",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/johan-estupinan/",
+            "name": "Lee Seung Cheol",
+            "country": "South Korea",
+            "flag": "🇰🇷",
+            "profile": "https://www.onefc.com/athletes/lee-seung-cheol/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Lee Seung Cheol",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/lee-seung-cheol/",
+            "name": "Nazareth Lalthazuala",
+            "country": "India",
+            "flag": "🇮🇳",
+            "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         },
         {
@@ -102,56 +474,71 @@
           "label": "Bantamweight Muay Thai",
           "discipline": "mt",
           "fighter_a": {
-            "name": "Nazareth Lalthazuala",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
+            "name": "Nontachai Jitmuangnon",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/nontachai-jitmuangnon/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Katsuki Kitano",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/katsuki-kitano/",
+            "name": "Felipe Lobo",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "profile": "https://www.onefc.com/athletes/felipe-lobo/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         },
         {
           "id": 5,
-          "label": "Atomweight MMA",
-          "discipline": "mma",
+          "label": "Featherweight Kickboxing",
+          "discipline": "kb",
           "fighter_a": {
-            "name": "Felipe Lobo",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/felipe-lobo/",
+            "name": "Zhou Jiaqiang",
+            "country": "China",
+            "flag": "🇨🇳",
+            "profile": "https://www.onefc.com/athletes/zhou-jiaqiang/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Victoria Souza",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/victoria-souza/",
+            "name": "Mamuka Usubyan",
+            "country": "Russia",
+            "flag": "🇷🇺",
+            "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         },
         {
           "id": 6,
-          "label": "Featherweight Kickboxing",
-          "discipline": "kb",
+          "label": "Atomweight MMA",
+          "discipline": "mma",
           "fighter_a": {
-            "name": "Magdalena Czaban",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
+            "name": "Vick Souza",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "profile": "https://www.onefc.com/athletes/vick-souza/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Zhou Jiaqiang",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/zhou-jiaqiang/",
+            "name": "Magdalena Czaban",
+            "country": "United States",
+            "flag": "🇺🇸",
+            "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         },
         {
@@ -159,37 +546,71 @@
           "label": "Bantamweight MMA",
           "discipline": "mma",
           "fighter_a": {
-            "name": "Mamuka Usubyan",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
+            "name": "Victor Hugo",
+            "country": "Indonesia",
+            "flag": "🇮🇩",
+            "profile": "https://www.onefc.com/athletes/victor-hugo-costa-marques/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Victor Hugo",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/victor-hugo-costa-marques/",
+            "name": "Devhonte Johnson",
+            "country": "Indonesia",
+            "flag": "🇮🇩",
+            "profile": "https://www.onefc.com/athletes/devhonte-johnson/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         },
         {
           "id": 8,
-          "label": "Bout 8",
-          "discipline": "unknown",
+          "label": "Lightweight Kickboxing",
+          "discipline": "kb",
           "fighter_a": {
-            "name": "Devhonte Johnson",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/devhonte-johnson/",
+            "name": "Kalandar Tabarov",
+            "country": "Indonesia",
+            "flag": "🇮🇩",
+            "profile": "https://www.onefc.com/athletes/kalandar-tabarov/",
             "record": ""
           },
           "fighter_b": {
-            "name": "Kalandar Tabarov",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/kalandar-tabarov/",
+            "name": "Ilmadi Israilov",
+            "country": "Russia",
+            "flag": "🇷🇺",
+            "profile": "https://www.onefc.com/athletes/ilmadi-israilov/",
             "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
+          }
+        },
+        {
+          "id": 9,
+          "label": "Bout 9",
+          "discipline": "unknown",
+          "fighter_a": {
+            "name": "Bogdan Shumarov",
+            "country": "Netherlands",
+            "flag": "🇳🇱",
+            "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
+            "record": "15-2-1"
+          },
+          "fighter_b": {
+            "name": "Gasham Mammadov",
+            "country": "Azerbaijan",
+            "flag": "🇦🇿",
+            "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
+            "record": ""
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 6
           }
         }
       ]
