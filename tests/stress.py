@@ -520,7 +520,7 @@ def t_scorecard_one(browser):
 FAKE_SUPABASE = r"""
 (() => {
   const st = window.__fake = { session:null, cb:null, accounts:{}, profiles:{}, picks:[], calls:[], scores:[],
-                               summary:[], verdicts:[], others:[{username:'TopDog',balance:9000,won:9,settled:12}] };
+                               summary:[], verdicts:[], leagues:[], takes:[], others:[{username:'TopDog',balance:9000,won:9,settled:12}] };
   const err = m => ({ data:null, error:{ message:m } });
   const me = () => st.session && st.session.user.id;
   function lockedFight(key){ for(const e of (typeof events!=='undefined'?events:[])) for(const f of e.fights) if(f.id===key) return [e,f]; return [null,null]; }
@@ -541,6 +541,27 @@ FAKE_SUPABASE = r"""
       rows.sort((x,y)=>y.balance-x.balance); return {data:rows,error:null}; },
     submit_score(args){ if(!me()) return err('sign in first'); st.scores.push(args); return {data:null,error:null}; },
     score_summary(){ return {data:st.summary,error:null}; },
+    my_leagues(){ return {data: st.leagues.filter(l=>l.members.includes(me())).map(l=>({league_id:l.id,name:l.name,code:l.code,members:l.members.length,is_owner:l.owner===me()})), error:null}; },
+    create_league({p_name}){ if(!me()) return err('sign in first'); if((p_name||'').trim().length<3) return err('League names are 3-30 characters');
+      const l={id:'L'+(st.leagues.length+1), name:p_name.trim(), code:'ABC'+(234+st.leagues.length), owner:me(), members:[me()]}; st.leagues.push(l);
+      return {data:[{league_id:l.id, code:l.code}], error:null}; },
+    join_league({p_code}){ const l=st.leagues.find(x=>x.code===String(p_code).toUpperCase()); if(!l) return err('No league with that code');
+      if(!l.members.includes(me())) l.members.push(me()); return {data:[{league_id:l.id,name:l.name}],error:null}; },
+    leave_league({p_league}){ const l=st.leagues.find(x=>x.id===p_league); if(l) l.members=l.members.filter(m=>m!==me()); return {data:null,error:null}; },
+    league_table({p_league,p_period}){ const l=st.leagues.find(x=>x.id===p_league); if(!l||!l.members.includes(me())) return err('Join this league to see its table');
+      st.lastPeriod=p_period; return {data:l.members.map((m,i)=>({username:st.profiles[m]||('player'+i), profit:i?-150:420, won:i?0:2, settled:i?1:3})),error:null}; },
+    post_take({p_fight,p_side,p_body}){ if(!me()) return err('sign in first'); if(!st.profiles[me()]) return err('Pick a username first');
+      const [e,f]=lockedFight(p_fight); if(!f||eventLocked(e)) return err('Takes close when the event starts');
+      if(/https?:\/\//.test(p_body)) return err('No links in takes');
+      const ex=st.takes.find(t=>t.user===me()&&t.fight_key===p_fight);
+      if(ex){ ex.side=p_side; ex.body=p_body; ex.votes=[]; } else st.takes.push({id:st.takes.length+1,user:me(),fight_key:p_fight,side:p_side,body:p_body,status:'open',votes:[]});
+      return {data:1,error:null}; },
+    fight_takes({p_fights}){ return {data: st.takes.filter(t=>p_fights.includes(t.fight_key)).map(t=>({id:t.id,fight_key:t.fight_key,username:st.profiles[t.user]||t.user,
+      side:t.side,body:t.body,status:t.status,votes:t.votes.length,voted:t.votes.includes(me()),mine:t.user===me(),created_at:''})).sort((a,b)=>b.votes-a.votes), error:null}; },
+    vote_take({p_take,p_up}){ const t=st.takes.find(x=>x.id===p_take); if(t.user===me()) return err('You cannot vote on your own take');
+      t.votes=t.votes.filter(v=>v!==me()); if(p_up) t.votes.push(me()); return {data:null,error:null}; },
+    delete_take({p_take}){ st.takes=st.takes.filter(t=>!(t.id===p_take&&t.user===me())); return {data:null,error:null}; },
+    report_take({p_take}){ st.reports=(st.reports||[]).concat([p_take]); return {data:null,error:null}; },
     fan_verdicts(){ return {data:st.verdicts,error:null}; },
   };
   window.__PAF_SUPABASE__ = {
@@ -655,6 +676,115 @@ def t_accounts(browser):
     ctx.close(); srv.shutdown()
 
 
+def _signed_in_page(browser, site, viewport=(390, 900), path="index.html", provider="google", name="LegKickLarry"):
+    srv, url = serve(site)
+    ctx = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+    p = ctx.new_page(); errs = []
+    p.on("pageerror", lambda e: errs.append(str(e)))
+    p.on("dialog", lambda d: d.accept())
+    p.add_init_script(FAKE_SUPABASE)
+    p.goto(url + path); p.wait_for_timeout(600)
+    if provider:
+        p.evaluate(f"signIn('{provider}')"); p.wait_for_timeout(400)
+        p.fill("#usernameInput", name); p.click("#usernameModal .oauth-btn"); p.wait_for_timeout(250)
+    return srv, ctx, p, errs, url
+
+
+def t_leagues(browser):
+    site = with_db(make_site())
+    srv, ctx, p, errs, url = _signed_in_page(browser, site)
+    check(p.is_visible("#leaguesTabBtn"), "Leagues tab appears when accounts are on", "")
+    p.click('[data-tab="leagues"]'); p.wait_for_timeout(200)
+    check("not in a league yet" in p.inner_text("#leagues-panel"), "Empty state invites you to start or join", "")
+    p.fill("#lgName", "Fight Club"); p.click(".lg-forms .oauth-btn.primary"); p.wait_for_timeout(300)
+    txt = p.inner_text("#leagues-panel")
+    check("Fight Club" in txt and "ABC234" in txt and "LegKickLarry" in txt, "Creating a league shows its code and table", txt[:160])
+    check(p.locator("#lg-table .lb-row.me").count() == 1 and "+420 R" in txt, "Standings show profit with you highlighted", "")
+    p.click(".lg-period button:nth-child(2)"); p.wait_for_timeout(250)
+    check(p.evaluate("__fake.lastPeriod") == "all", "All-time toggle asks for all-time standings", "")
+    check(p.evaluate("inviteLink('ABC234')").endswith("?join=ABC234"), "Invite links carry the league code", "")
+    p.fill("#lgCode", "ZZZZZZ"); p.click(".lg-forms .lg-row:nth-child(2) .oauth-btn"); p.wait_for_timeout(250)
+    check("No league" in p.inner_text("#toast"), "Bad invite codes are rejected politely", p.inner_text("#toast"))
+    overflow = p.evaluate("document.documentElement.scrollWidth - window.innerWidth")
+    check(overflow <= 1, "Leagues tab fits a phone screen", f"{overflow}px")
+    if SHOTS:
+        p.screenshot(path=str(SHOTS / "leagues_390.png"))
+    check(not errs, "No JS errors in leagues", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+    # invite link while signed out -> sign in -> auto-joined
+    srv, ctx, p, errs, url = _signed_in_page(browser, site, path="index.html?join=abc234", provider=None)
+    p.evaluate("__fake.leagues.push({id:'L9',name:'Friends League',code:'ABC234',owner:'x',members:['x']}); __fake.profiles.x='Owner'")
+    check("join=" not in p.url, "Invite code is tidied out of the address bar", p.url)
+    p.click('[data-tab="leagues"]'); p.wait_for_timeout(150)
+    check("invited" in p.inner_text("#leagues-panel"), "Signed-out visitors see they were invited", p.inner_text("#leagues-panel")[:100])
+    p.evaluate("signIn('discord')"); p.wait_for_timeout(400)
+    p.fill("#usernameInput", "NewFriend"); p.click("#usernameModal .oauth-btn"); p.wait_for_timeout(400)
+    joined = p.evaluate("__fake.leagues.find(l=>l.code==='ABC234').members.includes('user-discord')")
+    check(joined and p.evaluate("document.getElementById('tab-leagues').style.display") == "", "Invite link auto-joins after sign-in", f"joined={joined}")
+    check(not errs, "No JS errors in invite flow", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_hot_takes(browser):
+    site = with_db(make_site())
+    srv, ctx, p, errs, url = _signed_in_page(browser, site, provider=None)
+    idx = p.evaluate("events.findIndex(e=>!eventLocked(e))"); p.evaluate(f"switchEvent({idx})")
+    fid = p.evaluate("events[activeEventIdx].fights[0].id")
+    p.evaluate(f"toggleTakes('{fid}')")
+    check("Sign in" in p.inner_text(f"#tk-{fid}"), "Guests are invited to sign in to post a take", "")
+    p.evaluate("signIn('google')"); p.wait_for_timeout(400); p.fill("#usernameInput", "HotTaker"); p.click("#usernameModal .oauth-btn"); p.wait_for_timeout(250)
+    p.evaluate(f"switchEvent({idx})")
+    if not p.evaluate(f"takesOpen.has('{fid}')"): p.evaluate(f"toggleTakes('{fid}')")
+    p.fill(f"#tkText-{fid}", "He folds the second it hits the mat"); p.click(f"#tk-{fid} .tk-form .oauth-btn"); p.wait_for_timeout(200)
+    check("backing" in p.inner_text("#toast"), "A take needs a side first", p.inner_text("#toast"))
+    p.click(f"#tk-{fid} .tk-sides .sc-btn.b")
+    check(p.input_value(f"#tkText-{fid}") == "He folds the second it hits the mat", "Picking a side keeps what you typed", "")
+    p.click(f"#tk-{fid} .tk-form .oauth-btn"); p.wait_for_timeout(300)
+    txt = p.inner_text(f"#tk-{fid}")
+    check("HotTaker" in txt and "He folds" in txt and "Update take" in txt, "Posting a take shows it on the fight", txt[:160])
+    check(p.locator(f"#tk-{fid} .tk-vote[disabled]").count() == 1, "You can't upvote your own take", "")
+    # someone else's take: vote + report
+    p.evaluate(f"__fake.profiles.rival='Rival'; __fake.takes.push({{id:99,user:'rival',fight_key:'{fid}',side:'a',body:'Easy work for the favourite',status:'open',votes:[]}}); loadTakes(events[activeEventIdx], true)")
+    p.wait_for_timeout(250)
+    p.click(f"#tk-{fid} .tk-item:has-text('Easy work') .tk-vote"); p.wait_for_timeout(300)
+    check(p.evaluate("__fake.takes.find(t=>t.id===99).votes.length") == 1, "Upvoting someone's take counts", "")
+    p.click(f"#tk-{fid} .tk-item:has-text('Easy work') .tk-link"); p.wait_for_timeout(200)
+    check(p.evaluate("(__fake.reports||[]).includes(99)"), "Reporting a take sends a report", "")
+    # links blocked
+    p.fill(f"#tkText-{fid}", "see https://spam.example"); p.click(f"#tk-{fid} .tk-form .oauth-btn"); p.wait_for_timeout(200)
+    check("links" in p.inner_text("#toast").lower(), "Links in takes are refused", p.inner_text("#toast"))
+    # XSS in a take body
+    p.evaluate(f"__fake.takes.push({{id:77,user:'rival',fight_key:'{fid}',side:'b',body:'<img src=x onerror=window.__tkx=1>',status:'open',votes:[]}}); loadTakes(events[activeEventIdx], true)")
+    p.wait_for_timeout(300)
+    check(not p.evaluate("window.__tkx"), "Take text can't inject code", "")
+    # reckoning: event over, take graded
+    p.evaluate(f"__fake.takes.forEach(t=>{{ if(t.fight_key==='{fid}') t.status = t.side==='a'?'aged_well':'aged_badly'; }}); events[activeEventIdx].status='completed'; loadTakes(events[activeEventIdx], true)")
+    p.wait_for_timeout(300)
+    txt = p.inner_text(f"#tk-{fid}")
+    check("Aged well" in txt and "Aged badly" in txt and "Update take" not in txt, "After the fight, takes are graded and closed", txt[:200])
+    if SHOTS:
+        p.locator(f"#tk-{fid}").scroll_into_view_if_needed(); p.screenshot(path=str(SHOTS / "takes_390.png"))
+    check(not errs, "No JS errors in hot takes", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_badges(browser):
+    now = int(time.time() * 1000)
+    bets = [{"fightId": "x", "type": "method", "pick": "KO/TKO", "odds": 2.8, "stake": 10, "payout": 28, "result": "won", "time": now + i} for i in range(3)]
+    bets += [{"fightId": "x", "type": "winner", "pick": "Dog", "odds": 3.1, "stake": 10, "payout": 31, "result": "won", "time": now + 10 + i} for i in range(3)]
+    bets += [{"fightId": "x", "type": "round", "pick": "Rd 2", "odds": 3.5, "stake": 10, "payout": 35, "result": "lost", "time": now + 20}]
+    pg = Page(browser, make_site(), storage=json.dumps({"balance": 5000, "bets": bets}))
+    pg.p.click('[data-tab="stats"]'); pg.p.wait_for_timeout(150)
+    earned = pg.js("[...document.querySelectorAll('.badge.earned .badge-name')].map(e=>e.textContent)")
+    check(set(earned) >= {"First Blood", "KO Artist", "Upset Whisperer", "Hot Streak"} and "Called the Round" not in earned,
+          "Badges are earned from real pick history", str(earned))
+    locked = pg.js("document.querySelector('.badge:not(.earned) .badge-desc')?.textContent||''")
+    check(bool(locked), "Locked badges show progress hints", locked)
+    check(pg.p.locator(".badge").count() == 8, "All 8 badges listed", "")
+    check(not pg.errors, "No JS errors in badges", "; ".join(pg.errors[:2]))
+    pg.close()
+
+
 def t_secret_key_guard(browser):
     sys.path.insert(0, str(REPO / "scraper"))
     import site_config
@@ -673,7 +803,8 @@ def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
              t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
-             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts]
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts,
+             t_leagues, t_hot_takes, t_badges]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
         browser = pw.chromium.launch()

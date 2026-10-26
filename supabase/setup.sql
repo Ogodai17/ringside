@@ -9,6 +9,8 @@
 --   picks       every pick; created only through place_pick(), settled only
 --               by settle_all() — players can't edit balances or results
 --   fan_scores  People's Scorecard (one card per account per fight)
+--   leagues     private groups with invite codes + weekly / all-time tables
+--   takes       Hot Takes: one per player per fight, upvotes, graded after the result
 --
 -- Visitors use the public publishable key. Row Level Security is on for every
 -- table; writes happen only through the functions below.
@@ -307,8 +309,207 @@ begin
       n := n + 1;
     end if;
   end loop;
+  perform grade_takes();
   return n;
 end $$;
+
+-- ───────────────────────── Leagues ─────────────────────────
+-- Private groups with a 6-character invite code. Standings = profit on
+-- settled picks (won: payout − stake, lost: −stake), this week (Mon 00:00 UTC)
+-- or all time. Only members can see a league's table.
+create table if not exists public.leagues (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null check (char_length(name) between 3 and 30),
+  code       text not null unique check (code ~ '^[A-HJ-NP-Z2-9]{6}$'),
+  owner      uuid not null references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.league_members (
+  league_id uuid not null references public.leagues (id) on delete cascade,
+  user_id   uuid not null references auth.users (id) on delete cascade,
+  joined_at timestamptz not null default now(),
+  primary key (league_id, user_id)
+);
+alter table public.leagues enable row level security;
+alter table public.league_members enable row level security;
+revoke all on public.leagues, public.league_members from anon, authenticated;
+
+create or replace function public.create_league(p_name text)
+returns table (league_id uuid, code text)
+language plpgsql security definer set search_path = public as $$
+declare c text; lid uuid; tries int := 0;
+begin
+  if auth.uid() is null then raise exception 'sign in first'; end if;
+  p_name := btrim(p_name);
+  if char_length(p_name) not between 3 and 30 then raise exception 'League names are 3-30 characters'; end if;
+  if (select count(*) from leagues where owner = auth.uid()) >= 10 then raise exception 'You can run up to 10 leagues'; end if;
+  loop  -- no 0/O/1/I so codes are easy to read out loud
+    c := (select string_agg(substr('ABCDEFGHJKLMNPQRSTUVWXYZ23456789', 1 + floor(random() * 32)::int, 1), '')
+          from generate_series(1, 6));
+    exit when not exists (select 1 from leagues where leagues.code = c);
+    tries := tries + 1; if tries > 20 then raise exception 'try again'; end if;
+  end loop;
+  insert into leagues (name, code, owner) values (p_name, c, auth.uid()) returning id into lid;
+  insert into league_members (league_id, user_id) values (lid, auth.uid());
+  return query select lid, c;
+end $$;
+
+create or replace function public.join_league(p_code text)
+returns table (league_id uuid, name text)
+language plpgsql security definer set search_path = public as $$
+declare l leagues;
+begin
+  if auth.uid() is null then raise exception 'sign in first'; end if;
+  select * into l from leagues where leagues.code = upper(btrim(p_code));
+  if not found then raise exception 'No league with that code'; end if;
+  if (select count(*) from league_members where league_members.league_id = l.id) >= 100 then raise exception 'That league is full'; end if;
+  if (select count(*) from league_members where user_id = auth.uid()) >= 20 then raise exception 'You can be in up to 20 leagues'; end if;
+  insert into league_members (league_id, user_id) values (l.id, auth.uid()) on conflict do nothing;
+  return query select l.id, l.name;
+end $$;
+
+create or replace function public.leave_league(p_league uuid)
+returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null then raise exception 'sign in first'; end if;
+  delete from league_members where league_id = p_league and user_id = auth.uid();
+  -- an empty league disappears
+  delete from leagues l where l.id = p_league and not exists (select 1 from league_members m where m.league_id = l.id);
+end $$;
+
+create or replace function public.my_leagues()
+returns table (league_id uuid, name text, code text, members bigint, is_owner boolean)
+language sql stable security definer set search_path = public as $$
+  select l.id, l.name, l.code, (select count(*) from league_members x where x.league_id = l.id), l.owner = auth.uid()
+  from leagues l join league_members m on m.league_id = l.id and m.user_id = auth.uid()
+  order by l.created_at;
+$$;
+
+create or replace function public.league_table(p_league uuid, p_period text default 'week')
+returns table (username text, profit bigint, won bigint, settled bigint)
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not exists (select 1 from league_members where league_id = p_league and user_id = auth.uid()) then
+    raise exception 'Join this league to see its table';
+  end if;
+  return query
+    select coalesce(p.username, 'player'),
+           coalesce(sum(case k.status when 'won' then k.payout - k.stake when 'lost' then -k.stake else 0 end), 0)::bigint,
+           count(*) filter (where k.status = 'won'),
+           count(*) filter (where k.status in ('won', 'lost'))
+    from league_members m
+    left join profiles p on p.id = m.user_id
+    left join picks k on k.user_id = m.user_id and k.status in ('won', 'lost')
+         and (p_period = 'all' or k.settled_at >= date_trunc('week', now()))
+    where m.league_id = p_league
+    group by m.user_id, p.username
+    order by 2 desc, 3 desc, 1;
+end $$;
+
+-- ───────────────────────── Hot Takes ─────────────────────────
+-- One take per player per fight, posted before it starts: back a side and say
+-- why in 140 characters. Fans upvote. When the result lands, settle_all()
+-- grades it: aged_well / aged_badly (void on a draw). 3 reports hides a take.
+create table if not exists public.takes (
+  id         bigint generated always as identity primary key,
+  user_id    uuid not null references auth.users (id) on delete cascade,
+  fight_key  text not null references public.fights (fight_key) on delete cascade,
+  side       text not null check (side in ('a', 'b')),
+  body       text not null check (char_length(btrim(body)) between 3 and 140),
+  status     text not null default 'open' check (status in ('open', 'aged_well', 'aged_badly', 'void')),
+  created_at timestamptz not null default now(),
+  unique (user_id, fight_key)
+);
+create table if not exists public.take_votes (
+  take_id bigint not null references public.takes (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  primary key (take_id, user_id)
+);
+create table if not exists public.take_reports (
+  take_id bigint not null references public.takes (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  primary key (take_id, user_id)
+);
+alter table public.takes enable row level security;
+alter table public.take_votes enable row level security;
+alter table public.take_reports enable row level security;
+revoke all on public.takes, public.take_votes, public.take_reports from anon, authenticated;
+
+create or replace function public.post_take(p_fight text, p_side text, p_body text)
+returns bigint
+language plpgsql security definer set search_path = public as $$
+declare f fights; new_id bigint;
+begin
+  if auth.uid() is null then raise exception 'sign in first'; end if;
+  if not exists (select 1 from profiles where id = auth.uid()) then raise exception 'Pick a username first'; end if;
+  select * into f from fights where fight_key = p_fight;
+  if not found then raise exception 'unknown fight'; end if;
+  if f.result_winner is not null or (f.starts_at is not null and now() >= f.starts_at) then
+    raise exception 'Takes close when the event starts';
+  end if;
+  if p_side not in ('a', 'b') then raise exception 'Pick a side'; end if;
+  p_body := btrim(regexp_replace(p_body, '\s+', ' ', 'g'));
+  if char_length(p_body) not between 3 and 140 then raise exception 'Takes are 3-140 characters'; end if;
+  if p_body ~* '(https?://|www\.)' then raise exception 'No links in takes'; end if;
+  insert into takes (user_id, fight_key, side, body) values (auth.uid(), p_fight, p_side, p_body)
+  on conflict (user_id, fight_key) do update set side = excluded.side, body = excluded.body, created_at = now()
+  returning id into new_id;
+  delete from take_votes where take_id = new_id;  -- an edited take starts over
+  return new_id;
+end $$;
+
+create or replace function public.delete_take(p_take bigint)
+returns void
+language sql security definer set search_path = public as $$
+  delete from takes where id = p_take and user_id = auth.uid() and status = 'open';
+$$;
+
+create or replace function public.vote_take(p_take bigint, p_up boolean)
+returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null then raise exception 'sign in first'; end if;
+  if exists (select 1 from takes where id = p_take and user_id = auth.uid()) then raise exception 'You cannot vote on your own take'; end if;
+  if p_up then insert into take_votes values (p_take, auth.uid()) on conflict do nothing;
+  else delete from take_votes where take_id = p_take and user_id = auth.uid(); end if;
+end $$;
+
+create or replace function public.report_take(p_take bigint)
+returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null then raise exception 'sign in first'; end if;
+  insert into take_reports values (p_take, auth.uid()) on conflict do nothing;
+end $$;
+
+create or replace function public.fight_takes(p_fights text[])
+returns table (id bigint, fight_key text, username text, side text, body text, status text,
+               votes bigint, voted boolean, mine boolean, created_at timestamptz)
+language sql stable security definer set search_path = public as $$
+  select t.id, t.fight_key, p.username, t.side, t.body, t.status,
+         (select count(*) from take_votes v where v.take_id = t.id),
+         exists (select 1 from take_votes v where v.take_id = t.id and v.user_id = auth.uid()),
+         t.user_id = auth.uid(),
+         t.created_at
+  from takes t join profiles p on p.id = t.user_id
+  where t.fight_key = any (p_fights[1:100])
+    and (select count(*) from take_reports r where r.take_id = t.id) < 3
+  order by 7 desc, t.created_at desc
+  limit 500;
+$$;
+
+create or replace function public.grade_takes()
+returns integer
+language sql security definer set search_path = public as $$
+  with g as (
+    update takes t set status = case when f.result_winner = 'draw' then 'void'
+                                     when t.side = f.result_winner then 'aged_well' else 'aged_badly' end
+    from fights f
+    where f.fight_key = t.fight_key and t.status = 'open' and f.result_winner is not null
+    returning 1
+  ) select count(*)::int from g;
+$$;
 
 -- ───────────────────────── who can call what ─────────────────────────
 revoke all on function public.my_account(), public.set_username(text),
@@ -321,6 +522,16 @@ grant execute on function public.leaderboard(integer), public.score_summary(text
 grant execute on function public.my_account(), public.set_username(text),
   public.place_pick(text, text, text, integer), public.claim_topup(),
   public.submit_score(text, int, text)
+  to authenticated;
+revoke all on function public.create_league(text), public.join_league(text), public.leave_league(uuid),
+  public.my_leagues(), public.league_table(uuid, text), public.post_take(text, text, text),
+  public.delete_take(bigint), public.vote_take(bigint, boolean), public.report_take(bigint),
+  public.fight_takes(text[]), public.grade_takes()
+  from public, anon, authenticated;
+grant execute on function public.fight_takes(text[]) to anon, authenticated;
+grant execute on function public.create_league(text), public.join_league(text), public.leave_league(uuid),
+  public.my_leagues(), public.league_table(uuid, text), public.post_take(text, text, text),
+  public.delete_take(bigint), public.vote_take(bigint, boolean), public.report_take(bigint)
   to authenticated;
 -- settle_all() and writes to fights: service role only (the GitHub sync job).
 grant execute on function public.settle_all() to service_role;

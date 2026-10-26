@@ -207,6 +207,48 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .modal-input { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:16px; }
 .modal-err { color:var(--accent); font-size:13px; min-height:16px; }
 .lb-row.me { background:var(--accent-glow); }
+/* Leagues, Hot Takes, Badges */
+.lg-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px; }
+.lg-card p { font-size:14px; color:var(--text-dim); }
+.lg-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.lg-head .share-btn { margin-top:0; flex-shrink:0; }
+.lg-name { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; overflow-wrap:anywhere; }
+.lg-sub { font-size:12px; color:var(--text-muted); }
+.lg-tabs, .lg-period { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.lg-period { margin-bottom:0; }
+.lg-tabs button, .lg-period button { background:var(--surface); border:1px solid var(--border); color:var(--text-dim); border-radius:16px; padding:6px 12px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Space Grotesk',sans-serif; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.lg-tabs button.on, .lg-period button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+.lg-row { display:flex; gap:8px; } .lg-row .modal-input { flex:1; min-width:0; } .lg-row .oauth-btn { width:auto; padding:10px 16px; }
+.lg-card .leaderboard { margin-bottom:0; }
+.oauth-btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+.lb-balance.pos { color:var(--green); } .lb-balance.neg { color:var(--accent); }
+.tk-wrap { padding:0 16px 14px; }
+.tk-body-wrap { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+.tk-item { border:1px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface); }
+.tk-item.aged_badly { opacity:.75; }
+.tk-meta { font-size:12px; color:var(--text-muted); display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+.tk-meta b { color:var(--text); }
+.tk-side { font-weight:700; } .tk-side.a { color:var(--accent); } .tk-side.b { color:var(--gold); }
+.tk-chip { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; margin-left:4px; }
+.tk-chip.well { background:var(--green-dim); color:var(--green); } .tk-chip.badly { background:var(--accent-glow); color:var(--accent); }
+.tk-body { font-size:14px; margin:4px 0 6px; overflow-wrap:anywhere; }
+.tk-actions { display:flex; gap:10px; align-items:center; }
+.tk-vote { background:var(--surface-raised); border:1px solid var(--border); border-radius:14px; padding:3px 10px; font-size:12px; font-weight:700; color:var(--text-dim); cursor:pointer; }
+.tk-vote.on { background:var(--accent); border-color:var(--accent); color:#fff; } .tk-vote:disabled { cursor:default; opacity:.7; }
+.tk-link { background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; padding:0; }
+.tk-form { display:flex; flex-direction:column; gap:6px; }
+.tk-sides { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.tk-form textarea { width:100%; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); padding:8px 10px; font-size:16px; font-family:inherit; resize:vertical; }
+.badge-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:16px; }
+@media (min-width:600px){ .badge-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+.badge { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; opacity:.55; filter:grayscale(1); }
+.badge.earned { opacity:1; filter:none; border-color:var(--gold); }
+.badge-ico { font-size:22px; } .badge-name { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; margin-top:2px; }
+.badge-desc { font-size:11px; color:var(--text-muted); }
+.nav { flex-wrap:nowrap; }
+.nav button { flex:1 1 0; min-width:0; padding-left:6px; padding-right:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+@media (min-width:600px){ .nav button { flex:0 0 auto; padding-left:16px; padding-right:16px; } }
+.lb-balance { white-space:nowrap; }
 /* People's Scorecard */
 .sc-wrap { padding:0 16px 14px; }
 .sc-toggle { width:100%; display:flex; justify-content:space-between; align-items:center; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; font-family:'Space Grotesk',sans-serif; }
@@ -292,6 +334,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
     <button class="active" data-tab="fights">Upcoming</button>
     <button data-tab="mybets">My Picks</button>
     <button data-tab="stats">My Stats</button>
+    <button data-tab="leagues" id="leaguesTabBtn" style="display:none">Leagues</button>
   </nav>
   <div class="connect-bar">
     <span id="connectText">Playing as guest — picks stay on this device</span>
@@ -307,6 +350,10 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div id="tab-mybets" style="display:none">
     <h3 class="section-title">My Picks</h3>
     <div id="my-bets-list"></div>
+  </div>
+  <div id="tab-leagues" style="display:none">
+    <h3 class="section-title">Leagues</h3>
+    <div id="leagues-panel"></div>
   </div>
   <div id="tab-stats" style="display:none">
     <h3 class="section-title">My Stats</h3>
@@ -607,9 +654,11 @@ function renderFights(){
         </div>
       </div>`}
       ${done?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
+      ${DB?`<div class="tk-wrap" id="tk-${f.id}">${takesHtml(f,ev)}</div>`:''}
     </div>`;
   }).join('');
   loadCommunity(ev);
+  loadTakes(ev);
 }
 
 /* ── Shareable pick card: draws your picks for this event as an image ── */
@@ -683,6 +732,7 @@ async function initAuth(){
     else { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'); sb=window.supabase.createClient(DB.url, DB.key); }
   }catch(e){ console.warn('Sign-in unavailable', e); return; }
   document.getElementById('authBtn').style.display='';
+  document.getElementById('leaguesTabBtn').style.display='';
   let session=null; try{ ({data:{session}} = await sb.auth.getSession()); }catch(e){}
   await onSession(session);
   sb.auth.onAuthStateChange((_evt, sess)=>{ if((sess?.user?.id||null)!==(user?.id||null)) onSession(sess); });
@@ -701,6 +751,8 @@ async function onSession(session){
     if(guestStash){ ({balance, bets, lastUBIClaim} = guestStash); guestStash=null; } else loadState();
   }
   renderAuth(); updateBal(); checkUBI(); renderFights();
+  if(user && profile?.username) await joinPendingLeague();
+  if(document.getElementById('tab-leagues').style.display!=='none') renderLeagues();
   if(document.getElementById('tab-mybets').style.display!=='none') renderMyBets();
   if(document.getElementById('tab-stats').style.display!=='none') renderStats();
 }
@@ -730,7 +782,7 @@ async function signOut(){ closeModal('accountModal'); try{ await sb.auth.signOut
 async function saveUsername(){
   const v=document.getElementById('usernameInput').value.trim(), err=document.getElementById('usernameErr');
   if(!/^[A-Za-z0-9_]{3,20}$/.test(v)){ err.textContent='3–20 letters, numbers or underscores'; return; }
-  try{ await rpc('set_username',{p_name:v}); profile={...(profile||{}), username:v}; closeModal('usernameModal'); renderAuth(); showToast(`You're ${v} now`); }
+  try{ await rpc('set_username',{p_name:v}); profile={...(profile||{}), username:v}; closeModal('usernameModal'); renderAuth(); showToast(`You're ${v} now`); await joinPendingLeague(); }
   catch(e){ err.textContent = e.message; }
 }
 function serverBetToLocal(r){
@@ -810,6 +862,182 @@ async function loadLeaderboard(){
       <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`).join('')}</div>
       ${user?'':'<p class="stats-note"><a href="#" onclick="openModal(\'signinModal\');return false">Sign in</a> to get on the board.</p>'}`;
   }catch(e){ el.innerHTML=''; }
+}
+
+/* ── Leagues: private groups with invite codes ───────────────────────
+   Standings are profit on settled picks — this week (from Monday) or all
+   time — computed by the server from real picks, so nobody can pad them. */
+let myLeagues=[], activeLeague=null, leaguePeriod='week';
+(function captureJoinLink(){
+  const m = /[?&]join=([A-Za-z0-9]{6})\b/.exec(location.search);
+  if(!m) return;
+  try{ localStorage.setItem('paf_join', m[1].toUpperCase()); }catch(e){}
+  history.replaceState(null, '', location.pathname);   // tidy the address bar
+})();
+async function joinPendingLeague(){
+  let code=null; try{ code=localStorage.getItem('paf_join'); }catch(e){}
+  if(!code || !user || !profile?.username) return;
+  try{ localStorage.removeItem('paf_join'); }catch(e){}
+  try{ const r=await rpc('join_league',{p_code:code}); const row=Array.isArray(r)?r[0]:r;
+       activeLeague=row?.league_id||null; showToast(`Joined ${row?.name||'the league'}`); showTab('leagues'); }
+  catch(e){ showToast(e.message); }
+}
+function inviteLink(code){ return `${SITE_URL}?join=${code}`; }
+async function renderLeagues(){
+  const el=document.getElementById('leagues-panel'); if(!el) return;
+  if(!user){
+    let pending=null; try{ pending=localStorage.getItem('paf_join'); }catch(e){}
+    el.innerHTML = `<div class="lg-card"><p>${pending?`You've been invited to a league (code <b>${esc(pending)}</b>).`:'Go head-to-head with your friends: a private table, reset every Monday.'}</p>
+      <button class="oauth-btn primary" onclick="openModal('signinModal')">Sign in to ${pending?'join':'start a league'}</button></div>`;
+    return;
+  }
+  if(!profile?.username){ el.innerHTML=`<div class="lg-card"><p>Pick your fight name first.</p><button class="oauth-btn primary" onclick="openModal('usernameModal')">Choose a name</button></div>`; return; }
+  try{ myLeagues = await rpc('my_leagues') || []; }catch(e){ el.innerHTML='<div class="empty-state">Leagues are offline right now.</div>'; return; }
+  if(activeLeague && !myLeagues.some(l=>l.league_id===activeLeague)) activeLeague=null;
+  if(!activeLeague && myLeagues.length) activeLeague=myLeagues[0].league_id;
+  const L = myLeagues.find(l=>l.league_id===activeLeague);
+  el.innerHTML = `
+    ${myLeagues.length?`<div class="lg-tabs">${myLeagues.map(l=>`<button class="${l.league_id===activeLeague?'on':''}" onclick="activeLeague='${l.league_id}';renderLeagues()">${esc(l.name)}</button>`).join('')}</div>`:''}
+    ${L?`<div class="lg-card">
+      <div class="lg-head"><div><div class="lg-name">${esc(L.name)}</div><div class="lg-sub">${Number(L.members)} member${Number(L.members)===1?'':'s'} · code <b>${esc(L.code)}</b></div></div>
+        <button class="share-btn" onclick="shareInvite('${esc(L.code)}')">Invite</button></div>
+      <div class="lg-period"><button class="${leaguePeriod==='week'?'on':''}" onclick="leaguePeriod='week';renderLeagues()">This week</button><button class="${leaguePeriod==='all'?'on':''}" onclick="leaguePeriod='all';renderLeagues()">All time</button></div>
+      <div id="lg-table" class="leaderboard"><div class="empty-state">Loading…</div></div>
+      <button class="modal-link" onclick="leaveLeague('${L.league_id}')">Leave league</button>
+    </div>`:`<div class="lg-card"><p>You're not in a league yet. Start one and send your friends the link, or join with a code.</p></div>`}
+    <div class="lg-card lg-forms">
+      <div class="lg-row"><input id="lgName" class="modal-input" maxlength="30" placeholder="New league name"><button class="oauth-btn primary" onclick="createLeague()">Create</button></div>
+      <div class="lg-row"><input id="lgCode" class="modal-input" maxlength="6" placeholder="Invite code" style="text-transform:uppercase"><button class="oauth-btn" onclick="joinLeague()">Join</button></div>
+    </div>`;
+  if(L) loadLeagueTable(L.league_id);
+}
+async function loadLeagueTable(id){
+  const box=document.getElementById('lg-table'); if(!box) return;
+  try{
+    const rows = await rpc('league_table',{p_league:id, p_period:leaguePeriod}) || [];
+    if(id!==activeLeague) return;
+    const me=profile?.username;
+    box.innerHTML = rows.map((r,i)=>{ const p=Number(r.profit);
+      return `<div class="lb-row ${r.username===me?'me':''}"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${esc(r.username).charAt(0).toUpperCase()}</div>
+      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance ${p>0?'pos':p<0?'neg':''}">${p>0?'+':''}${p.toLocaleString()} R</div>
+      <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`; }).join('')
+      + (leaguePeriod==='week'?'<p class="stats-note" style="padding:0 12px 8px">Profit on picks settled since Monday. Resets every week.</p>':'');
+  }catch(e){ box.innerHTML=`<div class="empty-state">${esc(e.message)}</div>`; }
+}
+async function createLeague(){
+  const name=document.getElementById('lgName').value.trim();
+  if(name.length<3){ showToast('League names are 3–30 characters'); return; }
+  try{ const r=await rpc('create_league',{p_name:name}); const row=Array.isArray(r)?r[0]:r; activeLeague=row?.league_id; await renderLeagues(); showToast(`League created — code ${row?.code}`); }
+  catch(e){ showToast(e.message); }
+}
+async function joinLeague(){
+  const code=document.getElementById('lgCode').value.trim().toUpperCase();
+  if(!/^[A-Z0-9]{6}$/.test(code)){ showToast('Codes are 6 letters/numbers'); return; }
+  try{ const r=await rpc('join_league',{p_code:code}); const row=Array.isArray(r)?r[0]:r; activeLeague=row?.league_id; await renderLeagues(); showToast(`Joined ${row?.name||'league'}`); }
+  catch(e){ showToast(e.message); }
+}
+async function leaveLeague(id){
+  if(!confirm('Leave this league?')) return;
+  try{ await rpc('leave_league',{p_league:id}); activeLeague=null; await renderLeagues(); showToast('Left the league'); }catch(e){ showToast(e.message); }
+}
+async function shareInvite(code){
+  const L=myLeagues.find(l=>l.code===code); const url=inviteLink(code);
+  const text=`Join my Pick A Fight league "${unesc(L?L.name:'')}" — think you can out-pick me?`;
+  try{ if(navigator.share){ await navigator.share({title:'Pick A Fight league', text, url}); return; } }catch(e){ if(e && e.name==='AbortError') return; }
+  try{ await navigator.clipboard.writeText(`${text} ${url}`); showToast('Invite link copied'); }catch(e){ showToast(url); }
+}
+
+/* ── Hot Takes: back a side in 140 characters, get graded after the fight ── */
+const takesCache={}, takesOpen=new Set(), takeSide={}, takesLoaded={};
+async function loadTakes(ev, force){
+  if(!DB || !sb || !ev) return;
+  const ids=ev.fights.map(f=>f.id).filter(id=>force || !takesLoaded[id]);
+  if(!ids.length) return;
+  ids.forEach(id=>takesLoaded[id]=true);
+  try{
+    const rows = await rpc('fight_takes',{p_fights:ids}) || [];
+    ids.forEach(id=>takesCache[id]=[]);
+    rows.forEach(r=>{ (takesCache[r.fight_key]=takesCache[r.fight_key]||[]).push(r); });
+    if(events[activeEventIdx]===ev) ids.forEach(rerenderTakes);
+  }catch(e){ ids.forEach(id=>delete takesLoaded[id]); }
+}
+function rerenderTakes(id){
+  const ev=events[activeEventIdx]; const f=ev && ev.fights.find(x=>x.id===id); const el=document.getElementById('tk-'+id);
+  if(f && el) el.innerHTML=takesHtml(f, ev);
+}
+function takesHtml(f, ev){
+  const list=takesCache[f.id]||[], open=takesOpen.has(f.id), locked=eventLocked(ev)||!!f.result;
+  const head=`<button class="sc-toggle tk-toggle" onclick="event.stopPropagation();toggleTakes('${f.id}')">Hot takes${list.length?` (${list.length})`:''}<span>${open?'▲':'▼'}</span></button>`;
+  if(!open) return head;
+  const side=s=>s==='a'?lastName(f.a.name):lastName(f.b.name);
+  const mine=list.find(t=>t.mine);
+  const items=list.slice(0,20).map(t=>{
+    const chip = t.status==='aged_well'?'<span class="tk-chip well">Aged well</span>':t.status==='aged_badly'?'<span class="tk-chip badly">Aged badly</span>':'';
+    return `<div class="tk-item ${esc(t.status)}"><div class="tk-meta"><b>${esc(t.username)}</b> backs <span class="tk-side ${t.side==='a'?'a':'b'}">${side(t.side)}</span>${chip}</div>
+      <div class="tk-body">${esc(t.body)}</div>
+      <div class="tk-actions">
+        <button class="tk-vote ${t.voted?'on':''}" ${t.mine||!user?'disabled':''} onclick="event.stopPropagation();voteTake(${Number(t.id)},${!t.voted})">▲ ${Number(t.votes)}</button>
+        ${t.mine&&!locked?`<button class="tk-link" onclick="event.stopPropagation();deleteTake(${Number(t.id)})">Delete</button>`:''}
+        ${!t.mine&&user?`<button class="tk-link" onclick="event.stopPropagation();reportTake(${Number(t.id)})">Report</button>`:''}
+      </div></div>`; }).join('');
+  let form='';
+  if(locked) form = list.length?'':'<div class="sc-dim">Takes closed when the event started.</div>';
+  else if(!user) form = `<div class="sc-dim"><a href="#" onclick="event.preventDefault();event.stopPropagation();openModal('signinModal')">Sign in</a> to post your take.</div>`;
+  else {
+    const sel = takeSide[f.id] || mine?.side || '';
+    form = `<div class="tk-form" onclick="event.stopPropagation()">
+      <div class="tk-sides"><button class="sc-btn a ${sel==='a'?'on':''}" onclick="pickTakeSide('${f.id}','a')">${lastName(f.a.name)}</button><button class="sc-btn b ${sel==='b'?'on':''}" onclick="pickTakeSide('${f.id}','b')">${lastName(f.b.name)}</button></div>
+      <textarea id="tkText-${f.id}" maxlength="140" rows="2" placeholder="${mine?'Edit your take…':'Your take in 140 characters'}">${mine?esc(mine.body):''}</textarea>
+      <button class="oauth-btn primary" onclick="postTake('${f.id}')">${mine?'Update take':'Post take'}</button></div>`;
+  }
+  return head + `<div class="tk-body-wrap">${items || (locked?'':'<div class="sc-dim">No takes yet. Be the first to call it.</div>')}${form}</div>`;
+}
+function toggleTakes(id){ takesOpen.has(id)?takesOpen.delete(id):takesOpen.add(id); rerenderTakes(id); }
+function pickTakeSide(id, side){
+  const draft=document.getElementById('tkText-'+id)?.value;   // keep what they've typed
+  takeSide[id]=side; rerenderTakes(id);
+  const t=document.getElementById('tkText-'+id); if(t && draft!==undefined) t.value=draft;
+}
+async function postTake(id){
+  const side=takeSide[id] || (takesCache[id]||[]).find(t=>t.mine)?.side;
+  const body=(document.getElementById('tkText-'+id)?.value||'').trim();
+  if(!side){ showToast("Pick who you're backing first"); return; }
+  if(body.length<3){ showToast('Say a little more (3–140 characters)'); return; }
+  try{ await rpc('post_take',{p_fight:id, p_side:side, p_body:body}); await loadTakes(events[activeEventIdx], true); showToast('Take posted'); }
+  catch(e){ showToast(e.message); }
+}
+async function voteTake(tid, up){ try{ await rpc('vote_take',{p_take:tid, p_up:up}); await loadTakes(events[activeEventIdx], true); }catch(e){ showToast(e.message); } }
+async function deleteTake(tid){ try{ await rpc('delete_take',{p_take:tid}); await loadTakes(events[activeEventIdx], true); showToast('Take deleted'); }catch(e){ showToast(e.message); } }
+async function reportTake(tid){ if(!confirm('Report this take as abusive or spam?')) return;
+  try{ await rpc('report_take',{p_take:tid}); showToast('Reported — thanks'); }catch(e){ showToast(e.message); } }
+
+/* ── Badges: earned from your picks, scorecards and takes ── */
+function computeBadges(){
+  const settled = bets.filter(b=>b.result==='won'||b.result==='lost').slice().sort((a,b)=>(a.time||0)-(b.time||0));
+  const won = settled.filter(b=>b.result==='won');
+  let best=0, run=0; for(const b of settled){ run = b.result==='won'?run+1:0; best=Math.max(best,run); }
+  const ko = won.filter(b=>b.type==='method' && b.pick==='KO/TKO').length;
+  const rnd = won.filter(b=>b.type==='round').length;
+  const dogs = won.filter(b=>b.type==='winner' && b.odds>=2.5).length;
+  let judge=0, robbery=0;
+  for(const ev of events) for(const f of ev.fights){
+    if(!cards[f.id]) continue; const m=myTotals(f,ev), r=f.result;
+    if(!m || !m.complete || !r || r.method!=='Decision' || (r.winner!=='a'&&r.winner!=='b')) continue;
+    if(m.winner===r.winner) judge++;
+    else { const s=fanShare(f); if(s && s.n>=FAN_MIN && (m.winner==='a'?s.a:s.b)>=0.6) robbery++; }
+  }
+  const hero = Object.values(takesCache).flat().filter(t=>t.mine && t.status==='aged_well' && Number(t.votes)>=5).length;
+  const B=(icon,name,desc,earned,progress)=>({icon,name,desc,earned,progress});
+  return [
+    B('🩸','First Blood','Won your first pick.', won.length>=1, 'Win a pick'),
+    B('🥊','KO Artist','Called 3 knockouts.', ko>=3, `${Math.min(ko,3)}/3 KO calls`),
+    B('🎯','Called the Round','Nailed the exact round.', rnd>=1, 'Win a round pick'),
+    B('🐶','Upset Whisperer','3 wins on underdogs at 2.50+.', dogs>=3, `${Math.min(dogs,3)}/3 big upsets`),
+    B('🔥','Hot Streak','5 winning picks in a row.', best>=5, `Best run ${best}/5`),
+    B('⚖️',"Judge's Eye",'5 scorecards that matched the judges.', judge>=5, `${Math.min(judge,5)}/5 matching cards`),
+    B('🚨','Robbery Detector','Disagreed with the judges — and the fans backed you.', robbery>=1, 'Spot a robbery the fans agree on'),
+    B('🌶️','Hot Take Hero','A take that aged well with 5+ upvotes.', hero>=1, DB?'Post a take that ages well':'Arrives with accounts'),
+  ];
 }
 
 /* ── People's Scorecard ─────────────────────────────────────────────
@@ -1016,16 +1244,18 @@ function placeBet(){
   save();updateBal();closeBetSlip();showToast(`Placed ${s} R on ${placed}`);checkUBI();
 }
 
+function showTab(t){
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active', b.dataset.tab===t));
+  for(const id of ['fights','mybets','stats','leagues']) document.getElementById('tab-'+id).style.display = id===t?'':'none';
+  if(t==='mybets')renderMyBets();
+  if(t==='stats')renderStats();
+  if(t==='leagues')renderLeagues();
+}
 document.querySelectorAll('.nav button').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    const t=btn.dataset.tab;
-    document.getElementById('tab-fights').style.display=t==='fights'?'':'none';
-    document.getElementById('tab-mybets').style.display=t==='mybets'?'':'none';
-    document.getElementById('tab-stats').style.display=t==='stats'?'':'none';
-    if(t==='mybets')renderMyBets();
-    if(t==='stats')renderStats();
+    showTab(btn.dataset.tab);
   });
 });
 
@@ -1084,6 +1314,8 @@ function renderStats(){
     </div>
     ${s.total?'':'<div class="empty-state">Make a few picks — your hit rate, streaks and upsets show up here once fights are scored.</div>'}
     <p class="stats-note">${user?'Stats are saved to your account.':(DB?'Guest stats live on this device — sign in to keep them everywhere.':'Stats live on this device.')}</p>
+    <h3 class="section-title">Badges</h3>
+    <div class="badge-grid">${computeBadges().map(b=>`<div class="badge ${b.earned?'earned':''}" title="${b.desc}"><div class="badge-ico">${b.icon}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.earned?b.desc:b.progress}</div></div>`).join('')}</div>
     <div id="lb-panel"></div>`;
   loadLeaderboard();
 }
