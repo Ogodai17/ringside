@@ -235,9 +235,21 @@ def parse_bout(comp: dict, idx: int) -> dict | None:
         method = method_from_status(status)
         if method == "Draw":
             winner = "draw"
+        # ESPN often omits the method, but the final round + clock tell us
+        # whether it went the distance (last round, 5:00) or ended early.
+        sched = ((comp.get("format") or {}).get("regulation") or {}).get("periods") or 3
+        period = status.get("period") or 0
+        clock = status.get("clock") or 0
+        went_distance = period >= sched and clock >= 299
+        if method is None and went_distance:
+            method = "Decision"
         if winner:
-            rnd = status.get("period") or None
-            result = {"winner": winner, "method": method, "round": rnd if method != "Decision" else None}
+            result = {
+                "winner": winner,
+                "method": method,                      # None = finish of unknown type
+                "round": None if method == "Decision" or not period else period,
+                "finish": not went_distance if period else None,
+            }
         if not _diag_printed:
             # Shows up as an annotation on the GitHub Actions run, so the
             # result format can be checked without downloading logs.

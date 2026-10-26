@@ -328,18 +328,24 @@ function resolveResults(){
     if(!fight || !fight.result) return;
     const r = fight.result;
     const market = bet.type || bet.market;
-    // Winner known but not how it ended (some UFC data): only settle winner picks
-    if(market!=='winner' && !r.method) return;
+    // UFC data can say "finished in round N" without saying KO vs submission.
+    const isDecision = r.method==='Decision';
+    const isFinish = r.finish===true || (!!r.method && !isDecision && r.method!=='Draw');
+    const known = r.method || r.finish!==undefined && r.finish!==null;
+    if(market!=='winner' && !known) return;          // not enough info yet
+    if(market==='method' && !r.method){              // finish type unknown: refund
+      bet.resolved = true; bet.result = 'void'; bet.payout = bet.stake;
+      balance += bet.stake; changed = true; return;
+    }
     let won = false;
     if(market==='winner'){
       won = (bet.pick===fight.a.name && r.winner==='a') || (bet.pick===fight.b.name && r.winner==='b');
     } else if(market==='method'){
       won = bet.pick===r.method;
     } else if(market==='round'){
-      won = !!r.round && bet.pick===`Rd ${r.round}`;
+      won = isFinish && !!r.round && bet.pick===`Rd ${r.round}`;
     } else if(market==='distance'){
-      const wentDist = r.method==='Decision';
-      won = (bet.pick==='Goes the distance' && wentDist) || (bet.pick==="Doesn't go the distance" && !wentDist);
+      won = (bet.pick==='Goes the distance' && isDecision) || (bet.pick==="Doesn't go the distance" && isFinish);
     }
     bet.resolved = true;
     bet.won = won;
@@ -431,7 +437,7 @@ function renderFights(){
     const res = f.result || {};
     const winnerName = res.winner==='a'?f.a.name:res.winner==='b'?f.b.name:res.winner==='draw'?'Draw':'';
     const resultBadge = !done ? '' : f.result
-      ? `<div class="result-badge">${winnerName} — ${res.method}${res.round?' (Rd '+res.round+')':''}</div>`
+      ? `<div class="result-badge">${winnerName} — ${res.method||'Finish'}${res.round?' (Rd '+res.round+')':''}</div>`
       : `<div class="result-badge">Betting closed — awaiting result</div>`;
     const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
     return `
@@ -536,7 +542,7 @@ function renderMyBets(){
   if(!bets.length){l.innerHTML='<div class="empty-state">No picks yet. Go make some calls.</div>';return;}
   l.innerHTML=bets.slice().reverse().map(b=>`
     <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${b.type} · ${b.stake} R @ ${b.odds.toFixed(2)}x</div></div>
-    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
+    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
 }
 function renderLeaderboard(){
   leaderboardData[leaderboardData.length-1].balance=balance;
