@@ -1,6 +1,6 @@
 {
-  "_help": "The ONE place to paste site IDs. Leave a value as \"\" to switch that feature off. After editing, commit — the workflow rebuilds every page automatically.",
-  "site_url": "https://ogodai17.github.io/ringside/",
+  "_help": "The ONE place to paste site IDs. Leave a value as \"\" to switch that feature off. After editing, commit \u2014 the workflow rebuilds every page automatically.",
+  "site_url": "https://pickafight.now/",
   "ga_measurement_id": "",
   "adsense_publisher_id": "",
   "adsense_slot_top": "",
