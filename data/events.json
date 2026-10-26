@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-10-26T16:36:03Z",
+  "scraped_at": "2026-10-26T19:14:08Z",
   "source": "onefc.com",
-  "event_count": 2,
+  "event_count": 3,
   "events": [
     {
       "name": "ONE Friday Fights 176 & The Inner Circle 36",
@@ -291,6 +291,38 @@
             "profile": "https://www.onefc.com/athletes/ranma/",
             "record": ""
           },
+          "result": null
+        }
+      ]
+    },
+    {
+      "name": "ONE Friday Fights 177 & The Inner Circle 37",
+      "subtitle": "",
+      "date": "2026-11-06",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-177/",
+      "status": "upcoming",
+      "fight_count": 1,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Lightweight MMA World Championship",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Christian Lee",
+            "country": "United States",
+            "flag": "🇺🇸",
+            "profile": "https://www.onefc.com/athletes/christian-lee/",
+            "record": ""
+          },
+          "fighter_b": {
+            "name": "Tye Ruotolo",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
+            "record": ""
+          },
+          "main_event": true,
           "result": null
         }
       ]
