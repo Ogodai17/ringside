@@ -95,6 +95,81 @@ def classify_discipline(label: str) -> str:
     return "unknown"
 
 
+def detect_event_date(soup: BeautifulSoup) -> str:
+    """Try to extract event date from the page."""
+    # Look for date patterns in meta tags
+    for meta in soup.find_all("meta"):
+        content = meta.get("content", "")
+        # ISO date format
+        m = re.search(r"(\d{4}-\d{2}-\d{2})", content)
+        if m:
+            return m.group(1)
+    # Look for date in page text (e.g. "October 25, 2026" or "25 October 2026")
+    text = soup.get_text()
+    months = "January|February|March|April|May|June|July|August|September|October|November|December"
+    m = re.search(rf"({months})\s+(\d{{1,2}}),?\s+(\d{{4}})", text)
+    if m:
+        return f"{m.group(1)} {m.group(2)}, {m.group(3)}"
+    m = re.search(rf"(\d{{1,2}})\s+({months})\s+(\d{{4}})", text)
+    if m:
+        return f"{m.group(2)} {m.group(1)}, {m.group(3)}"
+    return ""
+
+
+def detect_results(soup: BeautifulSoup, fights: list[dict]):
+    """Check if event has results and annotate fights with winner/method."""
+    page_text = soup.get_text(" ", strip=True).lower()
+    has_results = any(w in page_text for w in ["result", "winner", " win ", " won ", "defeated"])
+
+    if not has_results:
+        for f in fights:
+            f["result"] = None  # upcoming / no result yet
+        return
+
+    # Try to find result blocks near each fight's fighters
+    for f in fights:
+        f["result"] = None  # default
+        name_a = f["fighter_a"]["name"]
+        name_b = f["fighter_b"]["name"]
+
+        # Search for result indicators near fighter names
+        # Common patterns: "Fighter Name WIN", "Fighter Name defeated", result method text
+        for tag in soup.find_all(string=re.compile(r"(WIN|WINNER|Defeated|Victory)", re.I)):
+            context = tag.parent.get_text(" ", strip=True) if tag.parent else str(tag)
+            parent_block = tag.parent.parent.get_text(" ", strip=True) if tag.parent and tag.parent.parent else context
+
+            winner = None
+            if name_a.lower() in parent_block.lower():
+                winner = "a"
+            elif name_b.lower() in parent_block.lower():
+                winner = "b"
+
+            if winner:
+                # Try to detect method
+                method = "Decision"  # default
+                block_lower = parent_block.lower()
+                if any(k in block_lower for k in ["ko", "tko", "knockout"]):
+                    method = "KO/TKO"
+                elif any(k in block_lower for k in ["sub", "submission", "tap"]):
+                    method = "Submission"
+                elif "draw" in block_lower:
+                    method = "Draw"
+                    winner = "draw"
+
+                # Detect round
+                round_num = None
+                rm = re.search(r"(?:round|r)\s*(\d)", block_lower)
+                if rm:
+                    round_num = int(rm.group(1))
+
+                f["result"] = {
+                    "winner": winner,
+                    "method": method,
+                    "round": round_num,
+                }
+                break  # found result for this fight
+
+
 def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
     """Parse one event page into structured JSON."""
 
@@ -145,37 +220,8 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
             seen_names.append(al["name"])
             unique.append(al)
 
-    # Country info from tables
-    countries = {}
-    for table in soup.find_all("table"):
-        rows = table.find_all("tr")
-        for row in rows:
-            cells = [td.get_text(strip=True) for td in row.find_all("td")]
-            if len(cells) >= 3 and cells[1].lower() in ("country", "vs"):
-                # cells[0] = fighter A's country, cells[2] = fighter B's country
-                pass  # Countries parsed below from table context
-
-    # Parse countries from the VS tables more carefully
-    for table in soup.find_all("table"):
-        for row in table.find_all("tr"):
-            cells = row.find_all("td")
-            cell_texts = [c.get_text(strip=True) for c in cells]
-            if len(cell_texts) == 3 and cell_texts[1] == "Country":
-                # This row has country info
-                # Find which fighters this belongs to by looking at nearby athlete links
-                parent = table.parent
-                if parent:
-                    local_links = parent.find_all("a", href=re.compile(r"/athletes/"))
-                    local_names = []
-                    for ll in local_links:
-                        n = ll.get_text(strip=True)
-                        if n and n not in local_names:
-                            local_names.append(n)
-                    if len(local_names) >= 2:
-                        countries[local_names[0]] = cell_texts[0]
-                        countries[local_names[1]] = cell_texts[2]
-
     # Pair fighters into bouts
+    # (Country/flag enrichment happens in enrich_fighters via profile pages)
     fights = []
     for i in range(0, len(unique) - 1, 2):
         fa = unique[i]
@@ -185,25 +231,20 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
         label = disc_labels[fight_idx] if fight_idx < len(disc_labels) else f"Bout {fight_idx+1}"
         disc = classify_discipline(label)
 
-        country_a = countries.get(fa["name"], "")
-        country_b = countries.get(fb["name"], "")
-        flag_a = COUNTRY_FLAGS.get(country_a, "")
-        flag_b = COUNTRY_FLAGS.get(country_b, "")
-
         fights.append({
             "id": fight_idx + 1,
             "label": label,
             "discipline": disc,
             "fighter_a": {
                 "name": fa["name"],
-                "country": country_a,
-                "flag": flag_a,
+                "country": "",
+                "flag": "",
                 "profile": urljoin(BASE, fa["href"]),
             },
             "fighter_b": {
                 "name": fb["name"],
-                "country": country_b,
-                "flag": flag_b,
+                "country": "",
+                "flag": "",
                 "profile": urljoin(BASE, fb["href"]),
             },
         })
@@ -215,18 +256,57 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
     if fights:
         fights[0]["main_event"] = True
 
+    # Detect results for completed events
+    detect_results(soup, fights)
+    has_results = any(f.get("result") for f in fights)
+
+    # Try to get event date
+    event_date = detect_event_date(soup)
+
     return {
         "name": event_name,
         "subtitle": subtitle,
+        "date": event_date,
         "venue": venue,
         "url": url,
+        "status": "completed" if has_results else "upcoming",
         "fight_count": len(fights),
         "fights": fights,
     }
 
 
-def enrich_records(event: dict, delay: float = 0.5):
-    """Fetch each fighter's profile page to get their record."""
+def extract_country(soup: BeautifulSoup) -> str:
+    """Try to pull country from a fighter profile page."""
+    # Common patterns: country appears in meta tags, structured data, or text near flag/nationality
+    # Try og:description or meta description first
+    for meta in soup.find_all("meta"):
+        content = meta.get("content", "")
+        for country in COUNTRY_FLAGS:
+            if country in content:
+                return country
+
+    # Try finding country names in text near common labels
+    text = soup.get_text(" ", strip=True)
+    for label in ["Nationality", "Country", "Born", "Fighting out of", "Hometown"]:
+        idx = text.find(label)
+        if idx != -1:
+            snippet = text[idx:idx+80]
+            for country in COUNTRY_FLAGS:
+                if country in snippet:
+                    return country
+
+    # Fallback: scan full text for any known country name
+    # (check longer names first to avoid "New" matching before "New Zealand")
+    sorted_countries = sorted(COUNTRY_FLAGS.keys(), key=len, reverse=True)
+    for country in sorted_countries:
+        if country in text:
+            return country
+
+    return ""
+
+
+def enrich_fighters(event: dict, delay: float = 0.5):
+    """Fetch each fighter's profile page to get their record and country."""
     for fight in event["fights"]:
         for side in ("fighter_a", "fighter_b"):
             fighter = fight[side]
@@ -234,21 +314,29 @@ def enrich_records(event: dict, delay: float = 0.5):
             if not profile_url:
                 continue
 
-            print(f"    Record: {fighter['name']}...", end=" ", flush=True)
+            print(f"    Enrich: {fighter['name']}...", end=" ", flush=True)
             soup = fetch(profile_url)
             if soup:
                 text = soup.get_text()
-                # Look for record in format like "13-0-0 (Win-Loss-Draw)"
-                # or standalone "13-0-0"
+                # Record in format like "13-0-0 (Win-Loss-Draw)"
                 m = re.search(r"(\d{1,3})-(\d{1,3})-(\d{1,3})", text)
                 if m:
                     fighter["record"] = m.group(0)
-                    print(fighter["record"])
                 else:
                     fighter["record"] = ""
-                    print("not found")
+
+                # Country + flag
+                if not fighter.get("country"):
+                    country = extract_country(soup)
+                    fighter["country"] = country
+                    fighter["flag"] = COUNTRY_FLAGS.get(country, "")
+
+                status = fighter["record"] or "no record"
+                if fighter["country"]:
+                    status += f", {fighter['country']}"
+                print(status)
             else:
-                fighter["record"] = ""
+                fighter["record"] = fighter.get("record", "")
                 print("failed")
 
             time.sleep(delay)
@@ -286,7 +374,7 @@ def main():
             print(f"  -> {parsed['fight_count']} fights")
 
             if args.enrich:
-                enrich_records(parsed)
+                enrich_fighters(parsed)
 
             results.append(parsed)
         else:

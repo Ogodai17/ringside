@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ringside — ONE Championship Predictions</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Google AdSense — replace ca-pub-XXXXXXX with your publisher ID after approval -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <style>
 :root {
   --bg: #0a0a0c;
@@ -86,6 +88,9 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .fight-discipline { display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; margin-left:6px; vertical-align:middle; }
 .disc-mma { background:rgba(74,143,231,0.15); color:var(--blue); }
 .disc-mt { background:rgba(200,54,46,0.15); color:var(--accent); }
+.fight-completed { opacity:0.85; }
+.result-badge { background:var(--gold); color:#1a1a1a; font-size:12px; font-weight:700; padding:4px 10px; border-radius:6px; display:inline-block; margin-bottom:4px; }
+.fighter-won .fighter-name { color:var(--gold); font-weight:700; }
 .disc-kb { background:rgba(212,168,67,0.15); color:var(--gold); }
 .fighters-row { display:flex; align-items:center; gap:12px; }
 .fighter { flex:1; display:flex; flex-direction:column; gap:2px; }
@@ -186,6 +191,11 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div id="tab-fights">
     <div class="event-picker" id="eventPicker"></div>
     <div class="event-header" id="eventHeader"></div>
+    <!-- Ad: between header and fights -->
+    <div class="ad-unit" style="text-align:center;margin:12px 0;min-height:90px;">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="SLOT_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
     <div id="fight-cards"></div>
   </div>
   <div id="tab-mybets" style="display:none">
@@ -195,6 +205,11 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div id="tab-leaderboard" style="display:none">
     <h3 class="section-title">All-time Leaderboard</h3>
     <div class="leaderboard" id="leaderboard"></div>
+    <!-- Ad: below leaderboard -->
+    <div class="ad-unit" style="text-align:center;margin:16px 0;min-height:250px;">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="SLOT_BOTTOM" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </div>
 </div>
 
@@ -246,17 +261,58 @@ function mapFight(f,evIdx){
     b:{ name:f.fighter_b.name, record:f.fighter_b.record||"", flag:f.fighter_b.flag||"" },
     oddsA, oddsB,
     methods, rounds,
-    distance:["Goes the distance","Doesn't go the distance"]
+    distance:["Goes the distance","Doesn't go the distance"],
+    result: f.result||null
   };
 }
 function mapEvent(ev,idx){
   return {
     name: ev.name,
     subtitle: ev.subtitle||"",
-    date: "Upcoming",
+    date: ev.date||"Upcoming",
     venue: ev.venue||"TBD",
+    status: ev.status||"upcoming",
     fights: ev.fights.map(f=>mapFight(f,idx+1))
   };
+}
+
+/* ── Auto-resolve bets when results come in ── */
+function resolveResults(){
+  let changed = false;
+  bets.forEach(bet=>{
+    if(bet.resolved) return;
+    // Find the fight across all events
+    for(const ev of events){
+      const fight = ev.fights.find(f=>f.id===bet.fightId);
+      if(fight && fight.result){
+        bet.resolved = true;
+        const r = fight.result;
+        let won = false;
+        if(bet.market==='winner'){
+          won = (bet.pick===fight.a.name && r.winner==='a') || (bet.pick===fight.b.name && r.winner==='b');
+        } else if(bet.market==='method'){
+          won = bet.pick===r.method;
+        } else if(bet.market==='round'){
+          won = r.round && bet.pick===`Rd ${r.round}`;
+        } else if(bet.market==='distance'){
+          const wentDist = r.method==='Decision';
+          won = (bet.pick==='Goes the distance' && wentDist) || (bet.pick==="Doesn't go the distance" && !wentDist);
+        }
+        if(won){
+          const payout = Math.round(bet.stake * bet.odds);
+          balance += payout;
+          bet.payout = payout;
+          bet.won = true;
+        } else {
+          bet.won = false;
+          bet.payout = 0;
+        }
+        changed = true;
+        break;
+      }
+    }
+  });
+  if(changed){ save(); updateBal(); }
 }
 
 async function loadEvents(){
@@ -271,6 +327,7 @@ async function loadEvents(){
     console.warn('Could not load events.json, using empty card',e);
     events = [{name:"No Events Loaded",subtitle:"Scraper hasn't run yet",date:"—",venue:"—",fights:[]}];
   }
+  resolveResults();
   renderEventPicker();
   renderFights();
   renderLeaderboard();
@@ -309,34 +366,40 @@ function switchEvent(i){activeEventIdx=i;renderEventPicker();renderFights();}
 function renderFights(){
   const ev = events[activeEventIdx];
   document.getElementById('eventHeader').innerHTML=`<h2>${ev.name}: ${ev.subtitle}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
-  document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>`
-    <div class="fight-card" id="fight-${f.id}">
+  document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>{
+    const done = !!f.result;
+    const winnerName = done ? (f.result.winner==='a'?f.a.name:f.result.winner==='b'?f.b.name:'Draw') : '';
+    const resultBadge = done ? `<div class="result-badge">${winnerName} — ${f.result.method}${f.result.round?' (Rd '+f.result.round+')':''}</div>` : '';
+    const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
+    return `
+    <div class="fight-card ${done?'fight-completed':''}" id="fight-${f.id}">
       <div class="fight-main" onclick="toggleFight(${f.id})">
         <div class="fight-label">${f.label} <span class="fight-discipline ${discClass(f.disc)}">${discLabel(f.disc)}</span></div>
+        ${resultBadge}
         <div class="fighters-row">
-          <div class="fighter">
+          <div class="fighter ${done&&f.result.winner==='a'?'fighter-won':''}">
             <div class="fighter-name">${f.a.flag} ${f.a.name}</div>
             <div class="fighter-record">${f.a.record}</div>
           </div>
-          <div class="vs-badge">vs</div>
-          <div class="fighter right">
+          <div class="vs-badge">${done?'✓':'vs'}</div>
+          <div class="fighter right ${done&&f.result.winner==='b'?'fighter-won':''}">
             <div class="fighter-name">${f.b.name} ${f.b.flag}</div>
             <div class="fighter-record">${f.b.record}</div>
           </div>
         </div>
-        <div class="fight-odds">
-          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'A')">
+        <div class="fight-odds" ${disabledAttr}>
+          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'A')" ${done?'disabled':''}>
             <span class="label">${f.a.name.split(' ').pop()}</span>
             <span class="value">${f.oddsA.toFixed(2)}</span>
           </button>
-          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'B')">
+          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'B')" ${done?'disabled':''}>
             <span class="label">${f.b.name.split(' ').pop()}</span>
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
         </div>
-        <div class="expand-hint">Tap for more markets</div>
+        ${done?'':'<div class="expand-hint">Tap for more markets</div>'}
       </div>
-      <div class="fight-markets">
+      ${done?'':`<div class="fight-markets">
         <div class="market-group"><h4>Method of Victory</h4>
           <div class="market-options">${f.methods.map(m=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'method','${m}',${f.methods.length>2?2.8:1.9})">${m}</button>`).join('')}</div>
         </div>
@@ -346,8 +409,9 @@ function renderFights(){
         <div class="market-group"><h4>Distance</h4>
           <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
         </div>
-      </div>
-    </div>`).join('');
+      </div>`}
+    </div>`;
+  }).join('');
 }
 
 function toggleFight(id){document.getElementById('fight-'+id).classList.toggle('expanded');}
