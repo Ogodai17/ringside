@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Built from templates/index.html by scraper/build_pages.py — edit the template, not this file. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Google Analytics — replace G-XXXXXXXXXX with your real Measurement ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
 <title>Ringside — UFC & ONE Championship Fight Predictions</title>
 <meta name="description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money. Test your MMA and combat sports IQ.">
 <meta name="keywords" content="UFC predictions, ONE Championship predictions, fight predictions, MMA picks, Muay Thai predictions, combat sports game, UFC betting game, fight picks, UFC picks">
@@ -42,8 +41,7 @@
   }
 }
 </script>
-<!-- Google AdSense — replace ca-pub-XXXXXXX with your publisher ID after approval -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
 <style>
 :root {
   --bg: #0a0a0c;
@@ -97,8 +95,6 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .nav button.active { background:var(--accent); border-color:var(--accent); color:#fff; }
 
 .connect-bar { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; margin:16px 0; display:flex; align-items:center; justify-content:space-between; font-size:13px; color:var(--text-dim); }
-.connect-btn { background:var(--surface-raised); border:1px solid var(--border); border-radius:6px; padding:6px 14px; font-size:12px; font-weight:600; color:var(--text); cursor:pointer; font-family:'Space Grotesk',sans-serif; }
-.connect-btn:hover { background:var(--surface-hover); }
 
 #ubi-banner { display:none; background:var(--gold-dim); border:1px solid rgba(212,168,67,0.25); border-radius:10px; padding:12px 16px; margin:12px 0; font-size:13px; color:var(--gold); text-align:center; cursor:pointer; }
 #ubi-banner strong { font-weight:700; }
@@ -230,18 +226,13 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   </nav>
   <div class="connect-bar">
     <span>Playing as guest — picks stay on this device</span>
-    <button class="connect-btn" onclick="alert('Wallet connect coming soon')">Connect wallet</button>
   </div>
   <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 R.</div>
 
   <div id="tab-fights">
     <div class="event-picker" id="eventPicker"></div>
     <div class="event-header" id="eventHeader"></div>
-    <!-- Ad: between header and fights -->
-    <div class="ad-unit" style="text-align:center;margin:12px 0;min-height:90px;">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="SLOT_TOP" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
     <div id="fight-cards"></div>
   </div>
   <div id="tab-mybets" style="display:none">
@@ -251,11 +242,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div id="tab-leaderboard" style="display:none">
     <h3 class="section-title">All-time Leaderboard</h3>
     <div class="leaderboard" id="leaderboard"></div>
-    <!-- Ad: below leaderboard -->
-    <div class="ad-unit" style="text-align:center;margin:16px 0;min-height:250px;">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="SLOT_BOTTOM" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    
   </div>
 </div>
 
@@ -279,6 +266,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 
 <script>
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
+const AFFILIATE_URL = "";
 try { const s = JSON.parse(localStorage.getItem('ringside_state')||'{}'); balance=s.balance??5000; bets=s.bets??[]; lastUBIClaim=s.lastUBIClaim??null; } catch(e){}
 
 let events = [];
@@ -431,9 +419,13 @@ function renderFights(){
   const promoTag = ev.promotion&&ev.promotion!=='ONE'?`<span class="promo-tag promo-${ev.promotion.toLowerCase()}">${ev.promotion}</span> `:'';
   document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
   document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>{
-    const done = !!f.result;
-    const winnerName = done ? (f.result.winner==='a'?f.a.name:f.result.winner==='b'?f.b.name:'Draw') : '';
-    const resultBadge = done ? `<div class="result-badge">${winnerName} — ${f.result.method}${f.result.round?' (Rd '+f.result.round+')':''}</div>` : '';
+    // Betting closes once the event is over, even if the result hasn't been scraped yet
+    const done = !!f.result || ev.status==='completed';
+    const res = f.result || {};
+    const winnerName = res.winner==='a'?f.a.name:res.winner==='b'?f.b.name:res.winner==='draw'?'Draw':'';
+    const resultBadge = !done ? '' : f.result
+      ? `<div class="result-badge">${winnerName} — ${res.method}${res.round?' (Rd '+res.round+')':''}</div>`
+      : `<div class="result-badge">Betting closed — awaiting result</div>`;
     const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
     return `
     <div class="fight-card ${done?'fight-completed':''}" id="fight-${f.id}">
@@ -441,12 +433,12 @@ function renderFights(){
         <div class="fight-label">${f.label} <span class="fight-discipline ${discClass(f.disc)}">${discLabel(f.disc)}</span></div>
         ${resultBadge}
         <div class="fighters-row">
-          <div class="fighter ${done&&f.result.winner==='a'?'fighter-won':''}">
+          <div class="fighter ${res.winner==='a'?'fighter-won':''}">
             <div class="fighter-name">${f.a.flag} ${f.a.name}</div>
             <div class="fighter-record">${f.a.record}</div>
           </div>
           <div class="vs-badge">${done?'✓':'vs'}</div>
-          <div class="fighter right ${done&&f.result.winner==='b'?'fighter-won':''}">
+          <div class="fighter right ${res.winner==='b'?'fighter-won':''}">
             <div class="fighter-name">${f.b.name} ${f.b.flag}</div>
             <div class="fighter-record">${f.b.record}</div>
           </div>
@@ -461,7 +453,7 @@ function renderFights(){
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
         </div>
-        <div class="affiliate-row"><a class="affiliate-btn" href="https://www.example.com/bet?ref=ringside" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24"><path d="M10 6V8H5V19H16V14H18V20C18 20.55 17.55 21 17 21H4C3.45 21 3 20.55 3 20V7C3 6.45 3.45 6 4 6H10ZM21 3V11H19V6.41L11.21 14.21L9.79 12.79L17.59 5H13V3H21Z"/></svg>Bet for real</a></div>
+        ${AFFILIATE_URL?`<div class="affiliate-row"><a class="affiliate-btn" href="${AFFILIATE_URL}" target="_blank" rel="noopener noreferrer nofollow sponsored"><svg viewBox="0 0 24 24"><path d="M10 6V8H5V19H16V14H18V20C18 20.55 17.55 21 17 21H4C3.45 21 3 20.55 3 20V7C3 6.45 3.45 6 4 6H10ZM21 3V11H19V6.41L11.21 14.21L9.79 12.79L17.59 5H13V3H21Z"/></svg>Bet for real</a></div>`:''}
         ${done?'':'<div class="expand-hint">Tap for more markets</div>'}
       </div>
       ${done?'':`<div class="fight-markets">

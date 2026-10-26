@@ -14,6 +14,8 @@ import json
 import re
 import sys
 import time
+from collections import Counter
+from datetime import date
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -95,79 +97,141 @@ def classify_discipline(label: str) -> str:
     return "unknown"
 
 
-def detect_event_date(soup: BeautifulSoup) -> str:
-    """Try to extract event date from the page."""
-    # Look for date patterns in meta tags
-    for meta in soup.find_all("meta"):
-        content = meta.get("content", "")
-        # ISO date format
-        m = re.search(r"(\d{4}-\d{2}-\d{2})", content)
-        if m:
-            return m.group(1)
-    # Look for date in page text (e.g. "October 25, 2026" or "25 October 2026")
-    text = soup.get_text()
-    months = "January|February|March|April|May|June|July|August|September|October|November|December"
-    m = re.search(rf"({months})\s+(\d{{1,2}}),?\s+(\d{{4}})", text)
+MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
+
+
+def _valid_date(y: int, mo: int, d: int) -> str:
+    try:
+        return date(y, mo, d).isoformat()
+    except ValueError:
+        return ""
+
+
+def detect_event_date(soup: BeautifulSoup, today: date | None = None) -> str:
+    """Extract the event date as YYYY-MM-DD.
+
+    NOTE: never use meta published/modified times — those are when the
+    article was written/edited, not when the fights happen (this was the
+    old bug that dated Oct 30 events as Sep 1).
+    """
+    today = today or date.today()
+
+    # 1) onefc.com names event artwork like "261030-BKK-OFF176_TIC36-1800x1200px.jpg"
+    #    (YYMMDD prefix). Take the most common code across og:image + <img> tags.
+    codes = []
+    for tag in soup.find_all(["meta", "img", "source"]):
+        for attr in ("content", "src", "srcset", "data-src"):
+            val = tag.get(attr) or ""
+            for m in re.finditer(r"/(\d{2})(\d{2})(\d{2})-[A-Za-z]", val):
+                iso = _valid_date(2000 + int(m.group(1)), int(m.group(2)), int(m.group(3)))
+                if iso:
+                    codes.append(iso)
+    if codes:
+        return Counter(codes).most_common(1)[0][0]
+
+    # 2) Text like "October 30, 2026" / "30 October 2026"
+    text = soup.get_text(" ", strip=True)
+    months_re = "|".join(MONTHS)
+    m = re.search(rf"\b({months_re})\s+(\d{{1,2}}),?\s+(\d{{4}})\b", text)
     if m:
-        return f"{m.group(1)} {m.group(2)}, {m.group(3)}"
-    m = re.search(rf"(\d{{1,2}})\s+({months})\s+(\d{{4}})", text)
+        return _valid_date(int(m.group(3)), MONTHS.index(m.group(1)) + 1, int(m.group(2)))
+    m = re.search(rf"\b(\d{{1,2}})\s+({months_re})\s+(\d{{4}})\b", text)
     if m:
-        return f"{m.group(2)} {m.group(1)}, {m.group(3)}"
+        return _valid_date(int(m.group(3)), MONTHS.index(m.group(2)) + 1, int(m.group(1)))
+
+    # 3) Text like "on October 30" with no year — pick the year that puts
+    #    the date closest to today.
+    m = re.search(rf"\bon\s+({months_re})\s+(\d{{1,2}})\b", text)
+    if m:
+        mo, d = MONTHS.index(m.group(1)) + 1, int(m.group(2))
+        candidates = [_valid_date(y, mo, d) for y in (today.year - 1, today.year, today.year + 1)]
+        candidates = [c for c in candidates if c]
+        if candidates:
+            return min(candidates, key=lambda c: abs((date.fromisoformat(c) - today).days))
     return ""
 
 
-def detect_results(soup: BeautifulSoup, fights: list[dict]):
-    """Check if event has results and annotate fights with winner/method."""
-    page_text = soup.get_text(" ", strip=True).lower()
-    has_results = any(w in page_text for w in ["result", "winner", " win ", " won ", "defeated"])
+def event_is_past(event_date: str, today: date | None = None) -> bool:
+    """True once the day after the event has started (results can exist)."""
+    if not event_date:
+        return False
+    today = today or date.today()
+    try:
+        return date.fromisoformat(event_date) < today
+    except ValueError:
+        return False
 
-    if not has_results:
-        for f in fights:
-            f["result"] = None  # upcoming / no result yet
+
+def detect_results(soup: BeautifulSoup, fights: list[dict], event_past: bool):
+    """Annotate fights with winner/method — only for events that already happened.
+
+    Old version matched words like "Results" in the site menu and the
+    "Winner" inside fighter names (e.g. "Superbest Winnermuaythai"), which
+    marked every upcoming fight as a KO win for fighter A. Now:
+      - upcoming events never get results
+      - a WIN/WINNER label must be its own standalone text, not a substring
+      - method/round use whole-word matches
+    A past fight with no clear result stays None (shown as "awaiting result").
+    """
+    for f in fights:
+        f["result"] = None
+    if not event_past:
         return
 
-    # Try to find result blocks near each fight's fighters
-    for f in fights:
-        f["result"] = None  # default
-        name_a = f["fighter_a"]["name"]
-        name_b = f["fighter_b"]["name"]
+    win_label = re.compile(r"^\s*(WIN|WINNER|WINS)\s*$", re.I)
+    labels = soup.find_all(string=win_label)
 
-        # Search for result indicators near fighter names
-        # Common patterns: "Fighter Name WIN", "Fighter Name defeated", result method text
-        for tag in soup.find_all(string=re.compile(r"(WIN|WINNER|Defeated|Victory)", re.I)):
-            context = tag.parent.get_text(" ", strip=True) if tag.parent else str(tag)
-            parent_block = tag.parent.parent.get_text(" ", strip=True) if tag.parent and tag.parent.parent else context
+    all_names = [(f["fighter_a"]["name"].lower(), f["fighter_b"]["name"].lower()) for f in fights]
 
-            winner = None
-            if name_a.lower() in parent_block.lower():
-                winner = "a"
-            elif name_b.lower() in parent_block.lower():
-                winner = "b"
+    for i, f in enumerate(fights):
+        name_a, name_b = all_names[i]
+        other_names = [n for j, pair in enumerate(all_names) if j != i for n in pair]
+        for tag in labels:
+            # Walk up to the smallest block holding BOTH fighters of this
+            # bout and NO fighters from other bouts.
+            block, txt = tag.parent, ""
+            for _ in range(5):
+                if block is None:
+                    break
+                txt = block.get_text(" ", strip=True).lower()
+                if any(n in txt for n in other_names):
+                    block = None
+                    break
+                if name_a in txt and name_b in txt:
+                    break
+                block = block.parent
+            if block is None or not (name_a in txt and name_b in txt):
+                continue
 
-            if winner:
-                # Try to detect method
-                method = "Decision"  # default
-                block_lower = parent_block.lower()
-                if any(k in block_lower for k in ["ko", "tko", "knockout"]):
-                    method = "KO/TKO"
-                elif any(k in block_lower for k in ["sub", "submission", "tap"]):
-                    method = "Submission"
-                elif "draw" in block_lower:
-                    method = "Draw"
-                    winner = "draw"
+            # Winner = fighter name nearest to the WIN label (edge to edge),
+            # measured in the label's own position within this block.
+            before = []
+            for s in block.strings:
+                if s is tag:
+                    break
+                before.append(s.strip())
+            label_pos = len(" ".join(x for x in before if x).lower()) + 1
+            def dist(name):
+                p = txt.find(name)
+                return min(abs(p - label_pos), abs(p + len(name) - label_pos))
+            winner = "a" if dist(name_a) <= dist(name_b) else "b"
 
-                # Detect round
-                round_num = None
-                rm = re.search(r"(?:round|r)\s*(\d)", block_lower)
-                if rm:
-                    round_num = int(rm.group(1))
+            method = "Decision"
+            if re.search(r"\b(t?ko|knockout)\b", txt):
+                method = "KO/TKO"
+            elif re.search(r"\b(submission|sub)\b", txt):
+                method = "Submission"
+            elif re.search(r"\bdraw\b", txt):
+                method, winner = "Draw", "draw"
 
-                f["result"] = {
-                    "winner": winner,
-                    "method": method,
-                    "round": round_num,
-                }
-                break  # found result for this fight
+            round_num = None
+            rm = re.search(r"\b(?:round|rd\.?|r)\s*([1-5])\b", txt)
+            if rm:
+                round_num = int(rm.group(1))
+
+            f["result"] = {"winner": winner, "method": method, "round": round_num}
+            break
 
 
 def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
@@ -256,12 +320,10 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
     if fights:
         fights[0]["main_event"] = True
 
-    # Detect results for completed events
-    detect_results(soup, fights)
-    has_results = any(f.get("result") for f in fights)
-
-    # Try to get event date
+    # Date first — status and results depend on it
     event_date = detect_event_date(soup)
+    past = event_is_past(event_date)
+    detect_results(soup, fights, past)
 
     return {
         "name": event_name,
@@ -269,7 +331,7 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
         "date": event_date,
         "venue": venue,
         "url": url,
-        "status": "completed" if has_results else "upcoming",
+        "status": "completed" if past else "upcoming",
         "fight_count": len(fights),
         "fights": fights,
     }
@@ -379,6 +441,13 @@ def main():
             results.append(parsed)
         else:
             print("  -> no fights found, skipping")
+
+    # Safety net: never overwrite good data with an empty scrape.
+    # Exit non-zero so the GitHub Actions run shows a red X.
+    if not results:
+        print("\n[!] Scraped 0 events — keeping previous data/events.json. "
+              "The site layout may have changed.", file=sys.stderr)
+        sys.exit(1)
 
     # Write output
     out_dir = Path(args.out)

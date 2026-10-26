@@ -5,6 +5,14 @@ on:
   schedule:
     - cron: "0 10 * * 1,4"
   workflow_dispatch:
+  # Rebuild pages right away when settings or templates change
+  # (scrapers are skipped on these runs)
+  push:
+    branches: [main]
+    paths:
+      - site_config.json
+      - "templates/**"
+      - "scraper/**"
 
 permissions:
   contents: write
@@ -21,24 +29,40 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4
+        run: pip install -r requirements.txt
 
+      # Each scraper keeps the previous data file if it finds 0 events,
+      # and one failing doesn't stop the other.
       - name: Scrape ONE Championship
+        id: one
+        if: github.event_name != 'push'
+        continue-on-error: true
         run: python scraper/scrape.py --out data --enrich --max 4
 
       - name: Scrape UFC
+        id: ufc
+        if: github.event_name != 'push'
+        continue-on-error: true
         run: python scraper/scrape_ufc.py --out data --enrich --max-upcoming 4 --max-completed 2
 
-      - name: Generate fight previews (ONE)
-        run: python scraper/generate_previews.py --data data/events.json --out previews
+      - name: Build pages from site_config.json
+        run: python scraper/build_pages.py
 
-      - name: Generate fight previews (UFC)
-        run: python scraper/generate_previews.py --data data/ufc_events.json --out previews
+      - name: Generate fight previews + sitemap (all promotions, one pass)
+        run: python scraper/generate_previews.py --data data/events.json data/ufc_events.json --out previews
 
-      - name: Commit updated data
+      - name: Commit updated site
         run: |
           git config user.name "Ringside Bot"
           git config user.email "bot@ringside.dev"
-          git add data/ previews/ sitemap.xml
+          git add -A data/ previews/ sitemap.xml index.html about.html contact.html privacy.html CNAME 2>/dev/null || git add -A data/ previews/ sitemap.xml index.html about.html contact.html privacy.html
           git diff --staged --quiet || git commit -m "Update fight card data $(date -u +%Y-%m-%d)"
           git push
+
+      # Turn the run red (GitHub emails you) if a scraper failed, after
+      # everything else has been saved.
+      - name: Flag scraper failures
+        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure'
+        run: |
+          echo "::error::Scraper failure — ONE: ${{ steps.one.outcome }}, UFC: ${{ steps.ufc.outcome }}. Previous data was kept. Check the step logs above."
+          exit 1

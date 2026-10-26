@@ -123,6 +123,11 @@ def fetch(url: str, retries: int = 2) -> BeautifulSoup | None:
         try:
             r = requests.get(url, headers=HEADERS, timeout=15)
             r.raise_for_status()
+            if "checking your browser" in r.text[:5000].lower():
+                # ufcstats.com now sometimes serves a JavaScript bot check
+                # instead of the real page; plain requests can't pass it.
+                print(f"  [!] Bot check page (needs JavaScript): {url}", file=sys.stderr)
+                return None
             return BeautifulSoup(r.text, "html.parser")
         except Exception as e:
             if attempt < retries:
@@ -494,6 +499,13 @@ def main():
             results.append(parsed)
         else:
             print("  -> no fights found, skipping")
+
+    # Safety net: never overwrite good data with an empty scrape.
+    if not results:
+        print("\n[!] Scraped 0 UFC events — keeping previous data/ufc_events.json. "
+              "ufcstats.com may be blocking the scraper (bot check) or changed layout.",
+              file=sys.stderr)
+        sys.exit(1)
 
     # Write output
     out_dir = Path(args.out)

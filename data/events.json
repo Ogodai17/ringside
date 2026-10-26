@@ -1,15 +1,15 @@
 {
   "scraped_at": "2026-10-26T16:36:03Z",
   "source": "onefc.com",
-  "event_count": 3,
+  "event_count": 2,
   "events": [
     {
       "name": "ONE Friday Fights 176 & The Inner Circle 36",
       "subtitle": "",
-      "date": "2026-09-01",
+      "date": "2026-10-30",
       "venue": "Lumpinee Stadium, Bangkok",
       "url": "https://www.onefc.com/events/one-friday-fights-176/",
-      "status": "completed",
+      "status": "upcoming",
       "fight_count": 14,
       "fights": [
         {
@@ -31,11 +31,7 @@
             "record": ""
           },
           "main_event": true,
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 2,
@@ -55,11 +51,7 @@
             "profile": "https://www.onefc.com/athletes/yodudon-bs-muaythai/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 3,
@@ -79,11 +71,7 @@
             "profile": "https://www.onefc.com/athletes/arthur-evan/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 4,
@@ -103,11 +91,7 @@
             "profile": "https://www.onefc.com/athletes/klapichit-k-tongtalingchan/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 5,
@@ -127,11 +111,7 @@
             "profile": "https://www.onefc.com/athletes/adham-ruziev/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 6,
@@ -151,11 +131,7 @@
             "profile": "https://www.onefc.com/athletes/pedro-duarte/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 7,
@@ -175,11 +151,7 @@
             "profile": "https://www.onefc.com/athletes/yumeto-mizuno/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 8,
@@ -199,11 +171,7 @@
             "profile": "https://www.onefc.com/athletes/oga-akita/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 9,
@@ -223,11 +191,7 @@
             "profile": "https://www.onefc.com/athletes/raize/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 10,
@@ -247,11 +211,7 @@
             "profile": "https://www.onefc.com/athletes/akram-hamidi/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 11,
@@ -271,11 +231,7 @@
             "profile": "https://www.onefc.com/athletes/exza-wankhongohm/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 12,
@@ -295,11 +251,7 @@
             "profile": "https://www.onefc.com/athletes/yassir-rassafi/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 13,
@@ -319,11 +271,7 @@
             "profile": "https://www.onefc.com/athletes/abdelali-zahidi/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
+          "result": null
         },
         {
           "id": 14,
@@ -343,57 +291,17 @@
             "profile": "https://www.onefc.com/athletes/ranma/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 3
-          }
-        }
-      ]
-    },
-    {
-      "name": "ONE Friday Fights 177 & The Inner Circle 37",
-      "subtitle": "",
-      "date": "2026-09-01",
-      "venue": "Lumpinee Stadium, Bangkok",
-      "url": "https://www.onefc.com/events/one-friday-fights-177/",
-      "status": "completed",
-      "fight_count": 1,
-      "fights": [
-        {
-          "id": 1,
-          "label": "Lightweight MMA World Championship",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Christian Lee",
-            "country": "United States",
-            "flag": "🇺🇸",
-            "profile": "https://www.onefc.com/athletes/christian-lee/",
-            "record": ""
-          },
-          "fighter_b": {
-            "name": "Tye Ruotolo",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
-            "record": ""
-          },
-          "main_event": true,
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": null
-          }
+          "result": null
         }
       ]
     },
     {
       "name": "ONE Fight Night 49",
       "subtitle": "Gabriel Vs. Magomedov",
-      "date": "2025-12-10",
+      "date": "2026-11-07",
       "venue": "Lumpinee Stadium, Bangkok",
       "url": "https://www.onefc.com/events/onefightnight49/",
-      "status": "completed",
+      "status": "upcoming",
       "fight_count": 9,
       "fights": [
         {
@@ -415,11 +323,7 @@
             "record": ""
           },
           "main_event": true,
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 2,
@@ -439,11 +343,7 @@
             "profile": "https://www.onefc.com/athletes/taiki-naito/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 3,
@@ -463,11 +363,7 @@
             "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 4,
@@ -487,11 +383,7 @@
             "profile": "https://www.onefc.com/athletes/felipe-lobo/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 5,
@@ -511,11 +403,7 @@
             "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 6,
@@ -535,11 +423,7 @@
             "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 7,
@@ -559,11 +443,7 @@
             "profile": "https://www.onefc.com/athletes/devhonte-johnson/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 8,
@@ -583,11 +463,7 @@
             "profile": "https://www.onefc.com/athletes/ilmadi-israilov/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         },
         {
           "id": 9,
@@ -607,11 +483,7 @@
             "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
             "record": ""
           },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 6
-          }
+          "result": null
         }
       ]
     }

@@ -1,0 +1,9 @@
+{
+  "_help": "The ONE place to paste site IDs. Leave a value as \"\" to switch that feature off. After editing, commit — the workflow rebuilds every page automatically.",
+  "site_url": "https://ogodai17.github.io/ringside/",
+  "ga_measurement_id": "",
+  "adsense_publisher_id": "",
+  "adsense_slot_top": "",
+  "adsense_slot_bottom": "",
+  "affiliate_url": ""
+}

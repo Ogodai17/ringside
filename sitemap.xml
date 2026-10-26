@@ -25,4 +25,14 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/one-friday-fights-176-the-inner-circle-36.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

@@ -12,6 +12,12 @@ import re
 import sys
 from pathlib import Path
 
+import site_config
+
+CFG = site_config.load()
+BASE = CFG["site_url"]
+GA_HEAD = site_config.analytics_head(CFG)
+
 # Discipline display names
 DISC_LABELS = {
     "mma": "MMA",
@@ -20,6 +26,12 @@ DISC_LABELS = {
     "grappling": "Grappling",
     "unknown": "Combat Sports",
 }
+
+AFF_STYLE = "display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;color:var(--gold);text-decoration:none;font-family:'Space Grotesk',sans-serif;letter-spacing:0.03em;transition:background .15s,color .15s"
+AFF_HTML = (
+    f'<div style="text-align:center;margin:10px 0">{site_config.affiliate_link(CFG, AFF_STYLE)}</div>'
+    if CFG["affiliate_url"] else ""
+)
 
 # Analysis templates per discipline
 ANALYSIS = {
@@ -95,7 +107,7 @@ def build_jsonld(event: dict, title_full: str, slug: str, fights: list) -> str:
         "@context": "https://schema.org",
         "@type": "SportsEvent",
         "name": html_mod.escape(title_full),
-        "url": f"https://ogodai17.github.io/ringside/previews/{slug}.html",
+        "url": f"{BASE}previews/{slug}.html",
         "sport": "Mixed Martial Arts",
         "performer": performers,
     }
@@ -188,7 +200,7 @@ def build_preview_html(event: dict, idx: int) -> str:
           <span class="odds">{odds_b}</span>
         </div>
       </div>{result_html}
-      <div style="text-align:center;margin:10px 0"><a href="https://www.example.com/bet?ref=ringside" target="_blank" rel="noopener noreferrer nofollow" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;color:var(--gold);text-decoration:none;font-family:'Space Grotesk',sans-serif;letter-spacing:0.03em;transition:background .15s,color .15s">&#x2197; Bet for real</a></div>
+      {AFF_HTML}
       <div class="analysis">
         {'<br>'.join(f'<p>{p}</p>' for p in analysis_parts)}
         <p class="pick-note">{fav_name} is the slight favorite at {fav_odds} — <a href="../index.html">make your pick on Ringside</a>.</p>
@@ -204,16 +216,15 @@ def build_preview_html(event: dict, idx: int) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+{GA_HEAD}
 <title>{title_full} — Predictions | Ringside</title>
 <meta name="description" content="{desc}">
 <meta name="keywords" content="{name} predictions, {name} picks, {event.get('promotion','ONE')} predictions, fight predictions, MMA picks, {', '.join(f['fighter_a']['name'] + ' vs ' + f['fighter_b']['name'] for f in fights[:3])}">
-<link rel="canonical" href="https://ogodai17.github.io/ringside/previews/{slugify(title_full)}.html">
+<link rel="canonical" href="{BASE}previews/{slugify(title_full)}.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{title_full} — Fight Predictions">
 <meta property="og:description" content="{desc}">
-<meta property="og:url" content="https://ogodai17.github.io/ringside/previews/{slugify(title_full)}.html">
+<meta property="og:url" content="{BASE}previews/{slugify(title_full)}.html">
 <meta property="og:site_name" content="Ringside">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="{title_full} — Fight Predictions">
@@ -313,22 +324,36 @@ h3 {{ font-size:15px; margin-bottom:14px; color:var(--text-dim); font-weight:400
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", default="data/events.json")
+    # Pass ALL data files in one run. (Running once per promotion made the
+    # second run overwrite the sitemap + preview index with only its own events.)
+    parser.add_argument("--data", nargs="+", default=["data/events.json", "data/ufc_events.json"])
     parser.add_argument("--out", default="previews")
     args = parser.parse_args()
 
-    data_path = Path(args.data)
-    if not data_path.exists():
-        print(f"No data file at {data_path}", file=sys.stderr)
-        sys.exit(1)
+    events = []
+    for data_file in args.data:
+        data_path = Path(data_file)
+        if not data_path.exists():
+            print(f"  (skipping missing {data_path})", file=sys.stderr)
+            continue
+        with open(data_path, encoding="utf-8") as f:
+            data = json.load(f)
+        for ev in data.get("events", []):
+            ev.setdefault("promotion", data.get("promotion", "ONE"))
+            events.append(ev)
 
-    with open(data_path, encoding="utf-8") as f:
-        data = json.load(f)
+    # Upcoming first (soonest first), then completed (most recent first)
+    upcoming = sorted([e for e in events if e.get("status") != "completed"], key=lambda e: e.get("date") or "9999")
+    done = sorted([e for e in events if e.get("status") == "completed"], key=lambda e: e.get("date") or "", reverse=True)
+    events = upcoming + done
 
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    events = data.get("events", [])
+    if not events:
+        print("No events in any data file — leaving existing previews alone.", file=sys.stderr)
+        sys.exit(1)
+
     print(f"Generating previews for {len(events)} events...")
 
     # Also build an index page linking all previews
@@ -371,11 +396,10 @@ def main():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+{GA_HEAD}
 <title>Fight Previews — Ringside</title>
 <meta name="description" content="Fight predictions and analysis for upcoming UFC and ONE Championship events. Free picks and breakdowns for every bout.">
-<link rel="canonical" href="https://ogodai17.github.io/ringside/previews/">
+<link rel="canonical" href="{BASE}previews/">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {{
@@ -427,6 +451,13 @@ h1 {{ font-size:28px; margin:0 0 8px; }}
     with open(out_dir / "index.html", "w", encoding="utf-8") as f:
         f.write(index_html)
 
+    # Remove preview pages for events no longer in the data (renamed or dropped)
+    keep = {l["filename"] for l in index_links} | {"index.html"}
+    for old in out_dir.glob("*.html"):
+        if old.name not in keep:
+            old.unlink()
+            print(f"  removed stale {old.name}")
+
     # Regenerate sitemap.xml with all preview URLs
     sitemap_path = out_dir.parent / "sitemap.xml"
     static_pages = [
@@ -437,7 +468,7 @@ h1 {{ font-size:28px; margin:0 0 8px; }}
         ("previews/index.html", "weekly", "0.8"),
     ]
     sitemap_urls = []
-    base = "https://ogodai17.github.io/ringside/"
+    base = BASE
     for path, freq, pri in static_pages:
         sitemap_urls.append(
             f"  <url>\n    <loc>{base}{path}</loc>\n"
