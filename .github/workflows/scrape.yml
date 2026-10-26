@@ -1,9 +1,10 @@
 name: Scrape Fight Cards
 
 on:
-  # Run every Monday and Thursday at 10:00 UTC
+  # Daily at 10:00 UTC (3am Pacific) — catches Friday ONE and Saturday UFC
+  # results the next morning. Betting locks at event start regardless.
   schedule:
-    - cron: "0 10 * * 1,4"
+    - cron: "0 10 * * *"
   workflow_dispatch:
   # Rebuild pages right away when settings or templates change
   # (scrapers are skipped on these runs)

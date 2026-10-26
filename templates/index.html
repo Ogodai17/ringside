@@ -139,6 +139,8 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .odd-btn:hover { background:var(--surface-hover); border-color:var(--text-muted); }
 .odd-btn.selected { background:var(--accent-glow); border-color:var(--accent); }
 .odd-btn .label { font-size:11px; color:var(--text-dim); }
+.odd-btn { min-width:0; }
+.odd-btn .label { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .odd-btn .value { font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; color:var(--text); }
 .odd-btn.selected .value { color:var(--accent); }
 .expand-hint { font-size:11px; color:var(--text-muted); text-align:center; }
@@ -267,7 +269,35 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 <script>
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = {{AFFILIATE_URL_JSON}};
-try { const s = JSON.parse(localStorage.getItem('ringside_state')||'{}'); balance=s.balance??5000; bets=s.bets??[]; lastUBIClaim=s.lastUBIClaim??null; } catch(e){}
+function loadState(){
+  let s = {};
+  try { s = JSON.parse(localStorage.getItem('ringside_state')||'{}') || {}; } catch(e){ s = {}; }
+  const b = Number(s.balance);
+  balance = Number.isFinite(b) ? Math.max(0, Math.min(Math.floor(b), 1e12)) : 5000;
+  bets = Array.isArray(s.bets) ? s.bets.filter(x => x && typeof x==='object' && typeof x.pick==='string'
+           && Number.isFinite(Number(x.stake)) && Number.isFinite(Number(x.odds))) : [];
+  bets.forEach(x => { x.stake = Number(x.stake); x.odds = Number(x.odds); x.result = x.result || 'pending'; });
+  lastUBIClaim = typeof s.lastUBIClaim==='string' ? s.lastUBIClaim : null;
+}
+loadState();
+/* One payout rule everywhere: what the slip shows is what a win pays */
+function payoutFor(stake, odds){ return Math.floor(stake*odds); }
+/* Scraped text is data, never HTML */
+function esc(v){ return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+/* "2026-10-30" -> "Fri, Oct 30" */
+function fmtDate(d){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d||'')) return d||'';
+  const dt = new Date(d+'T12:00:00Z');
+  return dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'});
+}
+/* Betting locks when the event starts (exact start time if the data has it,
+   otherwise the start of the event date). Scrapes only run periodically, so
+   the data can still say "upcoming" after fights are over. */
+function eventLocked(ev){
+  if(ev.status==='completed') return true;
+  const t = ev.start ? Date.parse(ev.start) : (/^\d{4}-\d{2}-\d{2}$/.test(ev.date||'') ? Date.parse(ev.date+'T00:00:00Z') : NaN);
+  return Number.isFinite(t) && Date.now() >= t;
+}
 
 let events = [];
 
@@ -290,10 +320,10 @@ function mapFight(f,ev){
   const methods = isMMA?["KO/TKO","Submission","Decision"]:["KO/TKO","Decision"];
   return {
     id: fightKey(ev,f),
-    label: f.label||`Bout ${f.id}`,
+    label: esc(f.label||`Bout ${f.id}`),
     disc,
-    a:{ name:f.fighter_a.name, record:f.fighter_a.record||"", flag:f.fighter_a.flag||"" },
-    b:{ name:f.fighter_b.name, record:f.fighter_b.record||"", flag:f.fighter_b.flag||"" },
+    a:{ name:esc(f.fighter_a.name), record:esc(f.fighter_a.record), flag:esc(f.fighter_a.flag) },
+    b:{ name:esc(f.fighter_b.name), record:esc(f.fighter_b.record), flag:esc(f.fighter_b.flag) },
     oddsA, oddsB,
     methods, rounds,
     distance:["Goes the distance","Doesn't go the distance"],
@@ -301,14 +331,19 @@ function mapFight(f,ev){
   };
 }
 function mapEvent(ev,idx){
+  const fights = (Array.isArray(ev.fights)?ev.fights:[])
+    .filter(f=>f && f.fighter_a && f.fighter_b && f.fighter_a.name && f.fighter_b.name);
+  const promotion = esc(ev.promotion||"ONE");
+  const raw = {...ev, promotion, name: ev.name||'Event'};
   return {
-    name: ev.name,
-    subtitle: ev.subtitle||"",
-    date: ev.date||"Upcoming",
-    venue: ev.venue||"TBD",
-    status: ev.status||"upcoming",
-    promotion: ev.promotion||"ONE",
-    fights: ev.fights.map(f=>mapFight(f,ev))
+    name: esc(raw.name),
+    subtitle: esc(ev.subtitle||""),
+    date: esc(ev.date||"Upcoming"),
+    start: ev.start||null,
+    venue: esc(ev.venue||"TBD"),
+    status: ev.status==='completed'?'completed':'upcoming',
+    promotion,
+    fights: fights.map(f=>mapFight(f,raw))
   };
 }
 
@@ -351,7 +386,7 @@ function resolveResults(){
     bet.won = won;
     bet.result = won ? 'won' : 'lost';
     if(won){
-      const payout = Math.round(bet.stake * bet.odds);
+      const payout = payoutFor(bet.stake, bet.odds);
       balance += payout;
       bet.payout = payout;
     } else {
@@ -367,7 +402,7 @@ async function loadEvents(){
   let allEvents = [];
   for(const src of sources){
     try {
-      const r = await fetch(src);
+      const r = await fetch(src, {cache:'no-cache'});  // revalidate so new results show up right away
       if(!r.ok) continue;
       const json = await r.json();
       if(json.events && json.events.length){
@@ -420,20 +455,20 @@ function renderEventPicker(){
   document.getElementById('eventPicker').innerHTML = events.map((e,i)=>`
     <div class="event-tab ${i===activeEventIdx?'active':''}" onclick="switchEvent(${i})">
       <div class="ev-name">${e.promotion&&e.promotion!=='ONE'&&!e.name.startsWith(e.promotion)?'<span class="promo-tag promo-'+e.promotion.toLowerCase()+'">'+e.promotion+'</span> ':''}${e.name}</div>
-      <div class="ev-date">${e.date}</div>
+      <div class="ev-date">${fmtDate(e.date)}${eventLocked(e)&&e.status!=='completed'?' · started':''}</div>
       <div class="ev-venue">${e.venue}</div>
     </div>`).join('');
 }
 
-function switchEvent(i){activeEventIdx=i;renderEventPicker();renderFights();}
+function switchEvent(i){if(!events[i])return;activeEventIdx=i;renderEventPicker();renderFights();}
 
 function renderFights(){
   const ev = events[activeEventIdx];
   const promoTag = ev.promotion&&ev.promotion!=='ONE'&&!ev.name.startsWith(ev.promotion)?`<span class="promo-tag promo-${ev.promotion.toLowerCase()}">${ev.promotion}</span> `:'';
-  document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
+  document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${fmtDate(ev.date)} · ${ev.venue}</div>`;
   document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>{
     // Betting closes once the event is over, even if the result hasn't been scraped yet
-    const done = !!f.result || ev.status==='completed';
+    const done = !!f.result || eventLocked(ev);
     const res = f.result || {};
     const winnerName = res.winner==='a'?f.a.name:res.winner==='b'?f.b.name:res.winner==='draw'?'Draw':'';
     const resultBadge = !done ? '' : f.result
@@ -458,11 +493,11 @@ function renderFights(){
         </div>
         <div class="fight-odds" ${disabledAttr}>
           <button class="odd-btn" onclick="event.stopPropagation();selectWinner('${f.id}','A')" ${done?'disabled':''}>
-            <span class="label">${f.a.name.split(' ').pop()}</span>
+            <span class="label">${f.a.name}</span>
             <span class="value">${f.oddsA.toFixed(2)}</span>
           </button>
           <button class="odd-btn" onclick="event.stopPropagation();selectWinner('${f.id}','B')" ${done?'disabled':''}>
-            <span class="label">${f.b.name.split(' ').pop()}</span>
+            <span class="label">${f.b.name}</span>
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
         </div>
@@ -509,17 +544,25 @@ function openBetSlip(){
 }
 function closeBetSlip(){document.getElementById('betSlip').classList.remove('visible');selectedPick=null;}
 function setStake(a,all){document.getElementById('stakeInput').value=all?balance:a;updatePayout();}
+function readStake(){
+  const raw = document.getElementById('stakeInput').value.trim();
+  if(!/^\d+$/.test(raw)) return 0;           // whole numbers only: no "1e9", "-5", "10.5"
+  const n = Number(raw);
+  return Number.isSafeInteger(n) ? n : 0;
+}
 function updatePayout(){
-  const s=parseInt(document.getElementById('stakeInput').value)||0;
+  const s=readStake();
   const btn=document.getElementById('placeBetBtn');
-  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=Math.floor(s*selectedPick.odds).toLocaleString()+' R';btn.disabled=false;}
+  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=payoutFor(s,selectedPick.odds).toLocaleString()+' R';btn.disabled=false;}
   else{document.getElementById('payoutDisplay').textContent='—';btn.disabled=true;}
 }
 function placeBet(){
-  const s=parseInt(document.getElementById('stakeInput').value)||0;
+  const s=readStake();
   if(s<=0||s>balance||!selectedPick)return;
+  const ev=events.find(e=>e.fights.some(f=>f.id===selectedPick.fightId));
+  if(!ev||eventLocked(ev)){closeBetSlip();showToast('Betting is closed for this event');renderFights();return;}
   balance-=s;
-  bets.push({...selectedPick,stake:s,payout:Math.floor(s*selectedPick.odds),result:'pending',time:Date.now()});
+  bets.push({...selectedPick,stake:s,payout:payoutFor(s,selectedPick.odds),result:'pending',time:Date.now()});
   const placed=selectedPick.pick;  // closeBetSlip() clears selectedPick
   save();updateBal();closeBetSlip();showToast(`Placed ${s} R on ${placed}`);checkUBI();
 }
@@ -541,7 +584,7 @@ function renderMyBets(){
   const l=document.getElementById('my-bets-list');
   if(!bets.length){l.innerHTML='<div class="empty-state">No picks yet. Go make some calls.</div>';return;}
   l.innerHTML=bets.slice().reverse().map(b=>`
-    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${b.type} · ${b.stake} R @ ${b.odds.toFixed(2)}x</div></div>
+    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${esc(b.type||'pick')} · ${b.stake} R @ ${Number(b.odds).toFixed(2)}x</div></div>
     <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
 }
 function renderLeaderboard(){

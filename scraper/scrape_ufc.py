@@ -303,6 +303,7 @@ def parse_event(ev: dict) -> dict | None:
         "name": name.strip(),
         "subtitle": subtitle.strip(),
         "date": start.astimezone(EASTERN).date().isoformat(),
+        "start": start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),  # betting locks here
         "venue": place,
         "url": next((l.get("href") for l in ev.get("links", []) if l.get("href")), ""),
         "status": "completed" if completed else "upcoming",
