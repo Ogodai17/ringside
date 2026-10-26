@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{GA_HEAD}}
+{{SOCIAL_HEAD}}
 <title>Ringside — UFC & ONE Championship Fight Predictions</title>
 <meta name="description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money. Test your MMA and combat sports IQ.">
 <meta name="keywords" content="UFC predictions, ONE Championship predictions, fight predictions, MMA picks, Muay Thai predictions, combat sports game, UFC betting game, fight picks, UFC picks">
@@ -17,7 +18,6 @@
 <meta property="og:url" content="{{SITE_URL}}">
 <meta property="og:site_name" content="Ringside">
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ringside — UFC & ONE Championship Fight Predictions">
 <meta name="twitter:description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -180,6 +180,20 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .affiliate-btn:hover { background:var(--gold); color:#000; }
 .affiliate-btn svg { width:12px; height:12px; fill:currentColor; }
 
+.share-btn { margin-top:10px; background:transparent; border:1px solid var(--border); color:var(--text); border-radius:8px; padding:7px 14px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Space Grotesk',sans-serif; }
+.share-btn:hover { border-color:var(--accent); color:var(--accent); }
+/* My Stats */
+.stat-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-bottom:12px; }
+@media (min-width:600px){ .stat-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+.stat-tile { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; }
+.stat-value { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; color:var(--text); }
+.stat-value.pos { color:var(--green); } .stat-value.neg { color:var(--accent); }
+.stat-label { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:6px 16px; margin-bottom:12px; }
+.mk-row { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; }
+.mk-row:last-child { border-bottom:none; } .mk-row span:first-child { color:var(--text-dim); }
+.mk-row span:last-child { text-align:right; overflow-wrap:anywhere; }
+.stats-note { font-size:12px; color:var(--text-muted); margin:8px 0 80px; }
 /* Leaderboard & My Bets */
 .section-title { font-size:18px; font-weight:700; padding:28px 0 12px; letter-spacing:-0.3px; }
 .leaderboard { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:80px; }
@@ -224,7 +238,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <nav class="nav">
     <button class="active" data-tab="fights">Upcoming</button>
     <button data-tab="mybets">My Picks</button>
-    <button data-tab="leaderboard">Leaderboard</button>
+    <button data-tab="stats">My Stats</button>
   </nav>
   <div class="connect-bar">
     <span>Playing as guest — picks stay on this device</span>
@@ -235,15 +249,15 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
     <div class="event-picker" id="eventPicker"></div>
     <div class="event-header" id="eventHeader"></div>
     {{AD_TOP}}
-    <div id="fight-cards"></div>
+    <div id="fight-cards">{{STATIC_FIGHTS}}</div>
   </div>
   <div id="tab-mybets" style="display:none">
     <h3 class="section-title">My Picks</h3>
     <div id="my-bets-list"></div>
   </div>
-  <div id="tab-leaderboard" style="display:none">
-    <h3 class="section-title">All-time Leaderboard</h3>
-    <div class="leaderboard" id="leaderboard"></div>
+  <div id="tab-stats" style="display:none">
+    <h3 class="section-title">My Stats</h3>
+    <div id="stats-panel"></div>
     {{AD_BOTTOM}}
   </div>
 </div>
@@ -269,6 +283,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 <script>
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = {{AFFILIATE_URL_JSON}};
+const SITE_URL = {{SITE_URL_JSON}};
 function loadState(){
   let s = {};
   try { s = JSON.parse(localStorage.getItem('ringside_state')||'{}') || {}; } catch(e){ s = {}; }
@@ -314,7 +329,9 @@ function mapFight(f,ev){
   const disc = f.discipline==='mt'?'mt':f.discipline==='kb'||f.discipline==='kickboxing'?'kb':f.discipline==='grappling'?'grappling':'mma';
   const isMMA = disc==='mma'||disc==='grappling';
   const isTitle = f.main_event || (f.label||'').toLowerCase().includes('world');
-  const [oddsA,oddsB] = genOdds(f.fighter_a.name, f.fighter_b.name);
+  // Odds come from scraper/odds.py (fighter records); hash odds only as a fallback
+  const [oddsA,oddsB] = (Array.isArray(f.odds)&&f.odds.length===2&&f.odds.every(x=>Number.isFinite(x)&&x>1))
+    ? f.odds : genOdds(f.fighter_a.name, f.fighter_b.name);
   const maxRd = isTitle?5:3;
   const rounds = Array.from({length:maxRd},(_,i)=>`Rd ${i+1}`);
   const methods = isMMA?["KO/TKO","Submission","Decision"]:["KO/TKO","Decision"];
@@ -429,20 +446,9 @@ async function loadEvents(){
   resolveResults();
   renderEventPicker();
   renderFights();
-  renderLeaderboard();
   updateBal();
 }
 
-const leaderboardData = [
-  {name:'MuayThaiMax',balance:24800,record:'31-12'},
-  {name:'BangkokBets',balance:18200,record:'22-9'},
-  {name:'ONEfanatic',balance:15600,record:'28-16'},
-  {name:'RodtangSZN',balance:11400,record:'19-14'},
-  {name:'LinekHammer',balance:9850,record:'15-8'},
-  {name:'PacioFan63',balance:7200,record:'12-10'},
-  {name:'CombatPicks',balance:5900,record:'18-20'},
-  {name:'Guest_you',balance:balance,record:'0-0'},
-];
 
 function save(){try{localStorage.setItem('ringside_state',JSON.stringify({balance,bets,lastUBIClaim}))}catch(e){}}
 function updateBal(){document.getElementById('balanceDisplay').textContent=balance.toLocaleString();}
@@ -465,7 +471,7 @@ function switchEvent(i){if(!events[i])return;activeEventIdx=i;renderEventPicker(
 function renderFights(){
   const ev = events[activeEventIdx];
   const promoTag = ev.promotion&&ev.promotion!=='ONE'&&!ev.name.startsWith(ev.promotion)?`<span class="promo-tag promo-${ev.promotion.toLowerCase()}">${ev.promotion}</span> `:'';
-  document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${fmtDate(ev.date)} · ${ev.venue}</div>`;
+  document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${fmtDate(ev.date)} · ${ev.venue}</div><button class="share-btn" onclick="sharePicks()">Share my picks</button>`;
   document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>{
     // Betting closes once the event is over, even if the result hasn't been scraped yet
     const done = !!f.result || eventLocked(ev);
@@ -517,6 +523,62 @@ function renderFights(){
       </div>`}
     </div>`;
   }).join('');
+}
+
+/* ── Shareable pick card: draws your picks for this event as an image ── */
+function unesc(v){ return String(v??'').replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'); }
+function fitText(ctx,text,maxW){ if(ctx.measureText(text).width<=maxW) return text;
+  while(text.length>1 && ctx.measureText(text+'…').width>maxW) text=text.slice(0,-1); return text+'…'; }
+function drawPickCard(ev, picks){
+  const W=1080, rowH=118, H=Math.max(1080, 420+picks.length*rowH+170);
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+  const F='"Space Grotesk", "Inter", system-ui, sans-serif';
+  x.fillStyle='#0a0a0c'; x.fillRect(0,0,W,H);
+  x.fillStyle='#c8362e'; x.fillRect(0,0,W,14);
+  x.font=`700 54px ${F}`; x.fillStyle='#e8e6e3'; x.fillText('ring',70,120);
+  x.fillStyle='#c8362e'; x.fillText('side',70+x.measureText('ring').width,120);
+  x.fillStyle='#8a8a96'; x.font=`500 30px ${F}`; x.fillText('MY PICKS',70,185);
+  x.fillStyle='#e8e6e3'; x.font=`700 46px ${F}`;
+  x.fillText(fitText(x,unesc(ev.name+(ev.subtitle?': '+ev.subtitle:'')),W-140),70,250);
+  x.fillStyle='#d4a843'; x.font=`500 30px ${F}`; x.fillText(unesc(fmtDate(ev.date)),70,300);
+  let y=380;
+  const mk={winner:'to win',method:'by',round:'in',distance:''};
+  for(const b of picks){
+    x.fillStyle='#141418'; x.beginPath(); x.roundRect(60,y-64,W-120,rowH-8,18); x.fill();
+    const mark=b.result==='won'?'✓':b.result==='lost'?'✗':'';
+    x.fillStyle=b.result==='won'?'#3cb860':b.result==='lost'?'#c8362e':'#e8e6e3';
+    x.font=`700 38px ${F}`;
+    const what = b.type==='winner'? unesc(b.pick) : `${unesc(b.label)}`;
+    x.fillText(fitText(x,(mark?mark+' ':'')+what,W-360),90,y);
+    x.fillStyle='#8a8a96'; x.font=`500 26px ${F}`;
+    const sub = b.type==='winner' ? `to win · ${unesc(b.label)}` : `${mk[b.type]||''} ${unesc(b.pick)}`.trim();
+    x.fillText(fitText(x,sub,W-360),90,y+34);
+    x.fillStyle='#d4a843'; x.font=`700 40px ${F}`; x.textAlign='right';
+    x.fillText(Number(b.odds).toFixed(2)+'x',W-90,y+10); x.textAlign='left';
+    y+=rowH;
+  }
+  x.fillStyle='#2a2a34'; x.fillRect(70,H-140,W-140,2);
+  x.fillStyle='#e8e6e3'; x.font=`600 32px ${F}`; x.fillText('Think you can call it better?',70,H-82);
+  x.fillStyle='#8a8a96'; x.font=`500 28px ${F}`; x.fillText(SITE_URL.replace(/^https?:\/\//,'').replace(/\/$/,''),70,H-40);
+  return c;
+}
+async function sharePicks(){
+  const ev=events[activeEventIdx]; if(!ev) return;
+  const ids=new Set(ev.fights.map(f=>f.id));
+  const picks=bets.filter(b=>ids.has(b.fightId));
+  if(!picks.length){ showToast('Make a pick on this card first'); return; }
+  try{ await document.fonts?.ready; }catch(e){}
+  const canvas=drawPickCard(ev,picks);
+  const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));
+  const name=`ringside-picks-${unesc(ev.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}.png`;
+  const text=`My picks for ${unesc(ev.name)} — think you can call it better? ${SITE_URL}`;
+  const file=blob && new File([blob],name,{type:'image/png'});
+  try{
+    if(file && navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file],text}); return; }
+  }catch(e){ if(e && e.name==='AbortError') return; }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  try{ await navigator.clipboard?.writeText(text); showToast('Image saved · caption copied'); }catch(e){ showToast('Image saved'); }
 }
 
 function toggleFight(id){document.getElementById('fight-'+id).classList.toggle('expanded');}
@@ -574,9 +636,9 @@ document.querySelectorAll('.nav button').forEach(btn=>{
     const t=btn.dataset.tab;
     document.getElementById('tab-fights').style.display=t==='fights'?'':'none';
     document.getElementById('tab-mybets').style.display=t==='mybets'?'':'none';
-    document.getElementById('tab-leaderboard').style.display=t==='leaderboard'?'':'none';
+    document.getElementById('tab-stats').style.display=t==='stats'?'':'none';
     if(t==='mybets')renderMyBets();
-    if(t==='leaderboard')renderLeaderboard();
+    if(t==='stats')renderStats();
   });
 });
 
@@ -587,13 +649,42 @@ function renderMyBets(){
     <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${esc(b.type||'pick')} · ${b.stake} R @ ${Number(b.odds).toFixed(2)}x</div></div>
     <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
 }
-function renderLeaderboard(){
-  leaderboardData[leaderboardData.length-1].balance=balance;
-  const s=[...leaderboardData].sort((a,b)=>b.balance-a.balance);
-  document.getElementById('leaderboard').innerHTML=s.map((p,i)=>`
-    <div class="lb-row"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${p.name.charAt(0)}</div>
-    <div class="lb-name">${p.name}</div><div class="lb-balance">${p.balance.toLocaleString()} R</div>
-    <div class="lb-record">${p.record}</div></div>`).join('');
+/* Honest personal stats (replaces a leaderboard of made-up bot names) */
+function computeStats(){
+  const settled = bets.filter(b=>b.result==='won'||b.result==='lost');
+  const won = settled.filter(b=>b.result==='won');
+  const profit = settled.reduce((t,b)=>t+(b.result==='won'?(b.payout-b.stake):-b.stake),0);
+  const ordered = settled.slice().sort((a,b)=>(a.time||0)-(b.time||0));
+  let streak=0, kind='';
+  for(let i=ordered.length-1;i>=0;i--){ const r=ordered[i].result; if(!kind) kind=r; if(r!==kind) break; streak++; }
+  const best = won.slice().sort((a,b)=>(b.payout-b.stake)-(a.payout-a.stake))[0]||null;
+  const byMarket = {};
+  for(const b of settled){ const m=b.type||'winner'; byMarket[m]=byMarket[m]||{w:0,n:0}; byMarket[m].n++; if(b.result==='won') byMarket[m].w++; }
+  return { total:bets.length, pending:bets.filter(b=>b.result==='pending').length, settled:settled.length,
+    won:won.length, hit: settled.length? Math.round(100*won.length/settled.length):null, profit,
+    streak, streakKind:kind, best, upsets: won.filter(b=>b.odds>=2).length, byMarket };
+}
+function renderStats(){
+  const s=computeStats(), el=document.getElementById('stats-panel');
+  const tile=(v,l,cls='')=>`<div class="stat-tile"><div class="stat-value ${cls}">${v}</div><div class="stat-label">${l}</div></div>`;
+  const sign=n=>(n>0?'+':'')+n.toLocaleString();
+  const mk={winner:'Winner',method:'Method',round:'Round',distance:'Distance'};
+  const markets=Object.entries(s.byMarket).map(([m,v])=>`<div class="mk-row"><span>${esc(mk[m]||m)}</span><span>${v.w}/${v.n} · ${Math.round(100*v.w/v.n)}%</span></div>`).join('');
+  el.innerHTML = `
+    <div class="stat-grid">
+      ${tile(s.hit===null?'—':s.hit+'%','Hit rate')}
+      ${tile(sign(s.profit)+' R','Profit on picks', s.profit>0?'pos':s.profit<0?'neg':'')}
+      ${tile(s.streak?`${s.streak}${s.streakKind==='won'?'W':'L'}`:'—','Current streak', s.streakKind==='won'?'pos':s.streak?'neg':'')}
+      ${tile(s.upsets,'Underdog hits')}
+    </div>
+    <div class="stat-card">
+      <div class="mk-row"><span>Picks made</span><span>${s.total}</span></div>
+      <div class="mk-row"><span>Settled / pending</span><span>${s.settled} / ${s.pending}</span></div>
+      ${s.best?`<div class="mk-row"><span>Best hit</span><span>${s.best.pick} +${(s.best.payout-s.best.stake).toLocaleString()} R</span></div>`:''}
+      ${markets}
+    </div>
+    ${s.total?'':'<div class="empty-state">Make a few picks — your hit rate, streaks and upsets show up here once fights are scored.</div>'}
+    <p class="stats-note">Stats live on this device. A real cross-device leaderboard is on the roadmap.</p>`;
 }
 function checkUBI(){
   const b=document.getElementById('ubi-banner'),today=new Date().toDateString();

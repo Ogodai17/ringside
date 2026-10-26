@@ -38,11 +38,13 @@ def check(cond, name, detail="", warn=False):
 
 def make_site(mutate=None):
     d = Path(tempfile.mkdtemp(prefix="rs_"))
-    for name in ["index.html", "about.html", "contact.html", "privacy.html", "sitemap.xml"]:
+    for name in ["index.html", "about.html", "contact.html", "privacy.html", "404.html", "sitemap.xml", "manifest.webmanifest"]:
         if (REPO / name).exists():
             shutil.copy(REPO / name, d / name)
     shutil.copytree(REPO / "data", d / "data")
     shutil.copytree(REPO / "previews", d / "previews")
+    if (REPO / "assets").exists():
+        shutil.copytree(REPO / "assets", d / "assets")
     if mutate:
         mutate(d)
     return d
@@ -124,7 +126,7 @@ def t_load_and_render(browser):
     names = pg.js("events.map(e=>e.name+' '+e.date+' '+e.status)")
     dates = pg.js("events.filter(e=>e.status!=='completed').map(e=>e.date)")
     check(dates == sorted(dates), "Upcoming events sorted soonest first", str(names))
-    for tab in ["mybets", "leaderboard", "fights"]:
+    for tab in ["mybets", "stats", "fights"]:
         pg.p.click(f'[data-tab="{tab}"]')
         pg.p.wait_for_timeout(100)
     check(not pg.errors, "Tabs switch without errors", "; ".join(pg.errors[:3]))
@@ -205,7 +207,7 @@ def t_corrupt_storage(browser):
         pg = Page(browser, make_site(), storage=raw)
         bal = pg.js("balance")
         txt = pg.js("document.getElementById('balanceDisplay').textContent")
-        pg.p.click('[data-tab="mybets"]'); pg.p.click('[data-tab="leaderboard"]')
+        pg.p.click('[data-tab="mybets"]'); pg.p.click('[data-tab="stats"]')
         ok = not pg.errors and isinstance(bal, (int, float)) and bal >= 0 and "NaN" not in txt
         check(ok, f"Survives corrupt save: {label}", f"balance={bal!r} shown='{txt}' errors={pg.errors[:2]}")
         pg.close()
@@ -341,8 +343,9 @@ def t_pages_links(browser):
     site = make_site()
     srv, url = serve(site)
     ctx = browser.new_context(); p = ctx.new_page()
-    pages = ["index.html", "about.html", "contact.html", "privacy.html", "previews/index.html"] + \
-            [f"previews/{f.name}" for f in sorted((site / "previews").glob("*.html")) if f.name != "index.html"]
+    pages = ["index.html", "about.html", "contact.html", "privacy.html", "404.html", "previews/index.html"] + \
+            [f"previews/{f.name}" for f in sorted((site / "previews").glob("*.html")) if f.name != "index.html"] + \
+            [f"previews/fights/{f.name}" for f in sorted((site / "previews" / "fights").glob("*.html"))]
     broken, ld_bad, errs = [], [], []
     for path in pages:
         p.on("pageerror", lambda e, path=path: errs.append(f"{path}: {e}"))
@@ -369,15 +372,77 @@ def t_pages_links(browser):
     base = locs[0]
     missing = [l for l in locs if ctx.request.get(url + l[len(base):]).status != 200]
     check(not missing, "Every sitemap URL exists", str(missing[:4]))
-    previews = {f.name for f in (site / "previews").glob("*.html") if f.name != "index.html"}
-    in_map = {l.rsplit("/", 1)[-1] for l in locs if "/previews/" in l}
+    previews = {f.relative_to(site / "previews").as_posix() for f in (site / "previews").rglob("*.html") if f.name != "index.html"}
+    in_map = {l.split("/previews/", 1)[1] for l in locs if "/previews/" in l}
     check(previews <= in_map, "Every preview page is in the sitemap", str(previews - in_map))
+    ctx.close(); srv.shutdown()
+
+
+def t_odds(browser):
+    pg = Page(browser, make_site())
+    bad = pg.js("""() => events.flatMap(e=>e.fights).filter(f=>!(f.oddsA>1&&f.oddsB>1&&f.oddsA<20&&f.oddsB<20)).map(f=>f.a.name+' '+f.oddsA+'/'+f.oddsB)""")
+    check(not bad, "Every fight has sane odds (1.01–20)", str(bad[:4]))
+    over = pg.js("() => events.flatMap(e=>e.fights).map(f=>1/f.oddsA+1/f.oddsB)")
+    check(all(1.0 <= o <= 1.12 for o in over), "Odds carry a small, consistent margin (like a real line)",
+          f"implied totals {min(over):.3f}–{max(over):.3f}")
+    # records drive odds: the clearly better record should be the favorite
+    wrong = pg.js("""() => { const r=s=>{const m=/^(\\d+)-(\\d+)/.exec(s||'');return m?[+m[1],+m[2]]:null};
+        return events.flatMap(e=>e.fights).filter(f=>{const a=r(f.a.record),b=r(f.b.record); if(!a||!b) return false;
+          const strong=(x,y)=>x[0]>=y[0]+8&&x[1]<=y[1]; return (strong(a,b)&&f.oddsA>f.oddsB)||(strong(b,a)&&f.oddsB>f.oddsA);})
+          .map(f=>f.a.name+' '+f.a.record+' '+f.oddsA+' vs '+f.b.name+' '+f.b.record+' '+f.oddsB); }""")
+    check(not wrong, "Much better record is always the favorite", str(wrong[:3]))
+    pg.close()
+
+
+def t_share_and_stats(browser):
+    site = make_site()
+    srv, url = serve(site)
+    ctx = browser.new_context(viewport={"width": 390, "height": 900}, accept_downloads=True)
+    p = ctx.new_page(); errs = []
+    p.on("pageerror", lambda e: errs.append(str(e)))
+    p.goto(url + "index.html"); p.wait_for_timeout(700)
+    p.click(".share-btn"); p.wait_for_timeout(200)
+    toast = p.evaluate("document.getElementById('toast').textContent")
+    check("first" in toast.lower(), "Share with no picks explains what to do", toast)
+    fid = p.evaluate("document.querySelector('.fight-card .odd-btn:not([disabled])').closest('.fight-card').id.replace('fight-','')")
+    p.evaluate(f"selectWinner('{fid}','A')"); p.fill("#stakeInput", "250"); p.evaluate("updatePayout()"); p.click("#placeBetBtn")
+    with p.expect_download() as dl:
+        p.click(".share-btn")
+    path = dl.value.path()
+    size = Path(path).stat().st_size if path else 0
+    check(size > 15000, "Share card image is generated", f"{size} bytes")
+    p.click('[data-tab="stats"]'); p.wait_for_timeout(150)
+    txt = p.evaluate("document.getElementById('stats-panel').innerText")
+    check("Picks made" in txt and "1" in txt, "Stats panel shows picks", txt[:120])
+    check(not p.evaluate("document.body.innerText").count("MuayThaiMax"), "No fake bot leaderboard names remain", "")
+    check(not errs, "No JS errors in share/stats flow", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_static_and_meta(browser):
+    site = make_site()
+    html = (site / "index.html").read_text()
+    import re
+    static = re.search(r'<div id="fight-cards">(.*?)</div>\s*</div>', html, re.S)
+    check(static and "prediction</a>" in static.group(1), "Homepage HTML contains fights for crawlers", "")
+    try:
+        man = json.loads((site / "manifest.webmanifest").read_text())
+        icons_ok = all((site / i["src"]).exists() for i in man["icons"])
+    except Exception as e:
+        man, icons_ok = None, False
+    check(man and icons_ok, "Web app manifest valid and icons exist", "")
+    check((site / "assets" / "og.png").exists(), "Link preview image exists", "")
+    srv, url = serve(site); ctx = browser.new_context(); p = ctx.new_page()
+    p.goto(url + "index.html")
+    og = p.evaluate("document.querySelector('meta[property=\"og:image\"]')?.content||''")
+    check(og.endswith("assets/og.png"), "Homepage advertises the preview image", og)
     ctx.close(); srv.shutdown()
 
 
 def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
-             t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links]
+             t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
+             t_odds, t_share_and_stats, t_static_and_meta]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
         browser = pw.chromium.launch()

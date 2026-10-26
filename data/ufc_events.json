@@ -34,7 +34,12 @@
             "profile": ""
           },
           "result": null,
-          "main_event": true
+          "main_event": true,
+          "p_a": 0.512,
+          "odds": [
+            1.84,
+            1.93
+          ]
         },
         {
           "id": 2,
@@ -54,7 +59,12 @@
             "record": "6-0-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.567,
+          "odds": [
+            1.66,
+            2.18
+          ]
         },
         {
           "id": 3,
@@ -74,7 +84,12 @@
             "record": "11-2-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.468,
+          "odds": [
+            2.01,
+            1.77
+          ]
         },
         {
           "id": 4,
@@ -94,7 +109,12 @@
             "record": "18-11-1",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.43,
+          "odds": [
+            2.2,
+            1.65
+          ]
         },
         {
           "id": 5,
@@ -114,7 +134,12 @@
             "record": "13-0-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.39,
+          "odds": [
+            2.42,
+            1.55
+          ]
         },
         {
           "id": 6,
@@ -134,7 +159,12 @@
             "record": "7-7-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.637,
+          "odds": [
+            1.48,
+            2.6
+          ]
         },
         {
           "id": 7,
@@ -154,7 +184,12 @@
             "record": "7-4-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.742,
+          "odds": [
+            1.27,
+            3.66
+          ]
         },
         {
           "id": 8,
@@ -174,7 +209,12 @@
             "record": "12-2-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.443,
+          "odds": [
+            2.13,
+            1.69
+          ]
         },
         {
           "id": 9,
@@ -194,7 +234,12 @@
             "record": "9-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.413,
+          "odds": [
+            2.28,
+            1.61
+          ]
         },
         {
           "id": 10,
@@ -214,7 +259,12 @@
             "record": "11-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.577,
+          "odds": [
+            1.64,
+            2.23
+          ]
         },
         {
           "id": 11,
@@ -234,7 +284,12 @@
             "record": "8-4-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.582,
+          "odds": [
+            1.62,
+            2.26
+          ]
         },
         {
           "id": 12,
@@ -254,7 +309,12 @@
             "record": "13-7-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.653,
+          "odds": [
+            1.44,
+            2.72
+          ]
         },
         {
           "id": 13,
@@ -274,7 +334,12 @@
             "record": "11-2-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.446,
+          "odds": [
+            2.12,
+            1.7
+          ]
         }
       ]
     },
@@ -308,7 +373,12 @@
             "profile": ""
           },
           "result": null,
-          "main_event": true
+          "main_event": true,
+          "p_a": 0.553,
+          "odds": [
+            1.7,
+            2.11
+          ]
         },
         {
           "id": 2,
@@ -328,7 +398,12 @@
             "record": "11-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.593,
+          "odds": [
+            1.59,
+            2.32
+          ]
         },
         {
           "id": 3,
@@ -348,7 +423,12 @@
             "record": "9-4-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.591,
+          "odds": [
+            1.6,
+            2.3
+          ]
         },
         {
           "id": 4,
@@ -368,7 +448,12 @@
             "record": "14-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.445,
+          "odds": [
+            2.12,
+            1.7
+          ]
         },
         {
           "id": 5,
@@ -388,7 +473,12 @@
             "record": "23-4-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.439,
+          "odds": [
+            2.15,
+            1.68
+          ]
         },
         {
           "id": 6,
@@ -408,7 +498,12 @@
             "record": "9-1-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.435,
+          "odds": [
+            2.17,
+            1.67
+          ]
         },
         {
           "id": 7,
@@ -428,7 +523,12 @@
             "record": "9-1-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.398,
+          "odds": [
+            2.37,
+            1.57
+          ]
         },
         {
           "id": 8,
@@ -448,7 +548,12 @@
             "record": "4-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.689,
+          "odds": [
+            1.37,
+            3.03
+          ]
         },
         {
           "id": 9,
@@ -468,7 +573,12 @@
             "record": "11-0-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.504,
+          "odds": [
+            1.87,
+            1.9
+          ]
         },
         {
           "id": 10,
@@ -488,7 +598,12 @@
             "record": "11-4-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.575,
+          "odds": [
+            1.64,
+            2.22
+          ]
         },
         {
           "id": 11,
@@ -508,7 +623,12 @@
             "record": "7-2-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.564,
+          "odds": [
+            1.67,
+            2.16
+          ]
         },
         {
           "id": 12,
@@ -528,7 +648,12 @@
             "record": "18-8-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.528,
+          "odds": [
+            1.79,
+            2.0
+          ]
         },
         {
           "id": 13,
@@ -548,7 +673,12 @@
             "record": "10-1-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.472,
+          "odds": [
+            2.0,
+            1.79
+          ]
         }
       ]
     },
@@ -582,7 +712,12 @@
             "profile": ""
           },
           "result": null,
-          "main_event": true
+          "main_event": true,
+          "p_a": 0.508,
+          "odds": [
+            1.86,
+            1.92
+          ]
         },
         {
           "id": 2,
@@ -602,7 +737,12 @@
             "record": "11-4-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.611,
+          "odds": [
+            1.54,
+            2.43
+          ]
         },
         {
           "id": 3,
@@ -622,7 +762,12 @@
             "record": "29-15-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.516,
+          "odds": [
+            1.83,
+            1.95
+          ]
         },
         {
           "id": 4,
@@ -642,7 +787,12 @@
             "record": "11-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.659,
+          "odds": [
+            1.43,
+            2.76
+          ]
         },
         {
           "id": 5,
@@ -662,7 +812,12 @@
             "record": "23-5-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.571,
+          "odds": [
+            1.65,
+            2.2
+          ]
         },
         {
           "id": 6,
@@ -682,7 +837,12 @@
             "record": "18-9-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.591,
+          "odds": [
+            1.6,
+            2.3
+          ]
         },
         {
           "id": 7,
@@ -702,7 +862,12 @@
             "record": "15-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.465,
+          "odds": [
+            2.03,
+            1.76
+          ]
         },
         {
           "id": 8,
@@ -722,7 +887,12 @@
             "record": "12-5-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.515,
+          "odds": [
+            1.83,
+            1.94
+          ]
         },
         {
           "id": 9,
@@ -742,7 +912,12 @@
             "record": "26-8-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.422,
+          "odds": [
+            2.24,
+            1.63
+          ]
         },
         {
           "id": 10,
@@ -762,7 +937,12 @@
             "record": "13-1-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.395,
+          "odds": [
+            2.39,
+            1.56
+          ]
         },
         {
           "id": 11,
@@ -782,7 +962,12 @@
             "record": "7-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.658,
+          "odds": [
+            1.43,
+            2.76
+          ]
         },
         {
           "id": 12,
@@ -802,7 +987,12 @@
             "record": "16-1-1",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.386,
+          "odds": [
+            2.44,
+            1.54
+          ]
         },
         {
           "id": 13,
@@ -822,7 +1012,12 @@
             "record": "8-0-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.399,
+          "odds": [
+            2.37,
+            1.57
+          ]
         }
       ]
     },
@@ -856,7 +1051,12 @@
             "profile": ""
           },
           "result": null,
-          "main_event": true
+          "main_event": true,
+          "p_a": 0.611,
+          "odds": [
+            1.54,
+            2.43
+          ]
         },
         {
           "id": 2,
@@ -876,7 +1076,12 @@
             "record": "9-2-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.598,
+          "odds": [
+            1.58,
+            2.35
+          ]
         },
         {
           "id": 3,
@@ -896,7 +1101,12 @@
             "record": "18-2-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.325,
+          "odds": [
+            2.9,
+            1.4
+          ]
         },
         {
           "id": 4,
@@ -916,7 +1126,12 @@
             "record": "16-5-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.448,
+          "odds": [
+            2.11,
+            1.71
+          ]
         },
         {
           "id": 5,
@@ -936,7 +1151,12 @@
             "record": "18-1-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.48,
+          "odds": [
+            1.96,
+            1.82
+          ]
         },
         {
           "id": 6,
@@ -956,7 +1176,12 @@
             "record": "17-5-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.554,
+          "odds": [
+            1.7,
+            2.11
+          ]
         },
         {
           "id": 7,
@@ -976,7 +1201,12 @@
             "record": "36-6-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.457,
+          "odds": [
+            2.06,
+            1.74
+          ]
         },
         {
           "id": 8,
@@ -996,7 +1226,12 @@
             "record": "8-1-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.469,
+          "odds": [
+            2.01,
+            1.78
+          ]
         },
         {
           "id": 9,
@@ -1016,7 +1251,12 @@
             "record": "20-3-0",
             "profile": ""
           },
-          "result": null
+          "result": null,
+          "p_a": 0.422,
+          "odds": [
+            2.24,
+            1.63
+          ]
         }
       ]
     },
@@ -1055,7 +1295,12 @@
             "round": 2,
             "finish": true
           },
-          "main_event": true
+          "main_event": true,
+          "p_a": 0.509,
+          "odds": [
+            1.85,
+            1.92
+          ]
         },
         {
           "id": 2,
@@ -1080,7 +1325,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.413,
+          "odds": [
+            2.28,
+            1.61
+          ]
         },
         {
           "id": 3,
@@ -1105,7 +1355,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.66,
+          "odds": [
+            1.43,
+            2.77
+          ]
         },
         {
           "id": 4,
@@ -1130,7 +1385,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.4,
+          "odds": [
+            2.36,
+            1.57
+          ]
         },
         {
           "id": 5,
@@ -1155,7 +1415,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.523,
+          "odds": [
+            1.8,
+            1.98
+          ]
         },
         {
           "id": 6,
@@ -1180,7 +1445,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.636,
+          "odds": [
+            1.48,
+            2.59
+          ]
         },
         {
           "id": 7,
@@ -1205,7 +1475,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.627,
+          "odds": [
+            1.5,
+            2.53
+          ]
         },
         {
           "id": 8,
@@ -1230,7 +1505,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.48,
+          "odds": [
+            1.97,
+            1.81
+          ]
         },
         {
           "id": 9,
@@ -1255,7 +1535,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.569,
+          "odds": [
+            1.66,
+            2.19
+          ]
         },
         {
           "id": 10,
@@ -1280,7 +1565,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.661,
+          "odds": [
+            1.43,
+            2.79
+          ]
         },
         {
           "id": 11,
@@ -1305,7 +1595,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.54,
+          "odds": [
+            1.75,
+            2.05
+          ]
         },
         {
           "id": 12,
@@ -1330,7 +1625,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.35,
+          "odds": [
+            2.69,
+            1.45
+          ]
         },
         {
           "id": 13,
@@ -1355,7 +1655,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.738,
+          "odds": [
+            1.28,
+            3.61
+          ]
         },
         {
           "id": 14,
@@ -1380,7 +1685,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.476,
+          "odds": [
+            1.98,
+            1.8
+          ]
         }
       ]
     },
@@ -1419,7 +1729,12 @@
             "round": 2,
             "finish": true
           },
-          "main_event": true
+          "main_event": true,
+          "p_a": 0.423,
+          "odds": [
+            2.23,
+            1.63
+          ]
         },
         {
           "id": 2,
@@ -1444,7 +1759,12 @@
             "method": null,
             "round": 2,
             "finish": true
-          }
+          },
+          "p_a": 0.555,
+          "odds": [
+            1.7,
+            2.12
+          ]
         },
         {
           "id": 3,
@@ -1469,7 +1789,12 @@
             "method": null,
             "round": 2,
             "finish": true
-          }
+          },
+          "p_a": 0.452,
+          "odds": [
+            2.09,
+            1.72
+          ]
         },
         {
           "id": 4,
@@ -1494,7 +1819,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.428,
+          "odds": [
+            2.2,
+            1.65
+          ]
         },
         {
           "id": 5,
@@ -1519,7 +1849,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.374,
+          "odds": [
+            2.52,
+            1.51
+          ]
         },
         {
           "id": 6,
@@ -1544,7 +1879,12 @@
             "method": "Decision",
             "round": null,
             "finish": false
-          }
+          },
+          "p_a": 0.492,
+          "odds": [
+            1.92,
+            1.86
+          ]
         },
         {
           "id": 7,
@@ -1569,7 +1909,12 @@
             "method": null,
             "round": 3,
             "finish": true
-          }
+          },
+          "p_a": 0.43,
+          "odds": [
+            2.19,
+            1.66
+          ]
         },
         {
           "id": 8,
@@ -1594,7 +1939,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.5,
+          "odds": [
+            1.89,
+            1.89
+          ]
         },
         {
           "id": 9,
@@ -1619,7 +1969,12 @@
             "method": null,
             "round": 3,
             "finish": true
-          }
+          },
+          "p_a": 0.456,
+          "odds": [
+            2.07,
+            1.73
+          ]
         },
         {
           "id": 10,
@@ -1644,7 +1999,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.671,
+          "odds": [
+            1.41,
+            2.86
+          ]
         },
         {
           "id": 11,
@@ -1669,7 +2029,12 @@
             "method": null,
             "round": 2,
             "finish": true
-          }
+          },
+          "p_a": 0.391,
+          "odds": [
+            2.42,
+            1.55
+          ]
         },
         {
           "id": 12,
@@ -1694,7 +2059,12 @@
             "method": null,
             "round": 1,
             "finish": true
-          }
+          },
+          "p_a": 0.433,
+          "odds": [
+            2.18,
+            1.67
+          ]
         },
         {
           "id": 13,
@@ -1719,7 +2089,12 @@
             "method": null,
             "round": 3,
             "finish": true
-          }
+          },
+          "p_a": 0.583,
+          "odds": [
+            1.62,
+            2.26
+          ]
         }
       ]
     }

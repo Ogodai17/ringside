@@ -367,6 +367,23 @@ def extract_country(soup: BeautifulSoup) -> str:
     return ""
 
 
+def parse_record(text: str) -> str:
+    """Fighter record as "W-L-D" from a ONE profile page.
+
+    onefc.com shows it as separate labels ("Wins - 11", "Losses - 5"),
+    not a single string. The old "\\d-\\d-\\d" search found nothing on most
+    pages and could match part of a date ("2026-10-30" -> "026-10-30").
+    """
+    w = re.search(r"\bWins\b\W{0,6}(\d{1,3})\b", text)
+    l = re.search(r"\bLosses\b\W{0,6}(\d{1,3})\b", text)
+    if w and l:
+        d = re.search(r"\bDraws\b\W{0,6}(\d{1,3})\b", text)
+        return f"{w.group(1)}-{l.group(1)}-{d.group(1) if d else 0}"
+    # Fallback: an explicit "13-0-0 (W-L-D)" style string, never a bare date
+    m = re.search(r"(?<![\d-])(\d{1,3})-(\d{1,3})-(\d{1,3})(?![\d-])\s*\(?\s*(?:W|Win)", text)
+    return f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else ""
+
+
 def enrich_fighters(event: dict, delay: float = 0.5):
     """Fetch each fighter's profile page to get their record and country."""
     for fight in event["fights"]:
@@ -379,13 +396,11 @@ def enrich_fighters(event: dict, delay: float = 0.5):
             print(f"    Enrich: {fighter['name']}...", end=" ", flush=True)
             soup = fetch(profile_url)
             if soup:
-                text = soup.get_text()
-                # Record in format like "13-0-0 (Win-Loss-Draw)"
-                m = re.search(r"(\d{1,3})-(\d{1,3})-(\d{1,3})", text)
-                if m:
-                    fighter["record"] = m.group(0)
-                else:
-                    fighter["record"] = ""
+                text = soup.get_text(" ", strip=True)
+                fighter["record"] = parse_record(text)
+                fr = re.search(r"Finish Rate\W{0,10}(\d{1,3})\s*%", text)
+                if fr:
+                    fighter["finish_rate"] = int(fr.group(1))
 
                 # Country + flag
                 if not fighter.get("country"):

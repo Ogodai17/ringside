@@ -76,3 +76,35 @@ def affiliate_link(cfg: dict, style: str = "") -> str:
         f'<a href="{html.escape(url)}" target="_blank" rel="noopener noreferrer nofollow sponsored"'
         f"{style_attr}>&#x2197; Bet for real</a>"
     )
+
+
+def social_image_tags(cfg: dict) -> str:
+    """Link-preview image, icons, manifest — absolute URLs so they work from any page depth."""
+    base = html.escape(cfg["site_url"])
+    return (
+        f'<meta property="og:image" content="{base}assets/og.png">\n'
+        '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+        '<meta name="twitter:card" content="summary_large_image">\n'
+        f'<meta name="twitter:image" content="{base}assets/og.png">\n'
+        f'<link rel="icon" type="image/png" href="{base}assets/favicon.png">\n'
+        f'<link rel="apple-touch-icon" href="{base}assets/icon-180.png">\n'
+        f'<link rel="manifest" href="{base}manifest.webmanifest">\n'
+        '<meta name="theme-color" content="#0a0a0c">'
+    )
+
+
+def manifest(cfg: dict) -> str:
+    return json.dumps({
+        "name": "Ringside — Fight Predictions",
+        "short_name": "Ringside",
+        "description": "Free UFC & ONE Championship fight pick'em with fake money.",
+        "start_url": "./",
+        "scope": "./",
+        "display": "standalone",
+        "background_color": "#0a0a0c",
+        "theme_color": "#0a0a0c",
+        "icons": [
+            {"src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+            {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+        ],
+    }, indent=2)

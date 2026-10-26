@@ -56,7 +56,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-procházka-vs-stirling.html</loc>
+    <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-prochazka-vs-stirling.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -69,5 +69,70 @@
     <loc>https://ogodai17.github.io/ringside/previews/ufc-fight-night-buckley-vs-malott.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/rambong-sor-therapat-vs-jacob-thompson-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/khunsuk-t1-fight-academy-vs-yodudon-k-tongtalingchan-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/renato-moicano-vs-tom-nolan-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/jean-paul-lebosnoyani-vs-farman-hasanov-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/christian-lee-vs-tye-ruotolo-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/lucas-gabriel-vs-magomed-magomedov-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/kongthoranee-sor-sommai-vs-taiki-naito-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/gabriel-bonfim-vs-sean-brady-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/austin-bashi-vs-lucas-brennan-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/ciryl-gane-vs-josh-hokit-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/bilal-hasan-vs-luis-gurule-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/jiri-prochazka-vs-navajo-stirling-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ogodai17.github.io/ringside/previews/fights/shamil-gaziev-vs-tallison-teixeira-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
