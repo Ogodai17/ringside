@@ -28,6 +28,11 @@ About 30 minutes, one time. Do them in order.
      - Authorized redirect URIs: the Supabase **Callback URL** from step 1
 4. Copy the **Client ID** and **Client Secret** → back in Supabase's Google
    provider page, paste both, switch it **on**, **Save**.
+5. Back in **Google Auth Platform → Audience**, click **Publish app** so the
+   status is **Published** (in "Testing", Google shows players a testing
+   warning). We only ask for basic sign-in info, so no Google review is needed.
+   Your app name/logo only appear on Google's screen after the optional brand
+   verification, which can take a few business days.
 
 ## 4. Discord sign-in
 1. **discord.com/developers** → **New Application** → name `Pick A Fight`.
