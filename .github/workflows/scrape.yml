@@ -1,10 +1,9 @@
-name: Scrape ONE Championship Events
+name: Scrape Fight Cards
 
 on:
   # Run every Monday and Thursday at 10:00 UTC
   schedule:
     - cron: "0 10 * * 1,4"
-  # Also run on push to main (for testing)
   workflow_dispatch:
 
 permissions:
@@ -24,16 +23,22 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
-      - name: Run scraper
+      - name: Scrape ONE Championship
         run: python scraper/scrape.py --out data --enrich --max 4
 
-      - name: Generate fight previews
+      - name: Scrape UFC
+        run: python scraper/scrape_ufc.py --out data --enrich --max-upcoming 4 --max-completed 2
+
+      - name: Generate fight previews (ONE)
         run: python scraper/generate_previews.py --data data/events.json --out previews
+
+      - name: Generate fight previews (UFC)
+        run: python scraper/generate_previews.py --data data/ufc_events.json --out previews
 
       - name: Commit updated data
         run: |
           git config user.name "Ringside Bot"
           git config user.email "bot@ringside.dev"
-          git add data/events.json previews/
+          git add data/ previews/ sitemap.xml
           git diff --staged --quiet || git commit -m "Update fight card data $(date -u +%Y-%m-%d)"
           git push

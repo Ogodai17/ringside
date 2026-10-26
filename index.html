@@ -3,22 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ringside — ONE Championship Fight Predictions</title>
-<meta name="description" content="Free fight prediction game for ONE Championship. Pick winners, methods, and rounds with fake money. Test your combat sports IQ — MMA, Muay Thai, kickboxing, and grappling.">
-<meta name="keywords" content="ONE Championship predictions, fight predictions, MMA picks, Muay Thai predictions, kickboxing predictions, combat sports game, ONE FC betting game, fight picks">
+<!-- Google Analytics — replace G-XXXXXXXXXX with your real Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<title>Ringside — UFC & ONE Championship Fight Predictions</title>
+<meta name="description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money. Test your MMA and combat sports IQ.">
+<meta name="keywords" content="UFC predictions, ONE Championship predictions, fight predictions, MMA picks, Muay Thai predictions, combat sports game, UFC betting game, fight picks, UFC picks">
 <meta name="author" content="Ringside">
 <link rel="canonical" href="https://ogodai17.github.io/ringside/">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Ringside — ONE Championship Fight Predictions">
-<meta property="og:description" content="Free fight prediction game for ONE Championship. Pick winners, methods, and rounds with fake money. Test your combat sports IQ.">
+<meta property="og:title" content="Ringside — UFC & ONE Championship Fight Predictions">
+<meta property="og:description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.">
 <meta property="og:url" content="https://ogodai17.github.io/ringside/">
 <meta property="og:site_name" content="Ringside">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ringside — ONE Championship Fight Predictions">
-<meta name="twitter:description" content="Free fight prediction game for ONE Championship. Pick winners, methods, and rounds with fake money.">
+<meta name="twitter:title" content="Ringside — UFC & ONE Championship Fight Predictions">
+<meta name="twitter:description" content="Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Ringside",
+  "url": "https://ogodai17.github.io/ringside/",
+  "description": "Free fight prediction game for UFC and ONE Championship. Pick winners, methods, and rounds with fake money.",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Ringside"
+  }
+}
+</script>
 <!-- Google AdSense — replace ca-pub-XXXXXXX with your publisher ID after approval -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <style>
@@ -106,6 +129,9 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .result-badge { background:var(--gold); color:#1a1a1a; font-size:12px; font-weight:700; padding:4px 10px; border-radius:6px; display:inline-block; margin-bottom:4px; }
 .fighter-won .fighter-name { color:var(--gold); font-weight:700; }
 .disc-kb { background:rgba(212,168,67,0.15); color:var(--gold); }
+.promo-tag { display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; vertical-align:middle; letter-spacing:0.05em; }
+.promo-ufc { background:rgba(200,54,46,0.2); color:var(--accent); }
+.promo-one { background:rgba(212,168,67,0.2); color:var(--gold); }
 .fighters-row { display:flex; align-items:center; gap:12px; }
 .fighter { flex:1; display:flex; flex-direction:column; gap:2px; }
 .fighter.right { text-align:right; align-items:flex-end; }
@@ -149,6 +175,12 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .place-bet-btn:disabled { opacity:0.4; cursor:not-allowed; }
 .payout-line { display:flex; justify-content:space-between; margin-top:8px; font-size:13px; color:var(--text-dim); }
 .payout-line .amount { color:var(--green); font-weight:600; font-family:'Space Grotesk',sans-serif; }
+
+/* Affiliate CTA */
+.affiliate-row { display:flex; justify-content:center; margin-top:8px; }
+.affiliate-btn { display:inline-flex; align-items:center; gap:6px; background:transparent; border:1px solid var(--gold); border-radius:6px; padding:6px 14px; font-size:11px; font-weight:600; color:var(--gold); text-decoration:none; font-family:'Space Grotesk',sans-serif; letter-spacing:0.03em; transition:background .15s,color .15s; cursor:pointer; }
+.affiliate-btn:hover { background:var(--gold); color:#000; }
+.affiliate-btn svg { width:12px; height:12px; fill:currentColor; }
 
 /* Leaderboard & My Bets */
 .section-title { font-size:18px; font-weight:700; padding:28px 0 12px; letter-spacing:-0.3px; }
@@ -286,6 +318,7 @@ function mapEvent(ev,idx){
     date: ev.date||"Upcoming",
     venue: ev.venue||"TBD",
     status: ev.status||"upcoming",
+    promotion: ev.promotion||"ONE",
     fights: ev.fights.map(f=>mapFight(f,idx+1))
   };
 }
@@ -330,16 +363,32 @@ function resolveResults(){
 }
 
 async function loadEvents(){
-  try {
-    const r = await fetch('data/events.json');
-    if(!r.ok) throw new Error(r.status);
-    const json = await r.json();
-    if(json.events && json.events.length){
-      events = json.events.map((ev,i)=>mapEvent(ev,i));
+  const sources = ['data/events.json', 'data/ufc_events.json'];
+  let allEvents = [];
+  for(const src of sources){
+    try {
+      const r = await fetch(src);
+      if(!r.ok) continue;
+      const json = await r.json();
+      if(json.events && json.events.length){
+        const promo = json.promotion || (src.includes('ufc') ? 'UFC' : 'ONE');
+        json.events.forEach(ev => ev.promotion = ev.promotion || promo);
+        allEvents.push(...json.events);
+      }
+    } catch(e){
+      console.warn(`Could not load ${src}`,e);
     }
-  } catch(e){
-    console.warn('Could not load events.json, using empty card',e);
-    events = [{name:"No Events Loaded",subtitle:"Scraper hasn't run yet",date:"—",venue:"—",fights:[]}];
+  }
+  if(allEvents.length){
+    // Sort: upcoming first (by date asc), then completed (by date desc)
+    allEvents.sort((a,b)=>{
+      if(a.status==='upcoming' && b.status!=='upcoming') return -1;
+      if(a.status!=='upcoming' && b.status==='upcoming') return 1;
+      return 0;
+    });
+    events = allEvents.map((ev,i)=>mapEvent(ev,i));
+  } else {
+    events = [{name:"No Events Loaded",subtitle:"Scraper hasn't run yet",date:"—",venue:"—",promotion:"—",fights:[]}];
   }
   resolveResults();
   renderEventPicker();
@@ -369,7 +418,7 @@ function discLabel(d){return d==='mma'?'MMA':d==='mt'?'Muay Thai':d==='grappling
 function renderEventPicker(){
   document.getElementById('eventPicker').innerHTML = events.map((e,i)=>`
     <div class="event-tab ${i===activeEventIdx?'active':''}" onclick="switchEvent(${i})">
-      <div class="ev-name">${e.name}</div>
+      <div class="ev-name">${e.promotion&&e.promotion!=='ONE'?'<span class="promo-tag promo-'+e.promotion.toLowerCase()+'">'+e.promotion+'</span> ':''}${e.name}</div>
       <div class="ev-date">${e.date}</div>
       <div class="ev-venue">${e.venue}</div>
     </div>`).join('');
@@ -379,7 +428,8 @@ function switchEvent(i){activeEventIdx=i;renderEventPicker();renderFights();}
 
 function renderFights(){
   const ev = events[activeEventIdx];
-  document.getElementById('eventHeader').innerHTML=`<h2>${ev.name}: ${ev.subtitle}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
+  const promoTag = ev.promotion&&ev.promotion!=='ONE'?`<span class="promo-tag promo-${ev.promotion.toLowerCase()}">${ev.promotion}</span> `:'';
+  document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
   document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>{
     const done = !!f.result;
     const winnerName = done ? (f.result.winner==='a'?f.a.name:f.result.winner==='b'?f.b.name:'Draw') : '';
@@ -411,6 +461,7 @@ function renderFights(){
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
         </div>
+        <div class="affiliate-row"><a class="affiliate-btn" href="https://www.example.com/bet?ref=ringside" target="_blank" rel="noopener noreferrer nofollow"><svg viewBox="0 0 24 24"><path d="M10 6V8H5V19H16V14H18V20C18 20.55 17.55 21 17 21H4C3.45 21 3 20.55 3 20V7C3 6.45 3.45 6 4 6H10ZM21 3V11H19V6.41L11.21 14.21L9.79 12.79L17.59 5H13V3H21Z"/></svg>Bet for real</a></div>
         ${done?'':'<div class="expand-hint">Tap for more markets</div>'}
       </div>
       ${done?'':`<div class="fight-markets">

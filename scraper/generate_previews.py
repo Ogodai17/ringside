@@ -81,6 +81,31 @@ def gen_odds(a: str, b: str):
     return dog, round(fav, 2)
 
 
+def build_jsonld(event: dict, title_full: str, slug: str, fights: list) -> str:
+    """Build JSON-LD Event schema for SEO."""
+    import html as html_mod
+    performers = []
+    for f in fights[:5]:
+        for side in ("fighter_a", "fighter_b"):
+            performers.append({
+                "@type": "Person",
+                "name": f[side]["name"],
+            })
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "SportsEvent",
+        "name": html_mod.escape(title_full),
+        "url": f"https://ogodai17.github.io/ringside/previews/{slug}.html",
+        "sport": "Mixed Martial Arts",
+        "performer": performers,
+    }
+    if event.get("date"):
+        ld["startDate"] = event["date"]
+    if event.get("venue"):
+        ld["location"] = {"@type": "Place", "name": html_mod.escape(event["venue"])}
+    return json.dumps(ld, ensure_ascii=False)
+
+
 def build_preview_html(event: dict, idx: int) -> str:
     name = event.get("name", "Event")
     subtitle = event.get("subtitle", "")
@@ -91,7 +116,9 @@ def build_preview_html(event: dict, idx: int) -> str:
     url = event.get("url", "")
 
     title_full = f"{name}: {subtitle}" if subtitle else name
+    slug = slugify(title_full)
     desc = f"Fight predictions and analysis for {title_full}. Free picks for every bout — winner, method, round."
+    jsonld = build_jsonld(event, title_full, slug, fights)
 
     fights_html = []
     for fi, fight in enumerate(fights):
@@ -161,6 +188,7 @@ def build_preview_html(event: dict, idx: int) -> str:
           <span class="odds">{odds_b}</span>
         </div>
       </div>{result_html}
+      <div style="text-align:center;margin:10px 0"><a href="https://www.example.com/bet?ref=ringside" target="_blank" rel="noopener noreferrer nofollow" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;color:var(--gold);text-decoration:none;font-family:'Space Grotesk',sans-serif;letter-spacing:0.03em;transition:background .15s,color .15s">&#x2197; Bet for real</a></div>
       <div class="analysis">
         {'<br>'.join(f'<p>{p}</p>' for p in analysis_parts)}
         <p class="pick-note">{fav_name} is the slight favorite at {fav_odds} — <a href="../index.html">make your pick on Ringside</a>.</p>
@@ -176,9 +204,11 @@ def build_preview_html(event: dict, idx: int) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 <title>{title_full} — Predictions | Ringside</title>
 <meta name="description" content="{desc}">
-<meta name="keywords" content="{name} predictions, {name} picks, ONE Championship predictions, fight predictions, {', '.join(f['fighter_a']['name'] + ' vs ' + f['fighter_b']['name'] for f in fights[:3])}">
+<meta name="keywords" content="{name} predictions, {name} picks, {event.get('promotion','ONE')} predictions, fight predictions, MMA picks, {', '.join(f['fighter_a']['name'] + ' vs ' + f['fighter_b']['name'] for f in fights[:3])}">
 <link rel="canonical" href="https://ogodai17.github.io/ringside/previews/{slugify(title_full)}.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{title_full} — Fight Predictions">
@@ -188,6 +218,7 @@ def build_preview_html(event: dict, idx: int) -> str:
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="{title_full} — Fight Predictions">
 <meta name="twitter:description" content="{desc}">
+<script type="application/ld+json">{jsonld}</script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {{
@@ -340,8 +371,10 @@ def main():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 <title>Fight Previews — Ringside</title>
-<meta name="description" content="Fight predictions and analysis for upcoming ONE Championship events. Free picks and breakdowns for every bout.">
+<meta name="description" content="Fight predictions and analysis for upcoming UFC and ONE Championship events. Free picks and breakdowns for every bout.">
 <link rel="canonical" href="https://ogodai17.github.io/ringside/previews/">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -393,6 +426,38 @@ h1 {{ font-size:28px; margin:0 0 8px; }}
 
     with open(out_dir / "index.html", "w", encoding="utf-8") as f:
         f.write(index_html)
+
+    # Regenerate sitemap.xml with all preview URLs
+    sitemap_path = out_dir.parent / "sitemap.xml"
+    static_pages = [
+        ("", "daily", "1.0"),
+        ("about.html", "monthly", "0.6"),
+        ("privacy.html", "monthly", "0.4"),
+        ("contact.html", "monthly", "0.5"),
+        ("previews/index.html", "weekly", "0.8"),
+    ]
+    sitemap_urls = []
+    base = "https://ogodai17.github.io/ringside/"
+    for path, freq, pri in static_pages:
+        sitemap_urls.append(
+            f"  <url>\n    <loc>{base}{path}</loc>\n"
+            f"    <changefreq>{freq}</changefreq>\n"
+            f"    <priority>{pri}</priority>\n  </url>"
+        )
+    for link in index_links:
+        sitemap_urls.append(
+            f"  <url>\n    <loc>{base}previews/{link['filename']}</loc>\n"
+            f"    <changefreq>weekly</changefreq>\n"
+            f"    <priority>0.7</priority>\n  </url>"
+        )
+    sitemap_xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(sitemap_urls) + "\n</urlset>\n"
+    )
+    with open(sitemap_path, "w", encoding="utf-8") as f:
+        f.write(sitemap_xml)
+    print(f"✓ Updated sitemap.xml with {len(sitemap_urls)} URLs")
 
     print(f"\n✓ Generated {len(index_links)} preview pages + index in {out_dir}/")
 
