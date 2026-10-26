@@ -1,43 +1,32 @@
 #!/usr/bin/env python3
 """
-Ringside UFC Scraper — pulls upcoming and recent UFC fight cards
-from ufcstats.com and outputs ufc_events.json for the frontend.
+Ringside UFC Scraper — pulls UFC fight cards from ESPN's public data feed
+(site.api.espn.com) and writes data/ufc_events.json in the same format as
+the ONE scraper.
 
-Uses the same output format as scrape.py (ONE Championship) so the
-frontend can load both seamlessly.
+Why ESPN: ufcstats.com started serving a JavaScript "checking your browser"
+page in Oct 2026, which plain requests can't get past. ESPN's feed is JSON,
+so there's no HTML to break. It's an unofficial endpoint (no published
+terms for this use) — if it disappears, this is the file to change.
 
-Run locally:
-    pip install requests beautifulsoup4
-    python scraper/scrape_ufc.py
-
-Or via GitHub Actions (see .github/workflows/scrape.yml).
+Run: python scraper/scrape_ufc.py --out data
 """
 
+import argparse
 import json
 import re
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urljoin
+from zoneinfo import ZoneInfo
 
 import requests
-from bs4 import BeautifulSoup
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/126.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
-}
+SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/mma/ufc/scoreboard"
+HEADERS = {"User-Agent": "Mozilla/5.0 (Ringside fight predictions; +https://github.com/Ogodai17/ringside)"}
+EASTERN = ZoneInfo("America/New_York")  # ESPN keys UFC dates to US Eastern
 
-BASE = "http://ufcstats.com"
-UPCOMING_URL = f"{BASE}/statistics/events/upcoming?page=all"
-COMPLETED_URL = f"{BASE}/statistics/events/completed?page=all"
-
-# Country code to flag emoji mapping (expanded for UFC's global roster)
 COUNTRY_FLAGS = {
     "United States": "🇺🇸", "USA": "🇺🇸",
     "Brazil": "🇧🇷",
@@ -117,413 +106,254 @@ COUNTRY_FLAGS = {
     "Hawaii": "🇺🇸",
 }
 
+WEIGHT_LABELS = {"W ": "Women's "}
 
-def fetch(url: str, retries: int = 2) -> BeautifulSoup | None:
+
+def get_json(url: str, params: dict | None = None, retries: int = 2) -> dict | None:
     for attempt in range(retries + 1):
         try:
-            r = requests.get(url, headers=HEADERS, timeout=15)
+            r = requests.get(url, params=params, headers=HEADERS, timeout=20)
             r.raise_for_status()
-            if "checking your browser" in r.text[:5000].lower():
-                # ufcstats.com now sometimes serves a JavaScript bot check
-                # instead of the real page; plain requests can't pass it.
-                print(f"  [!] Bot check page (needs JavaScript): {url}", file=sys.stderr)
-                return None
-            return BeautifulSoup(r.text, "html.parser")
+            return r.json()
         except Exception as e:
             if attempt < retries:
-                print(f"  Retry {attempt+1} for {url}", file=sys.stderr)
                 time.sleep(2)
             else:
-                print(f"  [!] Failed: {url} — {e}", file=sys.stderr)
-                return None
+                print(f"  [!] Failed: {url} {params or ''} — {e}", file=sys.stderr)
+    return None
 
 
-def discover_events(upcoming: bool = True, max_events: int = 6) -> list[dict]:
-    """Find event URLs from the ufcstats event listing pages."""
-    url = UPCOMING_URL if upcoming else COMPLETED_URL
-    label = "upcoming" if upcoming else "completed"
-    print(f"  Fetching {label} events from {url}...")
+def parse_iso(s: str) -> datetime:
+    # ESPN uses "2026-10-24T17:00Z" (no seconds)
+    s = s.replace("Z", "+00:00")
+    if re.match(r".*T\d{2}:\d{2}\+", s):
+        s = s.replace("+", ":00+", 1)
+    return datetime.fromisoformat(s)
 
-    soup = fetch(url)
-    if not soup:
+
+def event_id_from_ref(ref: str) -> str:
+    m = re.search(r"/events/(\d+)", ref or "")
+    return m.group(1) if m else ""
+
+
+def get_calendar() -> list[dict]:
+    """All UFC events this season: [{label, start (datetime), id}]."""
+    data = get_json(SCOREBOARD)
+    if not data:
         return []
-
-    events = []
-    # ufcstats uses <a> tags with href containing "event-details"
-    for a in soup.find_all("a", href=True):
-        href = a["href"].strip()
-        if "event-details" not in href:
+    cal = []
+    for entry in (data.get("leagues") or [{}])[0].get("calendar", []):
+        label = entry.get("label", "")
+        if not label.startswith("UFC"):  # skip Contender Series etc.
             continue
-
-        name = a.get_text(strip=True)
-        if not name or len(name) < 3:
+        try:
+            start = parse_iso(entry["startDate"])
+        except Exception:
             continue
+        cal.append({"label": label, "start": start,
+                    "id": event_id_from_ref((entry.get("event") or {}).get("$ref", ""))})
+    return sorted(cal, key=lambda e: e["start"])
 
-        # Deduplicate (same link appears multiple times)
-        full_url = href if href.startswith("http") else urljoin(BASE, href)
-        if any(e["url"] == full_url for e in events):
+
+def fetch_event(cal_entry: dict) -> dict | None:
+    """Fetch the scoreboard for the event's date and return that event."""
+    start = cal_entry["start"]
+    tried = []
+    for d in (start.astimezone(EASTERN).date(), start.astimezone(timezone.utc).date()):
+        key = d.strftime("%Y%m%d")
+        if key in tried:
             continue
+        tried.append(key)
+        data = get_json(SCOREBOARD, {"dates": key})
+        for ev in (data or {}).get("events", []):
+            if cal_entry["id"] and ev.get("id") == cal_entry["id"]:
+                return ev
+            if not cal_entry["id"] and ev.get("name") == cal_entry["label"]:
+                return ev
+    return None
 
-        events.append({
-            "url": full_url,
-            "name": name,
-            "upcoming": upcoming,
+
+def country_flag(athlete: dict) -> tuple[str, str]:
+    alt = ((athlete.get("flag") or {}).get("alt") or "").strip()
+    return alt, COUNTRY_FLAGS.get(alt, "")
+
+
+def weight_label(comp: dict) -> str:
+    label = ((comp.get("type") or {}).get("abbreviation") or "").strip()
+    for short, full in WEIGHT_LABELS.items():
+        if label.startswith(short):
+            label = full + label[len(short):]
+    return label or "Bout"
+
+
+def method_from_status(status: dict) -> str | None:
+    """Best-effort method from whatever ESPN puts in a finished bout's status."""
+    res = status.get("result") or {}
+    text = " ".join(str(x) for x in [
+        res.get("name"), res.get("displayName"), res.get("shortDisplayName"),
+        res.get("description"), (status.get("type") or {}).get("detail"),
+        (status.get("type") or {}).get("shortDetail"),
+    ] if x).lower()
+    if re.search(r"\b(t?ko|knockout|kotko)\b", text) or "ko/tko" in text:
+        return "KO/TKO"
+    if re.search(r"\b(sub|submission)\b", text):
+        return "Submission"
+    if re.search(r"\b(dec|decision|unanimous|split|majority)\b", text):
+        return "Decision"
+    if re.search(r"\bdraw\b", text):
+        return "Draw"
+    return None
+
+
+_diag_printed = False
+
+
+def parse_bout(comp: dict, idx: int) -> dict | None:
+    global _diag_printed
+    competitors = sorted(comp.get("competitors", []), key=lambda c: c.get("order", 0))
+    if len(competitors) != 2:
+        return None
+    fighters = []
+    for c in competitors:
+        ath = c.get("athlete") or {}
+        country, flag = country_flag(ath)
+        record = next((r.get("summary", "") for r in c.get("records", [])
+                       if r.get("type") == "total" or r.get("abbreviation") == "TOT"), "")
+        fighters.append({
+            "name": ath.get("displayName") or ath.get("fullName") or "TBA",
+            "country": country,
+            "flag": flag,
+            "record": record,
+            "profile": "",
         })
 
-    print(f"  Found {len(events)} {label} events")
-    return events[:max_events]
+    status = comp.get("status") or {}
+    stype = status.get("type") or {}
+    result = None
+    if stype.get("completed"):
+        winner = next((("a", "b")[i] for i, c in enumerate(competitors) if c.get("winner")), None)
+        method = method_from_status(status)
+        if method == "Draw":
+            winner = "draw"
+        if winner:
+            rnd = status.get("period") or None
+            result = {"winner": winner, "method": method, "round": rnd if method != "Decision" else None}
+        if not _diag_printed:
+            # Shows up as an annotation on the GitHub Actions run, so the
+            # result format can be checked without downloading logs.
+            snippet = json.dumps({"status": status, "winners": [c.get("winner") for c in competitors]})[:900]
+            print(f"::notice title=ESPN finished-bout sample::{snippet}")
+            _diag_printed = True
 
-
-def parse_event_page(url: str, event_name: str, upcoming: bool) -> dict | None:
-    """Parse a single UFC event detail page from ufcstats.com."""
-    soup = fetch(url)
-    if not soup:
-        return None
-
-    # --- Event metadata ---
-    # Name from the <h2> or passed in
-    h2 = soup.select("h2")
-    if h2:
-        event_name = h2[0].get_text(strip=True) or event_name
-
-    # Split name into name + subtitle at common separators
-    subtitle = ""
-    for sep in [":", " - "]:
-        if sep in event_name:
-            parts = event_name.split(sep, 1)
-            event_name = parts[0].strip()
-            subtitle = parts[1].strip()
-            break
-
-    # Date — usually in a <li> element
-    event_date = ""
-    lis = soup.select("li.b-list__box-list-item")
-    for li in lis:
-        text = li.get_text(strip=True)
-        if "Date:" in text:
-            date_str = text.split(":")[-1].strip()
-            # Parse "Month DD, YYYY" format
-            try:
-                from datetime import datetime
-                dt = datetime.strptime(date_str, "%B %d, %Y")
-                event_date = dt.strftime("%Y-%m-%d")
-            except (ValueError, ImportError):
-                event_date = date_str
-            break
-
-    # Location/venue
-    venue = ""
-    for li in lis:
-        text = li.get_text(strip=True)
-        if "Location:" in text:
-            venue = text.split(":", 1)[-1].strip()
-            break
-
-    # --- Fights ---
-    fights = []
-
-    if upcoming:
-        # Upcoming events: look for matchup links
-        # ufcstats upcoming format: rows with fighter name pairs
-        fight_rows = soup.select("tr.b-fight-details__table-row")
-        if not fight_rows:
-            # Alternative: look for the simpler matchup display
-            fight_rows = soup.select("tr")
-
-        for row in fight_rows:
-            # Each row has fighter names in <a> or <p> tags
-            links = row.select("a.b-link.b-link_style_black")
-            names = []
-            for link in links:
-                name = link.get_text(strip=True)
-                if name and len(name) > 1:
-                    names.append({
-                        "name": name,
-                        "profile": link.get("href", "").strip() or "",
-                    })
-
-            if len(names) >= 2:
-                # Weight class — look for it in the row
-                weight = ""
-                row_text = row.get_text(" ", strip=True)
-                weight_classes = [
-                    "Strawweight", "Flyweight", "Bantamweight", "Featherweight",
-                    "Lightweight", "Welterweight", "Middleweight",
-                    "Light Heavyweight", "Heavyweight",
-                    "Women's Strawweight", "Women's Flyweight",
-                    "Women's Bantamweight", "Women's Featherweight",
-                ]
-                for wc in weight_classes:
-                    if wc.lower() in row_text.lower():
-                        weight = wc
-                        break
-
-                label = f"{weight} MMA" if weight else "MMA"
-
-                fights.append({
-                    "fighter_a": names[0],
-                    "fighter_b": names[1],
-                    "label": label,
-                    "weight": weight,
-                    "result": None,
-                })
-    else:
-        # Completed events: rows have result data
-        fight_rows = soup.select("tr.b-fight-details__table-row")
-
-        for row in fight_rows:
-            links = row.select("a.b-link.b-link_style_black")
-            names = []
-            for link in links:
-                name = link.get_text(strip=True)
-                if name and len(name) > 1:
-                    names.append({
-                        "name": name,
-                        "profile": link.get("href", "").strip() or "",
-                    })
-
-            if len(names) < 2:
-                continue
-
-            # Check for win/loss indicators
-            win_flags = row.select("a.b-flag")
-            winner = None
-            if win_flags:
-                flag_text = win_flags[0].get_text(strip=True).lower()
-                if "win" in flag_text:
-                    winner = "a"  # First fighter listed is the winner on ufcstats
-
-            # Method and round from row cells
-            cells = row.select("td")
-            method = "Decision"
-            round_num = None
-            row_text = row.get_text(" ", strip=True).lower()
-
-            if any(k in row_text for k in ["ko", "tko"]):
-                method = "KO/TKO"
-            elif "sub" in row_text:
-                method = "Submission"
-            elif "dec" in row_text:
-                method = "Decision"
-            elif "draw" in row_text or "nc" in row_text:
-                method = "Draw" if "draw" in row_text else "No Contest"
-                winner = "draw"
-
-            # Try to find round number
-            rm = re.search(r"\b(\d)\b", " ".join(
-                c.get_text(strip=True) for c in cells[-2:] if c.get_text(strip=True).isdigit()
-            )) if cells else None
-            if rm:
-                round_num = int(rm.group(1))
-
-            # Weight class
-            weight = ""
-            weight_classes = [
-                "Strawweight", "Flyweight", "Bantamweight", "Featherweight",
-                "Lightweight", "Welterweight", "Middleweight",
-                "Light Heavyweight", "Heavyweight",
-                "Women's Strawweight", "Women's Flyweight",
-                "Women's Bantamweight", "Women's Featherweight",
-            ]
-            full_row_text = row.get_text(" ", strip=True)
-            for wc in weight_classes:
-                if wc.lower() in full_row_text.lower():
-                    weight = wc
-                    break
-
-            label = f"{weight} MMA" if weight else "MMA"
-
-            result = None
-            if winner:
-                result = {
-                    "winner": winner,
-                    "method": method,
-                    "round": round_num,
-                }
-
-            fights.append({
-                "fighter_a": names[0],
-                "fighter_b": names[1],
-                "label": label,
-                "weight": weight,
-                "result": result,
-            })
-
-    if not fights:
-        return None
-
-    # Build output in the same format as the ONE scraper
-    structured_fights = []
-    for i, fight in enumerate(fights):
-        fa = fight["fighter_a"]
-        fb = fight["fighter_b"]
-
-        structured_fights.append({
-            "id": i + 1,
-            "label": fight["label"],
-            "discipline": "mma",  # UFC is all MMA
-            "main_event": i == 0,
-            "fighter_a": {
-                "name": fa["name"],
-                "country": "",
-                "flag": "",
-                "record": "",
-                "profile": fa.get("profile", ""),
-            },
-            "fighter_b": {
-                "name": fb["name"],
-                "country": "",
-                "flag": "",
-                "record": "",
-                "profile": fb.get("profile", ""),
-            },
-            "result": fight.get("result"),
-        })
-
-    has_results = any(f.get("result") for f in structured_fights)
-
+    rounds = ((comp.get("format") or {}).get("regulation") or {}).get("periods")
     return {
-        "name": event_name,
-        "subtitle": subtitle,
-        "date": event_date,
-        "venue": venue,
-        "url": url,
-        "promotion": "UFC",
-        "status": "completed" if has_results else "upcoming",
-        "fight_count": len(structured_fights),
-        "fights": structured_fights,
+        "id": idx,
+        "label": weight_label(comp) + (" (5 rds)" if rounds == 5 else ""),
+        "discipline": "mma",
+        "fighter_a": fighters[0],
+        "fighter_b": fighters[1],
+        "result": result,
     }
 
 
-def enrich_fighter(fighter: dict, delay: float = 0.3):
-    """Fetch a fighter's profile page on ufcstats.com for record + country."""
-    profile_url = fighter.get("profile", "")
-    if not profile_url or not profile_url.startswith("http"):
-        return
+def parse_event(ev: dict) -> dict | None:
+    comps = ev.get("competitions", [])
+    # ESPN lists the early prelims first; the frontend expects the main event first.
+    comps = sorted(comps, key=lambda c: c.get("startDate") or c.get("date") or "", reverse=True)
+    fights = [b for i, c in enumerate(comps) if (b := parse_bout(c, i + 1))]
+    if not fights:
+        return None
 
-    print(f"    Enrich: {fighter['name']}...", end=" ", flush=True)
-    soup = fetch(profile_url)
-    if not soup:
-        print("failed")
-        return
+    full = ev.get("name", "UFC Event")
+    name, _, subtitle = full.partition(":")
+    # Main event = the bout matching the headline names, else the last-starting bout
+    headline = [w.strip().lower() for w in subtitle.split(" vs. ")] if " vs. " in subtitle else []
+    main_idx = 0
+    for i, f in enumerate(fights):
+        a, b = f["fighter_a"]["name"].lower(), f["fighter_b"]["name"].lower()
+        if len(headline) == 2 and any(headline[0] in x for x in (a, b)) and any(headline[1] in x for x in (a, b)):
+            main_idx = i
+            break
+    fights.insert(0, fights.pop(main_idx))
+    for i, f in enumerate(fights):
+        f["id"] = i + 1
+    fights[0]["main_event"] = True
 
-    text = soup.get_text(" ", strip=True)
+    start = parse_iso(ev["date"])
+    venue = (ev.get("venues") or [None])[0] or (comps[0].get("venue") if comps else None) or {}
+    addr = venue.get("address") or {}
+    place = ", ".join(x for x in [venue.get("fullName"), addr.get("city"), addr.get("country") or addr.get("state")] if x)
+    # Over = ESPN says so, or it started more than 12 hours ago
+    completed = bool(((ev.get("status") or {}).get("type") or {}).get("completed")) or \
+        (datetime.now(timezone.utc) - start).total_seconds() > 12 * 3600
 
-    # Record: "Record: 29-0-0" or "W-L-D" style
-    m = re.search(r"Record:\s*(\d{1,3}-\d{1,3}-\d{1,3})", text)
-    if m:
-        fighter["record"] = m.group(1)
-    else:
-        m = re.search(r"(\d{1,3})-(\d{1,3})-(\d{1,3})", text)
-        if m:
-            fighter["record"] = m.group(0)
-
-    # Country/nationality — ufcstats doesn't always show it prominently
-    # Look for location-like text after common labels
-    for label_text in ["Fighting out of", "fights out of"]:
-        idx = text.lower().find(label_text.lower())
-        if idx != -1:
-            snippet = text[idx:idx+120]
-            # Check for known countries
-            sorted_countries = sorted(COUNTRY_FLAGS.keys(), key=len, reverse=True)
-            for country in sorted_countries:
-                if country in snippet:
-                    fighter["country"] = country
-                    fighter["flag"] = COUNTRY_FLAGS.get(country, "")
-                    break
-            if fighter["country"]:
-                break
-
-    # Fallback: scan broader text for country names
-    if not fighter.get("country"):
-        sorted_countries = sorted(COUNTRY_FLAGS.keys(), key=len, reverse=True)
-        for country in sorted_countries:
-            if country in text:
-                fighter["country"] = country
-                fighter["flag"] = COUNTRY_FLAGS.get(country, "")
-                break
-
-    status = fighter.get("record", "") or "no record"
-    if fighter.get("country"):
-        status += f", {fighter['country']}"
-    print(status)
-
-    time.sleep(delay)
-
-
-def enrich_fighters(event: dict, delay: float = 0.3):
-    """Enrich all fighters in an event with records and countries."""
-    for fight in event["fights"]:
-        for side in ("fighter_a", "fighter_b"):
-            enrich_fighter(fight[side], delay)
+    return {
+        "name": name.strip(),
+        "subtitle": subtitle.strip(),
+        "date": start.astimezone(EASTERN).date().isoformat(),
+        "venue": place,
+        "url": next((l.get("href") for l in ev.get("links", []) if l.get("href")), ""),
+        "status": "completed" if completed else "upcoming",
+        "promotion": "UFC",
+        "fight_count": len(fights),
+        "fights": fights,
+    }
 
 
 def main():
-    import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default="data", help="Output directory")
-    parser.add_argument("--enrich", action="store_true",
-                        help="Fetch fighter profiles for records (slower)")
-    parser.add_argument("--max-upcoming", type=int, default=4,
-                        help="Max upcoming events to scrape")
-    parser.add_argument("--max-completed", type=int, default=2,
-                        help="Max recent completed events to scrape")
+    parser.add_argument("--max-upcoming", type=int, default=4)
+    parser.add_argument("--max-completed", type=int, default=2)
+    parser.add_argument("--enrich", action="store_true", help="(no-op; ESPN already includes records/countries)")
     args = parser.parse_args()
 
-    print("=== Ringside UFC Scraper ===")
-
-    # Get both upcoming and recently completed events
-    upcoming = discover_events(upcoming=True, max_events=args.max_upcoming)
-    completed = discover_events(upcoming=False, max_events=args.max_completed)
-
-    results = []
-
-    for ev in upcoming:
-        print(f"\n  [upcoming] {ev['name']}")
-        parsed = parse_event_page(ev["url"], ev["name"], upcoming=True)
-        if parsed:
-            print(f"  -> {parsed['fight_count']} fights")
-            if args.enrich:
-                enrich_fighters(parsed)
-            results.append(parsed)
-        else:
-            print("  -> no fights found, skipping")
-
-    for ev in completed:
-        print(f"\n  [completed] {ev['name']}")
-        parsed = parse_event_page(ev["url"], ev["name"], upcoming=False)
-        if parsed:
-            print(f"  -> {parsed['fight_count']} fights")
-            if args.enrich:
-                enrich_fighters(parsed)
-            results.append(parsed)
-        else:
-            print("  -> no fights found, skipping")
-
-    # Safety net: never overwrite good data with an empty scrape.
-    if not results:
-        print("\n[!] Scraped 0 UFC events — keeping previous data/ufc_events.json. "
-              "ufcstats.com may be blocking the scraper (bot check) or changed layout.",
-              file=sys.stderr)
+    print("=== Ringside UFC Scraper (ESPN feed) ===")
+    cal = get_calendar()
+    if not cal:
+        print("[!] Could not load the UFC calendar from ESPN.", file=sys.stderr)
         sys.exit(1)
 
-    # Write output
+    now = datetime.now(timezone.utc)
+    # An event counts as "upcoming" until ~12h after its listed start
+    upcoming = [c for c in cal if (c["start"] - now).total_seconds() > -12 * 3600][: args.max_upcoming]
+    completed = [c for c in cal if (c["start"] - now).total_seconds() <= -12 * 3600][-args.max_completed:][::-1]
+
+    results = []
+    for entry in upcoming + completed:
+        print(f"\n  {entry['label']} ({entry['start'].date()})")
+        ev = fetch_event(entry)
+        if not ev:
+            print("  -> not found on scoreboard, skipping")
+            continue
+        parsed = parse_event(ev)
+        if parsed:
+            done = sum(1 for f in parsed["fights"] if f["result"])
+            print(f"  -> {parsed['fight_count']} fights, {parsed['status']}, {done} results")
+            results.append(parsed)
+        else:
+            print("  -> no bouts listed yet, skipping")
+
+    if not results:
+        print("\n[!] Scraped 0 UFC events — keeping previous data/ufc_events.json.", file=sys.stderr)
+        sys.exit(1)
+
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_file = out_dir / "ufc_events.json"
-
     output = {
         "scraped_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "source": "ufcstats.com",
+        "source": "espn.com",
         "promotion": "UFC",
         "event_count": len(results),
         "events": results,
     }
-
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
-
     print(f"\n✓ Wrote {len(results)} UFC events to {out_file}")
+    print(f"::notice title=UFC scrape::{len(results)} events: " + "; ".join(
+        f"{e['name']} {e['date']} {e['status']} {e['fight_count']} bouts, "
+        f"{sum(1 for f in e['fights'] if f['result'])} results" for e in results))
 
 
 if __name__ == "__main__":

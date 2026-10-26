@@ -279,7 +279,8 @@ function genOdds(a,b){
   const dog=+(4.5-fav*1.05).toFixed(2);  // roughly inverse
   return seed%2===0?[+fav.toFixed(2),dog]:[dog,+fav.toFixed(2)];
 }
-function mapFight(f,evIdx){
+function fightKey(ev,f){return 'f'+hashName(`${ev.promotion||'ONE'}|${ev.name}|${f.fighter_a.name}|${f.fighter_b.name}`).toString(36);}
+function mapFight(f,ev){
   const disc = f.discipline==='mt'?'mt':f.discipline==='kb'||f.discipline==='kickboxing'?'kb':f.discipline==='grappling'?'grappling':'mma';
   const isMMA = disc==='mma'||disc==='grappling';
   const isTitle = f.main_event || (f.label||'').toLowerCase().includes('world');
@@ -288,7 +289,7 @@ function mapFight(f,evIdx){
   const rounds = Array.from({length:maxRd},(_,i)=>`Rd ${i+1}`);
   const methods = isMMA?["KO/TKO","Submission","Decision"]:["KO/TKO","Decision"];
   return {
-    id: evIdx*100 + f.id,
+    id: fightKey(ev,f),
     label: f.label||`Bout ${f.id}`,
     disc,
     a:{ name:f.fighter_a.name, record:f.fighter_a.record||"", flag:f.fighter_a.flag||"" },
@@ -307,45 +308,50 @@ function mapEvent(ev,idx){
     venue: ev.venue||"TBD",
     status: ev.status||"upcoming",
     promotion: ev.promotion||"ONE",
-    fights: ev.fights.map(f=>mapFight(f,idx+1))
+    fights: ev.fights.map(f=>mapFight(f,ev))
   };
 }
 
 /* ── Auto-resolve bets when results come in ── */
 function resolveResults(){
   let changed = false;
+  const all = events.flatMap(ev=>ev.fights);
   bets.forEach(bet=>{
     if(bet.resolved) return;
-    // Find the fight across all events
-    for(const ev of events){
-      const fight = ev.fights.find(f=>f.id===bet.fightId);
-      if(fight && fight.result){
-        bet.resolved = true;
-        const r = fight.result;
-        let won = false;
-        if(bet.market==='winner'){
-          won = (bet.pick===fight.a.name && r.winner==='a') || (bet.pick===fight.b.name && r.winner==='b');
-        } else if(bet.market==='method'){
-          won = bet.pick===r.method;
-        } else if(bet.market==='round'){
-          won = r.round && bet.pick===`Rd ${r.round}`;
-        } else if(bet.market==='distance'){
-          const wentDist = r.method==='Decision';
-          won = (bet.pick==='Goes the distance' && wentDist) || (bet.pick==="Doesn't go the distance" && !wentDist);
-        }
-        if(won){
-          const payout = Math.round(bet.stake * bet.odds);
-          balance += payout;
-          bet.payout = payout;
-          bet.won = true;
-        } else {
-          bet.won = false;
-          bet.payout = 0;
-        }
-        changed = true;
-        break;
-      }
+    // Picks saved before fight IDs became stable: re-link them by matchup name
+    if(typeof bet.fightId==='number'){
+      const f = all.find(x=>`${x.a.name} vs ${x.b.name}`===bet.label);
+      if(!f) return;
+      bet.fightId = f.id; changed = true;
     }
+    const fight = all.find(f=>f.id===bet.fightId);
+    if(!fight || !fight.result) return;
+    const r = fight.result;
+    const market = bet.type || bet.market;
+    // Winner known but not how it ended (some UFC data): only settle winner picks
+    if(market!=='winner' && !r.method) return;
+    let won = false;
+    if(market==='winner'){
+      won = (bet.pick===fight.a.name && r.winner==='a') || (bet.pick===fight.b.name && r.winner==='b');
+    } else if(market==='method'){
+      won = bet.pick===r.method;
+    } else if(market==='round'){
+      won = !!r.round && bet.pick===`Rd ${r.round}`;
+    } else if(market==='distance'){
+      const wentDist = r.method==='Decision';
+      won = (bet.pick==='Goes the distance' && wentDist) || (bet.pick==="Doesn't go the distance" && !wentDist);
+    }
+    bet.resolved = true;
+    bet.won = won;
+    bet.result = won ? 'won' : 'lost';
+    if(won){
+      const payout = Math.round(bet.stake * bet.odds);
+      balance += payout;
+      bet.payout = payout;
+    } else {
+      bet.payout = 0;
+    }
+    changed = true;
   });
   if(changed){ save(); updateBal(); }
 }
@@ -370,9 +376,10 @@ async function loadEvents(){
   if(allEvents.length){
     // Sort: upcoming first (by date asc), then completed (by date desc)
     allEvents.sort((a,b)=>{
-      if(a.status==='upcoming' && b.status!=='upcoming') return -1;
-      if(a.status!=='upcoming' && b.status==='upcoming') return 1;
-      return 0;
+      const ua = a.status!=='completed', ub = b.status!=='completed';
+      if(ua!==ub) return ua?-1:1;
+      const da = a.date||'', db = b.date||'';
+      return ua ? da.localeCompare(db) : db.localeCompare(da);
     });
     events = allEvents.map((ev,i)=>mapEvent(ev,i));
   } else {
@@ -406,7 +413,7 @@ function discLabel(d){return d==='mma'?'MMA':d==='mt'?'Muay Thai':d==='grappling
 function renderEventPicker(){
   document.getElementById('eventPicker').innerHTML = events.map((e,i)=>`
     <div class="event-tab ${i===activeEventIdx?'active':''}" onclick="switchEvent(${i})">
-      <div class="ev-name">${e.promotion&&e.promotion!=='ONE'?'<span class="promo-tag promo-'+e.promotion.toLowerCase()+'">'+e.promotion+'</span> ':''}${e.name}</div>
+      <div class="ev-name">${e.promotion&&e.promotion!=='ONE'&&!e.name.startsWith(e.promotion)?'<span class="promo-tag promo-'+e.promotion.toLowerCase()+'">'+e.promotion+'</span> ':''}${e.name}</div>
       <div class="ev-date">${e.date}</div>
       <div class="ev-venue">${e.venue}</div>
     </div>`).join('');
@@ -416,7 +423,7 @@ function switchEvent(i){activeEventIdx=i;renderEventPicker();renderFights();}
 
 function renderFights(){
   const ev = events[activeEventIdx];
-  const promoTag = ev.promotion&&ev.promotion!=='ONE'?`<span class="promo-tag promo-${ev.promotion.toLowerCase()}">${ev.promotion}</span> `:'';
+  const promoTag = ev.promotion&&ev.promotion!=='ONE'&&!ev.name.startsWith(ev.promotion)?`<span class="promo-tag promo-${ev.promotion.toLowerCase()}">${ev.promotion}</span> `:'';
   document.getElementById('eventHeader').innerHTML=`<h2>${promoTag}${ev.name}${ev.subtitle?': '+ev.subtitle:''}</h2><div class="event-meta">${ev.date} · ${ev.venue}</div>`;
   document.getElementById('fight-cards').innerHTML = ev.fights.map(f=>{
     // Betting closes once the event is over, even if the result hasn't been scraped yet
@@ -429,7 +436,7 @@ function renderFights(){
     const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
     return `
     <div class="fight-card ${done?'fight-completed':''}" id="fight-${f.id}">
-      <div class="fight-main" onclick="toggleFight(${f.id})">
+      <div class="fight-main" onclick="toggleFight('${f.id}')">
         <div class="fight-label">${f.label} <span class="fight-discipline ${discClass(f.disc)}">${discLabel(f.disc)}</span></div>
         ${resultBadge}
         <div class="fighters-row">
@@ -444,11 +451,11 @@ function renderFights(){
           </div>
         </div>
         <div class="fight-odds" ${disabledAttr}>
-          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'A')" ${done?'disabled':''}>
+          <button class="odd-btn" onclick="event.stopPropagation();selectWinner('${f.id}','A')" ${done?'disabled':''}>
             <span class="label">${f.a.name.split(' ').pop()}</span>
             <span class="value">${f.oddsA.toFixed(2)}</span>
           </button>
-          <button class="odd-btn" onclick="event.stopPropagation();selectWinner(${f.id},'B')" ${done?'disabled':''}>
+          <button class="odd-btn" onclick="event.stopPropagation();selectWinner('${f.id}','B')" ${done?'disabled':''}>
             <span class="label">${f.b.name.split(' ').pop()}</span>
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
@@ -458,13 +465,13 @@ function renderFights(){
       </div>
       ${done?'':`<div class="fight-markets">
         <div class="market-group"><h4>Method of Victory</h4>
-          <div class="market-options">${f.methods.map(m=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'method','${m}',${f.methods.length>2?2.8:1.9})">${m}</button>`).join('')}</div>
+          <div class="market-options">${f.methods.map(m=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','method','${m}',${f.methods.length>2?2.8:1.9})">${m}</button>`).join('')}</div>
         </div>
         <div class="market-group"><h4>Round</h4>
-          <div class="market-options">${f.rounds.map(r=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'round','${r}',${f.rounds.length>=5?5.0:3.5})">${r}</button>`).join('')}</div>
+          <div class="market-options">${f.rounds.map(r=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','round','${r}',${f.rounds.length>=5?5.0:3.5})">${r}</button>`).join('')}</div>
         </div>
         <div class="market-group"><h4>Distance</h4>
-          <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket(${f.id},'distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
+          <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
         </div>
       </div>`}
     </div>`;
@@ -507,7 +514,8 @@ function placeBet(){
   if(s<=0||s>balance||!selectedPick)return;
   balance-=s;
   bets.push({...selectedPick,stake:s,payout:Math.floor(s*selectedPick.odds),result:'pending',time:Date.now()});
-  updateBal();closeBetSlip();showToast(`Placed ${s} R on ${selectedPick.pick}`);save();checkUBI();
+  const placed=selectedPick.pick;  // closeBetSlip() clears selectedPick
+  save();updateBal();closeBetSlip();showToast(`Placed ${s} R on ${placed}`);checkUBI();
 }
 
 document.querySelectorAll('.nav button').forEach(btn=>{
