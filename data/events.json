@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-26T19:49:10Z",
+  "scraped_at": "2026-10-26T20:21:28Z",
   "source": "onefc.com",
   "event_count": 3,
   "events": [
@@ -21,21 +21,23 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/rambong-sor-therapat/",
-            "record": ""
+            "record": "11-5-0",
+            "finish_rate": 36
           },
           "fighter_b": {
             "name": "Jacob Thompson",
             "country": "United Kingdom",
             "flag": "🇬🇧",
             "profile": "https://www.onefc.com/athletes/jacob-thompson/",
-            "record": ""
+            "record": "2-2-0",
+            "finish_rate": 0
           },
           "main_event": true,
           "result": null,
-          "p_a": 0.498,
+          "p_a": 0.715,
           "odds": [
-            1.89,
-            1.88
+            1.32,
+            3.31
           ]
         },
         {
@@ -47,20 +49,22 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/khunsuk-sor-dechapan/",
-            "record": ""
+            "record": "8-6-0",
+            "finish_rate": 75
           },
           "fighter_b": {
             "name": "YodUdon K Tongtalingchan",
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/yodudon-bs-muaythai/",
-            "record": ""
+            "record": "3-4-0",
+            "finish_rate": 67
           },
           "result": null,
-          "p_a": 0.542,
+          "p_a": 0.627,
           "odds": [
-            1.74,
-            2.06
+            1.5,
+            2.53
           ]
         },
         {
@@ -72,7 +76,8 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/sitthichai-sor-dechapan/",
-            "record": ""
+            "record": "0-1-0",
+            "finish_rate": 0
           },
           "fighter_b": {
             "name": "Arthur Evan",
@@ -82,10 +87,10 @@
             "record": ""
           },
           "result": null,
-          "p_a": 0.534,
+          "p_a": 0.406,
           "odds": [
-            1.77,
-            2.02
+            2.33,
+            1.59
           ]
         },
         {
@@ -129,13 +134,14 @@
             "country": "Indonesia",
             "flag": "🇮🇩",
             "profile": "https://www.onefc.com/athletes/adham-ruziev/",
-            "record": ""
+            "record": "1-2-0",
+            "finish_rate": 0
           },
           "result": null,
-          "p_a": 0.523,
+          "p_a": 0.563,
           "odds": [
-            1.8,
-            1.98
+            1.68,
+            2.16
           ]
         },
         {
@@ -147,7 +153,8 @@
             "country": "New Zealand",
             "flag": "🇳🇿",
             "profile": "https://www.onefc.com/athletes/ethan-brockett/",
-            "record": ""
+            "record": "2-0-0",
+            "finish_rate": 50
           },
           "fighter_b": {
             "name": "Pedro Duarte",
@@ -157,10 +164,10 @@
             "record": ""
           },
           "result": null,
-          "p_a": 0.478,
+          "p_a": 0.493,
           "odds": [
-            1.97,
-            1.81
+            1.91,
+            1.86
           ]
         },
         {
@@ -172,20 +179,22 @@
             "country": "Azerbaijan",
             "flag": "🇦🇿",
             "profile": "https://www.onefc.com/athletes/nihad-taghizade/",
-            "record": ""
+            "record": "0-1-0",
+            "finish_rate": 0
           },
           "fighter_b": {
             "name": "Yumeto Mizuno",
             "country": "Japan",
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/yumeto-mizuno/",
-            "record": ""
+            "record": "1-0-0",
+            "finish_rate": 0
           },
           "result": null,
-          "p_a": 0.517,
+          "p_a": 0.401,
           "odds": [
-            1.82,
-            1.95
+            2.35,
+            1.58
           ]
         },
         {
@@ -229,13 +238,14 @@
             "country": "Japan",
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/raize/",
-            "record": ""
+            "record": "1-0-0",
+            "finish_rate": 100
           },
           "result": null,
-          "p_a": 0.553,
+          "p_a": 0.545,
           "odds": [
-            1.71,
-            2.11
+            1.73,
+            2.07
           ]
         },
         {
@@ -247,20 +257,22 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/numsurin-chor-ketwina/",
-            "record": ""
+            "record": "7-2-0",
+            "finish_rate": 29
           },
           "fighter_b": {
             "name": "Akram Hamidi",
             "country": "France",
             "flag": "🇫🇷",
             "profile": "https://www.onefc.com/athletes/akram-hamidi/",
-            "record": ""
+            "record": "3-2-0",
+            "finish_rate": 67
           },
           "result": null,
-          "p_a": 0.493,
+          "p_a": 0.649,
           "odds": [
-            1.91,
-            1.86
+            1.45,
+            2.69
           ]
         },
         {
@@ -272,7 +284,8 @@
             "country": "Indonesia",
             "flag": "🇮🇩",
             "profile": "https://www.onefc.com/athletes/xavier-gonzalez/",
-            "record": ""
+            "record": "7-7-0",
+            "finish_rate": 57
           },
           "fighter_b": {
             "name": "Exza Wankhongohm",
@@ -282,10 +295,10 @@
             "record": ""
           },
           "result": null,
-          "p_a": 0.44,
+          "p_a": 0.513,
           "odds": [
-            2.14,
-            1.69
+            1.84,
+            1.94
           ]
         },
         {
@@ -297,20 +310,22 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/tomyamkoong-bhumjaithai/",
-            "record": ""
+            "record": "4-2-0",
+            "finish_rate": 50
           },
           "fighter_b": {
             "name": "Yassir Rassafi",
             "country": "Morocco",
             "flag": "🇲🇦",
             "profile": "https://www.onefc.com/athletes/yassir-rassafi/",
-            "record": ""
+            "record": "0-1-0",
+            "finish_rate": 0
           },
           "result": null,
-          "p_a": 0.501,
+          "p_a": 0.709,
           "odds": [
-            1.88,
-            1.89
+            1.33,
+            3.24
           ]
         },
         {
@@ -322,20 +337,22 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/petkhaokradong/",
-            "record": ""
+            "record": "4-2-0",
+            "finish_rate": 25
           },
           "fighter_b": {
             "name": "Abdelali Zahidi",
             "country": "Morocco",
             "flag": "🇲🇦",
             "profile": "https://www.onefc.com/athletes/abdelali-zahidi/",
-            "record": ""
+            "record": "1-1-0",
+            "finish_rate": 100
           },
           "result": null,
-          "p_a": 0.445,
+          "p_a": 0.636,
           "odds": [
-            2.12,
-            1.7
+            1.48,
+            2.59
           ]
         },
         {
@@ -354,13 +371,14 @@
             "country": "Japan",
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/ranma/",
-            "record": ""
+            "record": "3-1-0",
+            "finish_rate": 67
           },
           "result": null,
-          "p_a": 0.553,
+          "p_a": 0.493,
           "odds": [
-            1.71,
-            2.11
+            1.91,
+            1.86
           ]
         }
       ]
@@ -383,21 +401,23 @@
             "country": "United States",
             "flag": "🇺🇸",
             "profile": "https://www.onefc.com/athletes/christian-lee/",
-            "record": ""
+            "record": "18-4-0",
+            "finish_rate": 94
           },
           "fighter_b": {
             "name": "Tye Ruotolo",
             "country": "Brazil",
             "flag": "🇧🇷",
             "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
-            "record": ""
+            "record": "11-0-0",
+            "finish_rate": 55
           },
           "main_event": true,
           "result": null,
-          "p_a": 0.531,
+          "p_a": 0.492,
           "odds": [
-            1.78,
-            2.01
+            1.92,
+            1.86
           ]
         }
       ]
@@ -420,7 +440,8 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/lucas-gabriel/",
-            "record": ""
+            "record": "5-0-0",
+            "finish_rate": 20
           },
           "fighter_b": {
             "name": "Magomed Magomedov",
@@ -431,10 +452,10 @@
           },
           "main_event": true,
           "result": null,
-          "p_a": 0.467,
+          "p_a": 0.57,
           "odds": [
-            2.02,
-            1.77
+            1.66,
+            2.19
           ]
         },
         {
@@ -446,20 +467,22 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/kongthoranee-sor-sommai/",
-            "record": ""
+            "record": "12-6-0",
+            "finish_rate": 25
           },
           "fighter_b": {
             "name": "Taiki Naito",
             "country": "Japan",
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/taiki-naito/",
-            "record": ""
+            "record": "10-6-0",
+            "finish_rate": 20
           },
           "result": null,
-          "p_a": 0.445,
+          "p_a": 0.543,
           "odds": [
-            2.12,
-            1.7
+            1.74,
+            2.07
           ]
         },
         {
@@ -471,20 +494,22 @@
             "country": "South Korea",
             "flag": "🇰🇷",
             "profile": "https://www.onefc.com/athletes/lee-seung-cheol/",
-            "record": ""
+            "record": "6-0-0",
+            "finish_rate": 50
           },
           "fighter_b": {
             "name": "Nazareth Lalthazuala",
             "country": "India",
             "flag": "🇮🇳",
             "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
-            "record": ""
+            "record": "3-0-0",
+            "finish_rate": 100
           },
           "result": null,
-          "p_a": 0.524,
+          "p_a": 0.631,
           "odds": [
-            1.8,
-            1.98
+            1.5,
+            2.55
           ]
         },
         {
@@ -496,20 +521,22 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/nontachai-jitmuangnon/",
-            "record": ""
+            "record": "6-2-0",
+            "finish_rate": 33
           },
           "fighter_b": {
             "name": "Felipe Lobo",
             "country": "Brazil",
             "flag": "🇧🇷",
             "profile": "https://www.onefc.com/athletes/felipe-lobo/",
-            "record": ""
+            "record": "4-6-0",
+            "finish_rate": 50
           },
           "result": null,
-          "p_a": 0.521,
+          "p_a": 0.657,
           "odds": [
-            1.81,
-            1.97
+            1.44,
+            2.75
           ]
         },
         {
@@ -521,20 +548,22 @@
             "country": "China",
             "flag": "🇨🇳",
             "profile": "https://www.onefc.com/athletes/zhou-jiaqiang/",
-            "record": ""
+            "record": "0-1-0",
+            "finish_rate": 0
           },
           "fighter_b": {
             "name": "Mamuka Usubyan",
             "country": "Russia",
             "flag": "🇷🇺",
             "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
-            "record": ""
+            "record": "4-1-0",
+            "finish_rate": 25
           },
           "result": null,
-          "p_a": 0.463,
+          "p_a": 0.267,
           "odds": [
-            2.04,
-            1.76
+            3.53,
+            1.29
           ]
         },
         {
@@ -546,20 +575,22 @@
             "country": "Brazil",
             "flag": "🇧🇷",
             "profile": "https://www.onefc.com/athletes/vick-souza/",
-            "record": ""
+            "record": "4-3-0",
+            "finish_rate": 25
           },
           "fighter_b": {
             "name": "Magdalena Czaban",
             "country": "United States",
             "flag": "🇺🇸",
             "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
-            "record": ""
+            "record": "1-0-0",
+            "finish_rate": 0
           },
           "result": null,
-          "p_a": 0.509,
+          "p_a": 0.595,
           "odds": [
-            1.85,
-            1.92
+            1.58,
+            2.33
           ]
         },
         {
@@ -621,7 +652,8 @@
             "country": "Netherlands",
             "flag": "🇳🇱",
             "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
-            "record": "15-2-1"
+            "record": "3-1-0",
+            "finish_rate": 100
           },
           "fighter_b": {
             "name": "Gasham Mammadov",
@@ -631,10 +663,10 @@
             "record": ""
           },
           "result": null,
-          "p_a": 0.661,
+          "p_a": 0.507,
           "odds": [
-            1.43,
-            2.78
+            1.86,
+            1.91
           ]
         }
       ]
