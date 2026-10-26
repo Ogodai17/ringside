@@ -190,6 +190,23 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 
 .share-btn { margin-top:10px; background:transparent; border:1px solid var(--border); color:var(--text); border-radius:8px; padding:7px 14px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Space Grotesk',sans-serif; }
 .share-btn:hover { border-color:var(--accent); color:var(--accent); }
+/* Accounts */
+.header-right { display:flex; align-items:center; gap:8px; }
+.auth-btn { background:var(--accent); color:#fff; border:none; border-radius:20px; padding:7px 14px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Space Grotesk',sans-serif; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.auth-btn.in { background:var(--surface-raised); color:var(--text); border:1px solid var(--border); }
+.modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:200; padding:16px; }
+.modal-bg.open { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; width:100%; max-width:380px; display:flex; flex-direction:column; gap:10px; }
+.modal h3 { font-family:'Space Grotesk',sans-serif; font-size:20px; }
+.modal p { font-size:14px; color:var(--text-dim); }
+.oauth-btn { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:var(--surface-raised); color:var(--text); font-size:15px; font-weight:600; cursor:pointer; font-family:'Space Grotesk',sans-serif; }
+.oauth-btn.google { background:#fff; color:#1f1f1f; border-color:#dadce0; }
+.oauth-btn.discord { background:#5865F2; color:#fff; border-color:#5865F2; }
+.modal-fine { font-size:12px !important; color:var(--text-muted) !important; }
+.modal-link { background:none; border:none; color:var(--text-muted); font-size:13px; cursor:pointer; padding:4px; }
+.modal-input { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:16px; }
+.modal-err { color:var(--accent); font-size:13px; min-height:16px; }
+.lb-row.me { background:var(--accent-glow); }
 /* People's Scorecard */
 .sc-wrap { padding:0 16px 14px; }
 .sc-toggle { width:100%; display:flex; justify-content:space-between; align-items:center; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; font-family:'Space Grotesk',sans-serif; }
@@ -268,7 +285,8 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 <div class="app">
   <header class="header">
     <div class="logo">pick a <span>fight</span></div>
-    <div class="balance-pill"><div class="coin-icon">R</div><span id="balanceDisplay">5,000</span></div>
+    <div class="header-right"><button id="authBtn" class="auth-btn" onclick="authClick()" style="display:none">Sign in</button>
+    <div class="balance-pill"><div class="coin-icon">R</div><span id="balanceDisplay">5,000</span></div></div>
   </header>
   <nav class="nav">
     <button class="active" data-tab="fights">Upcoming</button>
@@ -276,7 +294,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
     <button data-tab="stats">My Stats</button>
   </nav>
   <div class="connect-bar">
-    <span>Playing as guest — picks stay on this device</span>
+    <span id="connectText">Playing as guest — picks stay on this device</span>
   </div>
   <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 R.</div>
 
@@ -314,12 +332,41 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="modal-bg" id="signinModal" onclick="if(event.target===this)closeModal('signinModal')">
+  <div class="modal">
+    <h3>Sign in to Pick A Fight</h3>
+    <p>Keep your picks on every device, climb the leaderboard, and add your scorecards to the fan vote.</p>
+    <button class="oauth-btn google" onclick="signIn('google')">Continue with Google</button>
+    <button class="oauth-btn discord" onclick="signIn('discord')">Continue with Discord</button>
+    <p class="modal-fine">Your username is public. Your email isn't, and we never post anything for you.</p>
+    <button class="modal-link" onclick="closeModal('signinModal')">Not now</button>
+  </div>
+</div>
+<div class="modal-bg" id="usernameModal">
+  <div class="modal">
+    <h3>Pick your fight name</h3>
+    <p>This is what shows on the leaderboard. 3–20 letters, numbers or underscores.</p>
+    <input id="usernameInput" class="modal-input" maxlength="20" autocomplete="off" placeholder="e.g. LegKickLarry" onkeydown="if(event.key==='Enter')saveUsername()">
+    <div id="usernameErr" class="modal-err"></div>
+    <button class="oauth-btn" onclick="saveUsername()">Save name</button>
+  </div>
+</div>
+<div class="modal-bg" id="accountModal" onclick="if(event.target===this)closeModal('accountModal')">
+  <div class="modal">
+    <h3 id="accountName">Account</h3>
+    <p>Your picks, balance and scorecards are saved to your account.</p>
+    <button class="oauth-btn" onclick="closeModal('accountModal');openModal('usernameModal')">Change name</button>
+    <button class="oauth-btn" onclick="signOut()">Sign out</button>
+    <button class="modal-link" onclick="closeModal('accountModal')">Close</button>
+  </div>
+</div>
 
 <script>
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = "";
 const SITE_URL = "https://pickafight.now/";
-const SCORE_API = null;  // {url,key} when the community database is connected, else null
+const DB = null;  // {url,key} when the Supabase database is connected, else null
+const SCORE_API = DB;
 function loadState(){
   let s = {};
   try { s = JSON.parse(localStorage.getItem('ringside_state')||'{}') || {}; } catch(e){ s = {}; }
@@ -402,6 +449,7 @@ function mapEvent(ev,idx){
 
 /* ── Auto-resolve bets when results come in ── */
 function resolveResults(){
+  if(user) return;   // the server settles signed-in picks
   let changed = false;
   const all = events.flatMap(ev=>ev.fights);
   bets.forEach(bet=>{
@@ -486,7 +534,8 @@ async function loadEvents(){
 }
 
 
-function save(){try{localStorage.setItem('ringside_state',JSON.stringify({balance,bets,lastUBIClaim}))}catch(e){}}
+function save(){ if(user) return;  /* signed-in state lives on the server */
+  try{localStorage.setItem('ringside_state',JSON.stringify({balance,bets,lastUBIClaim}))}catch(e){}}
 function updateBal(){document.getElementById('balanceDisplay').textContent=balance.toLocaleString();}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
@@ -619,6 +668,150 @@ async function sharePicks(){
   try{ await navigator.clipboard?.writeText(text); showToast('Image saved · caption copied'); }catch(e){ showToast('Image saved'); }
 }
 
+/* ── Accounts: sign in with Google / Discord (Supabase Auth) ──────────
+   Guests play exactly as before (localStorage). Signed-in players' balance,
+   picks, top-ups and scorecards live on the server: picks go through
+   place_pick() (server odds, betting locks at start), and the GitHub sync
+   job settles them — so the leaderboard can't be edited from the browser. */
+let sb=null, user=null, profile=null, guestStash=null, placing=false;
+function loadScript(src){ return new Promise((res,rej)=>{ const el=document.createElement('script'); el.src=src; el.onload=res; el.onerror=rej; document.head.appendChild(el); }); }
+async function rpc(name, args){ const {data,error}=await sb.rpc(name, args||{}); if(error) throw new Error(error.message||'Something went wrong'); return data; }
+async function initAuth(){
+  if(!DB) return;
+  try{
+    if(window.__PAF_SUPABASE__) sb=window.__PAF_SUPABASE__;            // test hook
+    else { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'); sb=window.supabase.createClient(DB.url, DB.key); }
+  }catch(e){ console.warn('Sign-in unavailable', e); return; }
+  document.getElementById('authBtn').style.display='';
+  let session=null; try{ ({data:{session}} = await sb.auth.getSession()); }catch(e){}
+  await onSession(session);
+  sb.auth.onAuthStateChange((_evt, sess)=>{ if((sess?.user?.id||null)!==(user?.id||null)) onSession(sess); });
+  loadCommunity(events[activeEventIdx], true);
+}
+async function onSession(session){
+  user = session?.user || null;
+  if(user){
+    closeModal('signinModal');
+    if(!guestStash) guestStash={balance, bets:bets.slice(), lastUBIClaim};
+    try{ await refreshAccount(); }catch(e){ showToast('Could not load your account — try again'); }
+    if(!profile?.username) openModal('usernameModal');
+    await carryOverGuestPicks();
+  } else {
+    profile=null;
+    if(guestStash){ ({balance, bets, lastUBIClaim} = guestStash); guestStash=null; } else loadState();
+  }
+  renderAuth(); updateBal(); checkUBI(); renderFights();
+  if(document.getElementById('tab-mybets').style.display!=='none') renderMyBets();
+  if(document.getElementById('tab-stats').style.display!=='none') renderStats();
+}
+function renderAuth(){
+  const b=document.getElementById('authBtn'), t=document.getElementById('connectText');
+  if(!DB){ b.style.display='none'; return; }
+  if(user){
+    const name = profile?.username ? esc(profile.username) : 'Set name';
+    b.textContent = profile?.username ? profile.username : 'Set name'; b.classList.add('in');
+    t.innerHTML = `Signed in as <b>${name}</b> · picks sync across your devices`;
+  } else {
+    b.textContent='Sign in'; b.classList.remove('in');
+    t.textContent='Playing as guest — sign in to save picks and join the leaderboard';
+  }
+}
+function authClick(){ if(!user) return openModal('signinModal');
+  document.getElementById('accountName').textContent = profile?.username || 'Your account'; openModal('accountModal'); }
+function openModal(id){ const m=document.getElementById(id); m.classList.add('open');
+  if(id==='usernameModal'){ const i=document.getElementById('usernameInput'); i.value=profile?.username||''; document.getElementById('usernameErr').textContent=''; setTimeout(()=>i.focus(),50); } }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+async function signIn(provider){
+  try{ const {error}=await sb.auth.signInWithOAuth({provider, options:{redirectTo: location.origin+location.pathname}});
+       if(error) throw error; }
+  catch(e){ showToast('Sign-in failed — try again'); }
+}
+async function signOut(){ closeModal('accountModal'); try{ await sb.auth.signOut(); }catch(e){} await onSession(null); showToast('Signed out'); }
+async function saveUsername(){
+  const v=document.getElementById('usernameInput').value.trim(), err=document.getElementById('usernameErr');
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(v)){ err.textContent='3–20 letters, numbers or underscores'; return; }
+  try{ await rpc('set_username',{p_name:v}); profile={...(profile||{}), username:v}; closeModal('usernameModal'); renderAuth(); showToast(`You're ${v} now`); }
+  catch(e){ err.textContent = e.message; }
+}
+function serverBetToLocal(r){
+  const f=findFight(r.fight_key);
+  let pick=r.selection;
+  if(r.market==='winner') pick = f ? (r.selection==='a'?f.a.name:f.b.name) : r.selection.toUpperCase();
+  else if(r.market==='round') pick='Rd '+r.selection;
+  else if(r.market==='distance') pick = r.selection==='yes'?'Goes the distance':"Doesn't go the distance";
+  return { fightId:r.fight_key, type:r.market, pick, odds:Number(r.odds), label:f?`${f.a.name} vs ${f.b.name}`:'',
+           stake:r.stake, payout:r.status==='pending'?payoutFor(r.stake,Number(r.odds)):r.payout,
+           result:r.status, resolved:r.status!=='pending', time:Date.parse(r.created_at)||0, server:true };
+}
+async function refreshAccount(){
+  const acc = await rpc('my_account'); const row = Array.isArray(acc)?acc[0]:acc;
+  profile = { username: row?.username || null };
+  balance = Number(row?.balance ?? 0);
+  lastUBIClaim = row?.last_topup ? new Date(row.last_topup+'T12:00:00').toDateString() : null;
+  const {data, error} = await sb.from('picks').select('id,fight_key,market,selection,odds,stake,status,payout,created_at').order('created_at',{ascending:true}).limit(500);
+  if(error) throw new Error(error.message);
+  bets = (data||[]).map(serverBetToLocal);
+}
+function toServerPick(p){
+  const f=findFight(p.fightId); if(!f) return null;
+  if(p.type==='winner') return {market:'winner', selection: p.pick===f.a.name?'a':'b'};
+  if(p.type==='method') return {market:'method', selection:p.pick};
+  if(p.type==='round') return {market:'round', selection:String(p.pick).replace(/\D/g,'')};
+  if(p.type==='distance') return {market:'distance', selection: p.pick==='Goes the distance'?'yes':'no'};
+  return null;
+}
+async function placeBetServer(stake){
+  if(placing) return; placing=true;
+  const sp=toServerPick(selectedPick), placed=selectedPick.pick;
+  try{
+    if(!sp) throw new Error('That pick is no longer available');
+    await rpc('place_pick',{p_fight:selectedPick.fightId, p_market:sp.market, p_selection:sp.selection, p_stake:stake});
+    closeBetSlip(); await refreshAccount(); updateBal(); checkUBI(); showToast(`Placed ${stake} R on ${placed}`);
+  }catch(e){ showToast(e.message); }
+  finally{ placing=false; }
+}
+async function claimTopupServer(){
+  try{ await rpc('claim_topup'); await refreshAccount(); updateBal(); checkUBI(); showToast('Claimed 300 R daily top-up'); }
+  catch(e){ showToast(e.message); checkUBI(); }
+}
+/* First sign-in on this device: move the guest's open picks (on fights that
+   haven't started) onto the account. Finished guest history stays on the
+   device — it was never verified, so it can't count toward the leaderboard. */
+async function carryOverGuestPicks(){
+  if(!user || !guestStash) return;
+  const flag='paf_moved_'+user.id; try{ if(localStorage.getItem(flag)) return; }catch(e){}
+  const open = guestStash.bets.filter(b=>b.result==='pending' && !b.resolved);
+  let moved=0;
+  for(const b of open){
+    const ev=events.find(e=>e.fights.some(f=>f.id===b.fightId)); const sp=toServerPick(b);
+    if(!ev || eventLocked(ev) || !sp || b.stake>balance) continue;
+    try{ await rpc('place_pick',{p_fight:b.fightId, p_market:sp.market, p_selection:sp.selection, p_stake:b.stake}); balance-=b.stake; moved++; b.moved=true; }catch(e){}
+  }
+  try{ localStorage.setItem(flag,'1'); }catch(e){}
+  if(moved){
+    // the moved picks now live on the account: refund them on the guest side
+    guestStash.balance += open.filter(b=>b.moved).reduce((t,b)=>t+b.stake,0);
+    guestStash.bets = guestStash.bets.filter(b=>!b.moved);
+    try{ localStorage.setItem('ringside_state', JSON.stringify(guestStash)); }catch(e){}
+    await refreshAccount();
+    showToast(`Moved ${moved} open pick${moved>1?'s':''} to your account`);
+  }
+}
+async function loadLeaderboard(){
+  const el=document.getElementById('lb-panel'); if(!el) return;
+  if(!sb){ el.innerHTML=''; return; }
+  try{
+    const rows = await rpc('leaderboard',{p_limit:25});
+    if(!rows || !rows.length){ el.innerHTML='<div class="empty-state">No ranked players yet — sign in and be first.</div>'; return; }
+    const me = profile?.username;
+    el.innerHTML = `<h3 class="section-title">Leaderboard</h3><div class="leaderboard">${rows.map((r,i)=>`
+      <div class="lb-row ${r.username===me?'me':''}"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${esc(r.username).charAt(0).toUpperCase()}</div>
+      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance">${Number(r.balance).toLocaleString()} R</div>
+      <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`).join('')}</div>
+      ${user?'':'<p class="stats-note"><a href="#" onclick="openModal(\'signinModal\');return false">Sign in</a> to get on the board.</p>'}`;
+  }catch(e){ el.innerHTML=''; }
+}
+
 /* ── People's Scorecard ─────────────────────────────────────────────
    UFC-style fights: score each round (10-9, 10-8, 10-10) like a judge.
    ONE fights: ONE's judges score the whole fight, so fans give one verdict
@@ -725,7 +918,8 @@ function scorecardHtml(f, ev){
     lines.push(`<div><b>Fans:</b> ${Math.round(lead[1]*100)}% scored it for ${lead[0]} <span class="sc-dim">(${s.n} cards)</span></div>`);
     const rb=robbery(f);
     if(rb && rb.level==='robbery') lines.push(`<div class="sc-rob">Robbery meter: ${rb.pct}% of fans had the other guy winning.</div>`);
-  } else if(SCORE_API) lines.push(`<div class="sc-dim">Be one of the first fan cards on this fight.</div>`);
+  } else if(SCORE_API && !user) lines.push(`<div class="sc-dim"><a href="#" onclick="event.preventDefault();event.stopPropagation();openModal('signinModal')">Sign in</a> to add your card to the fan vote.</div>`);
+  else if(SCORE_API) lines.push(`<div class="sc-dim">Be one of the first fan cards on this fight.</div>`);
   else lines.push(`<div class="sc-dim">Community scorecards are coming soon.</div>`);
   return head + `<div class="sc-body">${rows}<div class="sc-summary">${lines.join('')}</div></div>`;
 }
@@ -742,31 +936,25 @@ function scorePick(id, round, val){
   saveCards(); rerenderCard(id);
   submitPick(id, round, clearing?'clear':val);
 }
-function apiHeaders(){
-  const h={'apikey':SCORE_API.key,'Content-Type':'application/json'};
-  if(/^eyJ/.test(SCORE_API.key)) h['Authorization']='Bearer '+SCORE_API.key;   // legacy anon keys only
-  return h;
-}
+let scNudged=false;
 async function submitPick(id, round, pick){
-  if(!SCORE_API) return;
+  if(!DB) return;
+  if(!user){ if(!scNudged){ scNudged=true; showToast('Saved on this device — sign in to add your card to the fan vote'); } return; }
   try{
-    const r = await fetch(SCORE_API.url.replace(/\/$/,'')+'/rest/v1/rpc/submit_score',{method:'POST',headers:apiHeaders(),
-      body:JSON.stringify({p_fight:id,p_round:round,p_device:deviceId(),p_pick:pick})});
-    if(!r.ok) throw new Error(r.status);
+    await rpc('submit_score',{p_fight:id, p_round:round, p_pick:pick});
     setTimeout(()=>{ delete loadedFor[id]; loadCommunity(events[activeEventIdx], true); }, 400);
   }catch(e){ showToast('Saved on this device — fan scores are offline right now'); }
 }
 const loadedFor = {};
 async function loadCommunity(ev, force){
-  if(!SCORE_API || !ev) return;
+  if(!SCORE_API || !sb || !ev) return;
   const ids = ev.fights.filter(f=>f.result || eventLocked(ev)).map(f=>f.id).filter(id=>force || !loadedFor[id]);
   if(!ids.length) return;
   ids.forEach(id=>loadedFor[id]=true);
-  const base=SCORE_API.url.replace(/\/$/,'')+'/rest/v1/rpc/';
   try{
     const [sum, ver] = await Promise.all([
-      fetch(base+'score_summary',{method:'POST',headers:apiHeaders(),body:JSON.stringify({p_fights:ids})}).then(r=>r.ok?r.json():[]),
-      fetch(base+'fan_verdicts',{method:'POST',headers:apiHeaders(),body:JSON.stringify({p_fights:ids})}).then(r=>r.ok?r.json():[]),
+      rpc('score_summary',{p_fights:ids}).catch(()=>[]),
+      rpc('fan_verdicts',{p_fights:ids}).catch(()=>[]),
     ]);
     ids.forEach(id=>community[id]={rounds:{},verdict:{}});
     for(const row of (Array.isArray(sum)?sum:[])){ const c=community[row.fight_key]; if(!c) continue;
@@ -821,6 +1009,7 @@ function placeBet(){
   if(s<=0||s>balance||!selectedPick)return;
   const ev=events.find(e=>e.fights.some(f=>f.id===selectedPick.fightId));
   if(!ev||eventLocked(ev)){closeBetSlip();showToast('Betting is closed for this event');renderFights();return;}
+  if(user){ placeBetServer(s); return; }
   balance-=s;
   bets.push({...selectedPick,stake:s,payout:payoutFor(s,selectedPick.odds),result:'pending',time:Date.now()});
   const placed=selectedPick.pick;  // closeBetSlip() clears selectedPick
@@ -894,15 +1083,17 @@ function renderStats(){
       ${markets}
     </div>
     ${s.total?'':'<div class="empty-state">Make a few picks — your hit rate, streaks and upsets show up here once fights are scored.</div>'}
-    <p class="stats-note">Stats live on this device. A real cross-device leaderboard is on the roadmap.</p>`;
+    <p class="stats-note">${user?'Stats are saved to your account.':(DB?'Guest stats live on this device — sign in to keep them everywhere.':'Stats live on this device.')}</p>
+    <div id="lb-panel"></div>`;
+  loadLeaderboard();
 }
 function checkUBI(){
   const b=document.getElementById('ubi-banner'),today=new Date().toDateString();
   b.style.display=(balance<300&&lastUBIClaim!==today)?'block':'none';
 }
-function claimUBI(){balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 R daily top-up');}
+function claimUBI(){if(user){claimTopupServer();return;}balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 R daily top-up');}
 
-loadEvents().then(()=>checkUBI());
+loadEvents().then(()=>{ checkUBI(); initAuth(); });
 </script>
 <footer style="border-top:1px solid var(--border);margin-top:40px;padding:24px 16px;text-align:center;color:var(--text-muted);font-size:13px;">
   <a href="index.html" style="color:var(--accent);text-decoration:none">Pick A Fight</a> · <a href="about.html" style="color:var(--accent);text-decoration:none">About</a> · <a href="privacy.html" style="color:var(--accent);text-decoration:none">Privacy</a> · <a href="contact.html" style="color:var(--accent);text-decoration:none">Contact</a>

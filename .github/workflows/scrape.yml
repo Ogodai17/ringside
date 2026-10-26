@@ -65,6 +65,15 @@ jobs:
           git diff --staged --quiet || git commit -m "Update fight card data $(date -u +%Y-%m-%d)"
           git push
 
+      # Push fights, odds and results into the database and settle picks.
+      # Needs the SUPABASE_SECRET_KEY repository secret; skips cleanly without it.
+      - name: Sync fights to database + settle picks
+        id: sync
+        continue-on-error: true
+        env:
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: python scraper/sync_db.py
+
       # Free Supabase projects pause after a week without traffic; one tiny
       # read a day keeps the community scorecard database awake.
       - name: Keep scorecard database awake
@@ -74,7 +83,7 @@ jobs:
           import json, sys, urllib.request
           sys.path.insert(0, "scraper")
           import site_config
-          api = site_config.score_api(site_config.load())
+          api = site_config.db_api(site_config.load())
           if not api:
               print("scorecards not configured — skipping"); raise SystemExit
           h = {"apikey": api["key"], "Content-Type": "application/json"}
@@ -98,7 +107,7 @@ jobs:
       # Turn the run red (GitHub emails you) if a scraper failed, after
       # everything else has been saved.
       - name: Flag scraper failures
-        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure' || steps.sitetest.outcome == 'failure'
+        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure' || steps.sync.outcome == 'failure' || steps.sitetest.outcome == 'failure'
         run: |
-          echo "::error::Failure — ONE scraper: ${{ steps.one.outcome }}, UFC scraper: ${{ steps.ufc.outcome }}, site test: ${{ steps.sitetest.outcome }}. Check the step logs above."
+          echo "::error::Failure — ONE scraper: ${{ steps.one.outcome }}, UFC scraper: ${{ steps.ufc.outcome }}, database sync: ${{ steps.sync.outcome }}, site test: ${{ steps.sitetest.outcome }}. Check the step logs above."
           exit 1

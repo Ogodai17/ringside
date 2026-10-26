@@ -517,51 +517,141 @@ def t_scorecard_one(browser):
     pg.close()
 
 
+FAKE_SUPABASE = r"""
+(() => {
+  const st = window.__fake = { session:null, cb:null, accounts:{}, profiles:{}, picks:[], calls:[], scores:[],
+                               summary:[], verdicts:[], others:[{username:'TopDog',balance:9000,won:9,settled:12}] };
+  const err = m => ({ data:null, error:{ message:m } });
+  const me = () => st.session && st.session.user.id;
+  function lockedFight(key){ for(const e of (typeof events!=='undefined'?events:[])) for(const f of e.fights) if(f.id===key) return [e,f]; return [null,null]; }
+  const rpcs = {
+    my_account(){ if(!me()) return err('sign in first'); st.accounts[me()] ??= {balance:5000,last_topup:null};
+      const a=st.accounts[me()]; return {data:[{balance:a.balance, username:st.profiles[me()]||null, last_topup:a.last_topup}], error:null}; },
+    set_username({p_name}){ if(!/^[A-Za-z0-9_]{3,20}$/.test(p_name)) return err('bad name');
+      if(p_name.toLowerCase()==='taken_name') return err('That username is taken'); st.profiles[me()]=p_name; return {data:p_name,error:null}; },
+    place_pick({p_fight,p_market,p_selection,p_stake}){
+      if(!me()) return err('sign in first'); const [e,f]=lockedFight(p_fight);
+      if(!f || eventLocked(e)) return err('Betting is closed for this fight');
+      const a=st.accounts[me()]; if(p_stake>a.balance) return err('Not enough R');
+      const odds = p_market==='winner' ? (p_selection==='a'?f.oddsA:f.oddsB) : 1.9;
+      a.balance-=p_stake; st.picks.push({id:st.picks.length+1,user:me(),fight_key:p_fight,market:p_market,selection:p_selection,odds,stake:p_stake,status:'pending',payout:0,created_at:new Date().toISOString()});
+      return {data:[{pick_id:st.picks.length,balance:a.balance,odds}],error:null}; },
+    claim_topup(){ const a=st.accounts[me()]; if(a.balance>=300) return err('No top-up available right now'); a.balance+=300; return {data:a.balance,error:null}; },
+    leaderboard(){ const rows=[...st.others]; for(const [id,u] of Object.entries(st.profiles)) rows.push({username:u,balance:st.accounts[id]?.balance??5000,won:0,settled:0});
+      rows.sort((x,y)=>y.balance-x.balance); return {data:rows,error:null}; },
+    submit_score(args){ if(!me()) return err('sign in first'); st.scores.push(args); return {data:null,error:null}; },
+    score_summary(){ return {data:st.summary,error:null}; },
+    fan_verdicts(){ return {data:st.verdicts,error:null}; },
+  };
+  window.__PAF_SUPABASE__ = {
+    rpc: async (name,args) => { st.calls.push([name,args]); return rpcs[name] ? rpcs[name](args||{}) : err('no such function'); },
+    from: (table) => { const q = { select(){return q;}, order(){return q;}, limit(){ return Promise.resolve({data: st.picks.filter(p=>p.user===me()), error:null}); } }; return q; },
+    auth: {
+      getSession: async () => ({ data:{ session: st.session } }),
+      onAuthStateChange: (cb) => { st.cb = cb; return { data:{ subscription:{ unsubscribe(){} } } }; },
+      signInWithOAuth: async ({provider}) => { st.provider=provider; st.session={ user:{ id:'user-'+provider } }; setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {error:null}; },
+      signOut: async () => { st.session=null; setTimeout(()=>st.cb && st.cb('SIGNED_OUT', null), 0); return {error:null}; },
+    },
+  };
+})();
+"""
+
+
+def with_db(site):
+    html = (site / "index.html").read_text()
+    html = html.replace("const DB = null", 'const DB = {"url":"https://fake-db.test","key":"sb_publishable_test"}')
+    (site / "index.html").write_text(html)
+    return site
+
+
 def t_scorecard_community(browser):
-    site = make_site()
+    site = with_db(make_site())
     found = _decision_fight(site)
     if not found:
         return
     _, _, a_name, winner = found
-    html = (site / "index.html").read_text()
-    html = html.replace("const SCORE_API = null", 'const SCORE_API = {"url":"https://fake-db.test","key":"sb_publishable_test"}')
-    (site / "index.html").write_text(html)
-    calls = []
     srv, url = serve(site)
     ctx = browser.new_context(viewport={"width": 390, "height": 900}); p = ctx.new_page(); errs = []
     p.on("pageerror", lambda e: errs.append(str(e)))
-    fid_holder = {}
-    def handle(route):
-        req = route.request; body = json.loads(req.post_data or "{}")
-        calls.append((req.url.rsplit("/", 1)[-1], body, req.headers.get("apikey")))
-        fid = fid_holder.get("id")
-        if req.url.endswith("score_summary"):
-            data = [{"fight_key": fid, "round": 1, "pick": "b109" if winner == "a" else "a109", "n": 14},
-                    {"fight_key": fid, "round": 1, "pick": "a109" if winner == "a" else "b109", "n": 4}] if fid else []
-        elif req.url.endswith("fan_verdicts"):
-            loser = "b" if winner == "a" else "a"
-            data = [{"fight_key": fid, "winner": loser, "n": 15}, {"fight_key": fid, "winner": winner, "n": 3}] if fid else []
-        else:
-            data = ""
-        route.fulfill(status=200, content_type="application/json", body=json.dumps(data))
-    p.route("https://fake-db.test/**", handle)
+    p.add_init_script(FAKE_SUPABASE)
     p.goto(url + "index.html"); p.wait_for_timeout(600)
     idx = p.evaluate("(n)=>events.findIndex(e=>e.fights.some(f=>unesc(f.a.name)===n))", a_name)
     fid = p.evaluate(f"(n)=>events[{idx}].fights.find(f=>unesc(f.a.name)===n).id", a_name)
-    fid_holder["id"] = fid
-    p.evaluate(f"switchEvent({idx})"); p.wait_for_timeout(500)
+    loser_r1 = "b109" if winner == "a" else "a109"
+    win_r1 = "a109" if winner == "a" else "b109"
+    loser = "b" if winner == "a" else "a"
+    p.evaluate(f"""()=>{{ __fake.summary=[{{fight_key:'{fid}',round:1,pick:'{loser_r1}',n:14}},{{fight_key:'{fid}',round:1,pick:'{win_r1}',n:4}}];
+                       __fake.verdicts=[{{fight_key:'{fid}',winner:'{loser}',n:15}},{{fight_key:'{fid}',winner:'{winner}',n:3}}]; }}""")
+    p.evaluate(f"switchEvent({idx})"); p.evaluate("loadCommunity(events[activeEventIdx], true)"); p.wait_for_timeout(400)
     badge = p.evaluate(f"document.querySelector('#fight-{fid} .fan-badge')?.innerText||''")
     check("robbery" in badge.lower(), "Robbery badge appears when most fans disagree with a decision", badge or "no badge")
     p.evaluate(f"toggleCard('{fid}')")
     txt = p.evaluate(f"document.getElementById('scw-{fid}').innerText")
     check("Fans:" in txt and "83%" in txt and "18 cards" in txt, "Scorecard shows fan consensus and card count", txt[:220])
     check(p.locator(f"#scw-{fid} .sc-fans").count() >= 1, "Per-round fan split bars render", "")
-    p.evaluate(f"scorePick('{fid}',2,'a109')"); p.wait_for_timeout(300)
-    sub = [c for c in calls if c[0] == "submit_score"]
-    ok = sub and sub[-1][1].get("p_fight") == fid and sub[-1][1].get("p_round") == 2 and sub[-1][1].get("p_pick") == "a109" \
-         and len(sub[-1][1].get("p_device", "")) == 36 and sub[-1][2] == "sb_publishable_test"
-    check(bool(ok), "Picks are sent to the community database correctly", str(sub[-1:] if sub else "no submit call"))
+    p.evaluate(f"scorePick('{fid}',2,'a109')"); p.wait_for_timeout(200)
+    check(not p.evaluate("__fake.calls.some(c=>c[0]==='submit_score')"), "Guests' scorecards stay local (no fan vote without sign-in)", "")
+    p.evaluate("signIn('google')"); p.wait_for_timeout(500)
+    p.evaluate("closeModal('usernameModal')")
+    p.evaluate(f"scorePick('{fid}',3,'b109')"); p.wait_for_timeout(300)
+    sub = p.evaluate("__fake.calls.filter(c=>c[0]==='submit_score').map(c=>c[1])")
+    check(bool(sub) and sub[-1] == {"p_fight": fid, "p_round": 3, "p_pick": "b109"}, "Signed-in scorecards go to the fan vote", str(sub[-1:]))
     check(not errs, "No JS errors with community data", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_accounts(browser):
+    site = with_db(make_site())
+    srv, url = serve(site)
+    ctx = browser.new_context(viewport={"width": 390, "height": 900}); p = ctx.new_page(); errs = []
+    p.on("pageerror", lambda e: errs.append(str(e)))
+    p.add_init_script(FAKE_SUPABASE)
+    p.goto(url + "index.html"); p.wait_for_timeout(700)
+    check(p.is_visible("#authBtn") and p.inner_text("#authBtn") == "Sign in", "Sign-in button shows when the database is connected", "")
+    # guest makes an open pick
+    fid = p.evaluate("""()=>{ for(let i=0;i<events.length;i++){ if(!eventLocked(events[i])) { switchEvent(i); return events[i].fights[0].id; } } }""")
+    p.evaluate(f"selectWinner('{fid}','A')"); p.fill("#stakeInput", "200"); p.evaluate("updatePayout()"); p.click("#placeBetBtn"); p.wait_for_timeout(100)
+    check(p.evaluate("balance") == 4800 and p.evaluate("bets.length") == 1, "Guest pick works before signing in", "")
+    # sign in
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check(p.evaluate("document.getElementById('signinModal').classList.contains('open')"), "Sign-in sheet opens with Google + Discord", "")
+    check(p.locator(".oauth-btn.google").count() == 1 and p.locator(".oauth-btn.discord").count() == 1, "Both Google and Discord buttons present", "")
+    p.click(".oauth-btn.discord"); p.wait_for_timeout(600)
+    check(p.evaluate("__fake.provider") == "discord", "Discord sign-in is requested", "")
+    check(p.evaluate("document.getElementById('usernameModal').classList.contains('open')"), "New players are asked to pick a username", "")
+    p.fill("#usernameInput", "ab"); p.click("#usernameModal .oauth-btn"); p.wait_for_timeout(100)
+    check("3–20" in p.inner_text("#usernameErr"), "Too-short usernames are rejected", p.inner_text("#usernameErr"))
+    p.fill("#usernameInput", "taken_name"); p.click("#usernameModal .oauth-btn"); p.wait_for_timeout(150)
+    check("taken" in p.inner_text("#usernameErr"), "Taken usernames are rejected", p.inner_text("#usernameErr"))
+    p.fill("#usernameInput", "LegKickLarry"); p.click("#usernameModal .oauth-btn"); p.wait_for_timeout(150)
+    check(p.inner_text("#authBtn") == "LegKickLarry" and "LegKickLarry" in p.inner_text("#connectText"), "Username shows in the header once set", p.inner_text("#authBtn"))
+    moved = p.evaluate("__fake.picks.filter(x=>x.user==='user-discord').length")
+    check(moved == 1 and p.evaluate("balance") == 4800, "Guest's open pick moves to the new account", f"server picks {moved}, balance {p.evaluate('balance')}")
+    # server pick via the UI + double-submit guard
+    fid2 = p.evaluate(f"""()=>events[activeEventIdx].fights.find(f=>f.id!=='{fid}').id""")
+    p.evaluate(f"selectWinner('{fid2}','B')"); p.fill("#stakeInput", "300"); p.evaluate("updatePayout()")
+    p.evaluate("placeBet(); placeBet();"); p.wait_for_timeout(400)
+    n = p.evaluate("__fake.picks.filter(x=>x.user==='user-discord').length")
+    check(n == 2 and p.evaluate("balance") == 4500, "Signed-in picks are placed on the server (once)", f"{n} picks, balance {p.evaluate('balance')}")
+    p.click('[data-tab="mybets"]'); p.wait_for_timeout(150)
+    check(p.locator(".bet-history-card").count() == 2, "My Picks shows the account's picks", "")
+    p.click('[data-tab="stats"]'); p.wait_for_timeout(300)
+    lb = p.evaluate("document.getElementById('lb-panel').innerText")
+    check("TopDog" in lb and "LegKickLarry" in lb and p.locator(".lb-row.me").count() == 1, "Leaderboard shows real usernames, you highlighted", lb[:120])
+    # sign out -> guest restored (moved pick refunded on guest side)
+    p.evaluate("signOut()"); p.wait_for_timeout(400)
+    check(p.inner_text("#authBtn") == "Sign in" and p.evaluate("balance") == 5000 and p.evaluate("bets.length") == 0,
+          "Signing out returns to guest mode cleanly", f"balance {p.evaluate('balance')}, bets {p.evaluate('bets.length')}")
+    # sign back in: no duplicate carry-over
+    p.evaluate("signIn('discord')"); p.wait_for_timeout(500)
+    n2 = p.evaluate("__fake.picks.filter(x=>x.user==='user-discord').length")
+    check(n2 == 2, "Signing in again doesn't duplicate moved picks", f"{n2} picks")
+    overflow = p.evaluate("document.documentElement.scrollWidth - window.innerWidth")
+    check(overflow <= 1, "Header with sign-in fits a phone screen", f"{overflow}px")
+    if SHOTS:
+        p.click('[data-tab="fights"]'); p.evaluate("window.scrollTo(0,0)"); p.screenshot(path=str(SHOTS / "signed_in_390.png"))
+        p.evaluate("signOut()"); p.wait_for_timeout(300); p.evaluate("openModal('signinModal')"); p.screenshot(path=str(SHOTS / "signin_390.png"))
+    check(not errs, "No JS errors in the account flow", "; ".join(errs[:2]))
     ctx.close(); srv.shutdown()
 
 
@@ -571,11 +661,11 @@ def t_secret_key_guard(browser):
     bad = []
     for key in ["sb_secret_abc123", "random-string", "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.x"]:
         try:
-            site_config.score_api({"scorecards_url": "https://x.supabase.co", "scorecards_publishable_key": key})
+            site_config.db_api({"database_url": "https://x.supabase.co", "database_publishable_key": key})
             bad.append(key[:12])
         except SystemExit:
             pass
-    ok_pub = site_config.score_api({"scorecards_url": "https://x.supabase.co", "scorecards_publishable_key": "sb_publishable_ok"})
+    ok_pub = site_config.db_api({"database_url": "https://x.supabase.co", "database_publishable_key": "sb_publishable_ok"})
     check(not bad and ok_pub, "Build refuses secret database keys, accepts publishable", f"accepted: {bad}")
 
 
@@ -583,7 +673,7 @@ def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
              t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
-             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard]
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
         browser = pw.chromium.launch()

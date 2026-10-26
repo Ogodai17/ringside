@@ -62,7 +62,7 @@ def main():
         "{{STATIC_FIGHTS}}": static_fights_html(),
         "{{SITE_URL_JSON}}": json.dumps(cfg["site_url"]),
         "{{SOCIAL_HEAD}}": site_config.social_image_tags(cfg),
-        "{{SCORE_API_JSON}}": json.dumps(site_config.score_api(cfg)),
+        "{{DB_JSON}}": json.dumps(site_config.db_api(cfg)),
     }
 
     for tpl in sorted(TEMPLATES.glob("*.html")):
@@ -91,7 +91,7 @@ def main():
         ("Google Analytics", cfg["ga_measurement_id"]),
         ("AdSense", cfg["adsense_publisher_id"]),
         ("affiliate button", cfg["affiliate_url"]),
-        ("community scorecards", cfg.get("scorecards_url")),
+        ("accounts + community database", cfg.get("database_url")),
     ] if on]
     print(f"✓ Pages built for {cfg['site_url']} — on: {', '.join(features) or 'none (no IDs set yet)'}")
 
