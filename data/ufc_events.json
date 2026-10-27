@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-26T20:21:30Z",
+  "scraped_at": "2026-10-27T15:37:12Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -99,7 +99,7 @@
             "name": "Ode' Osbourne",
             "country": "Jamaica",
             "flag": "🇯🇲",
-            "record": "13-10-0",
+            "record": "13-9-0",
             "profile": ""
           },
           "fighter_b": {
@@ -110,10 +110,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.43,
+          "p_a": 0.445,
           "odds": [
-            2.2,
-            1.65
+            2.12,
+            1.7
           ]
         },
         {
