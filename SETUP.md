@@ -59,3 +59,23 @@ step 5. The site build refuses to run if a secret key ends up in
 After step 6, Claude adds the URL + publishable key to `site_config.json`, the
 site rebuilds with a **Sign in** button, and the next daily run syncs fights
 into the database.
+
+---
+
+# Discord feed (optional, works without the database)
+
+Posts the week's cards and the results to a Discord channel, with links back
+to the site. Nothing else — no picks from Discord.
+
+1. In the Discord server: **Server Settings → Integrations → Webhooks → New
+   Webhook** → pick the channel → **Copy Webhook URL**. (Any server admin can
+   do this for their own server and send you the URL.)
+2. GitHub repo → **Settings → Secrets and variables → Actions → New repository
+   secret** → Name `DISCORD_WEBHOOKS`, value = the URL. Several servers: one
+   URL per line.
+3. Done. The daily run posts upcoming cards within 7 days and results the
+   morning after. Once the database (above) is live, decisions also get the
+   People's Scorecard verdict ("Fans say robbery · 72%").
+
+To preview a post without sending: `python scraper/discord_feed.py --dry-run`.
+To re-post something, delete its line from `data/discord_feed_state.json`.

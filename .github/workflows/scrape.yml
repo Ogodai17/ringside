@@ -57,6 +57,23 @@ jobs:
       - name: Generate fight previews + sitemap (all promotions, one pass)
         run: python scraper/generate_previews.py --data data/events.json data/ufc_events.json --out previews
 
+      # Post this week's cards and fresh results to Discord (feed only, no
+      # picks). Needs the DISCORD_WEBHOOKS repository secret; skips without it.
+      # The feed's own test runs first so a broken feed never posts junk.
+      - name: Test Discord feed
+        id: feedtest
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: python tests/discord_feed_test.py
+
+      - name: Post to Discord
+        id: feed
+        if: github.event_name != 'push' && steps.feedtest.outcome == 'success'
+        continue-on-error: true
+        env:
+          DISCORD_WEBHOOKS: ${{ secrets.DISCORD_WEBHOOKS }}
+        run: python scraper/discord_feed.py
+
       - name: Commit updated site
         run: |
           git config user.name "Pick A Fight Bot"
@@ -107,7 +124,7 @@ jobs:
       # Turn the run red (GitHub emails you) if a scraper failed, after
       # everything else has been saved.
       - name: Flag scraper failures
-        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure' || steps.sync.outcome == 'failure' || steps.sitetest.outcome == 'failure'
+        if: steps.one.outcome == 'failure' || steps.ufc.outcome == 'failure' || steps.sync.outcome == 'failure' || steps.sitetest.outcome == 'failure' || steps.feedtest.outcome == 'failure' || steps.feed.outcome == 'failure'
         run: |
-          echo "::error::Failure — ONE scraper: ${{ steps.one.outcome }}, UFC scraper: ${{ steps.ufc.outcome }}, database sync: ${{ steps.sync.outcome }}, site test: ${{ steps.sitetest.outcome }}. Check the step logs above."
+          echo "::error::Failure — ONE scraper: ${{ steps.one.outcome }}, UFC scraper: ${{ steps.ufc.outcome }}, database sync: ${{ steps.sync.outcome }}, site test: ${{ steps.sitetest.outcome }}, Discord feed test: ${{ steps.feedtest.outcome }}, Discord post: ${{ steps.feed.outcome }}. Check the step logs above."
           exit 1
