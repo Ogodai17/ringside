@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-27T15:37:11Z",
+  "scraped_at": "2026-10-28T16:21:10Z",
   "source": "onefc.com",
   "event_count": 3,
   "events": [
@@ -595,6 +595,32 @@
         },
         {
           "id": 7,
+          "label": "Lightweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Bogdan Shumarov",
+            "country": "Netherlands",
+            "flag": "🇳🇱",
+            "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
+            "record": "3-1-0",
+            "finish_rate": 100
+          },
+          "fighter_b": {
+            "name": "Gasham Mammadov",
+            "country": "Azerbaijan",
+            "flag": "🇦🇿",
+            "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
+            "record": ""
+          },
+          "result": null,
+          "p_a": 0.507,
+          "odds": [
+            1.86,
+            1.91
+          ]
+        },
+        {
+          "id": 8,
           "label": "Bantamweight MMA",
           "discipline": "mma",
           "fighter_a": {
@@ -619,9 +645,9 @@
           ]
         },
         {
-          "id": 8,
-          "label": "Lightweight Kickboxing",
-          "discipline": "kb",
+          "id": 9,
+          "label": "Bout 9",
+          "discipline": "unknown",
           "fighter_a": {
             "name": "Kalandar Tabarov",
             "country": "Indonesia",
@@ -641,32 +667,6 @@
           "odds": [
             2.14,
             1.69
-          ]
-        },
-        {
-          "id": 9,
-          "label": "Bout 9",
-          "discipline": "unknown",
-          "fighter_a": {
-            "name": "Bogdan Shumarov",
-            "country": "Netherlands",
-            "flag": "🇳🇱",
-            "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
-            "record": "3-1-0",
-            "finish_rate": 100
-          },
-          "fighter_b": {
-            "name": "Gasham Mammadov",
-            "country": "Azerbaijan",
-            "flag": "🇦🇿",
-            "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
-            "record": ""
-          },
-          "result": null,
-          "p_a": 0.507,
-          "odds": [
-            1.86,
-            1.91
           ]
         }
       ]
