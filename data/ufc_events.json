@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-10-30T16:22:44Z",
+  "scraped_at": "2026-10-31T15:33:04Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -320,7 +320,7 @@
     },
     {
       "name": "UFC Fight Night",
-      "subtitle": "Bonfim vs. Brady",
+      "subtitle": "Cortes Acosta vs. Walker",
       "date": "2026-11-07",
       "start": "2026-11-07T22:00:00Z",
       "venue": "Meta APEX, Las Vegas, USA",
@@ -331,28 +331,28 @@
       "fights": [
         {
           "id": 1,
-          "label": "Welterweight (5 rds)",
+          "label": "Heavyweight (5 rds)",
           "discipline": "mma",
           "fighter_a": {
-            "name": "Gabriel Bonfim",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "record": "20-1-0",
+            "name": "Waldo Cortes Acosta",
+            "country": "Dominican Republic",
+            "flag": "🇩🇴",
+            "record": "17-4-0",
             "profile": ""
           },
           "fighter_b": {
-            "name": "Sean Brady",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "record": "19-2-0",
+            "name": "Johnny Walker",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "record": "23-10-0",
             "profile": ""
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.553,
+          "p_a": 0.538,
           "odds": [
-            1.7,
-            2.11
+            1.75,
+            2.04
           ]
         },
         {
@@ -482,6 +482,31 @@
         },
         {
           "id": 7,
+          "label": "Heavyweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Gabriel Lorenço",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "record": "8-1-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Thomas Petersen",
+            "country": "USA",
+            "flag": "🇺🇸",
+            "record": "11-5-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.54,
+          "odds": [
+            1.75,
+            2.05
+          ]
+        },
+        {
+          "id": 8,
           "label": "Welterweight",
           "discipline": "mma",
           "fighter_a": {
@@ -506,7 +531,7 @@
           ]
         },
         {
-          "id": 8,
+          "id": 9,
           "label": "Women's Bantamweight",
           "discipline": "mma",
           "fighter_a": {
@@ -531,7 +556,7 @@
           ]
         },
         {
-          "id": 9,
+          "id": 10,
           "label": "Featherweight",
           "discipline": "mma",
           "fighter_a": {
@@ -556,7 +581,7 @@
           ]
         },
         {
-          "id": 10,
+          "id": 11,
           "label": "Featherweight",
           "discipline": "mma",
           "fighter_a": {
@@ -581,7 +606,7 @@
           ]
         },
         {
-          "id": 11,
+          "id": 12,
           "label": "Featherweight",
           "discipline": "mma",
           "fighter_a": {
@@ -606,7 +631,7 @@
           ]
         },
         {
-          "id": 12,
+          "id": 13,
           "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -631,7 +656,7 @@
           ]
         },
         {
-          "id": 13,
+          "id": 14,
           "label": "Women's Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -653,31 +678,6 @@
           "odds": [
             1.64,
             2.22
-          ]
-        },
-        {
-          "id": 14,
-          "label": "Heavyweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Gabriel Lorenço",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "record": "8-1-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Alvin Hines",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "record": "7-2-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.564,
-          "odds": [
-            1.67,
-            2.16
           ]
         }
       ]

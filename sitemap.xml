@@ -26,11 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-friday-fights-176-the-inner-circle-36.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/ufc-fight-night-moicano-vs-nolan.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -46,7 +41,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/ufc-fight-night-bonfim-vs-brady.html</loc>
+    <loc>https://pickafight.now/previews/ufc-fight-night-cortes-acosta-vs-walker.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/one-friday-fights-178-the-inner-circle-38.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -69,16 +69,6 @@
     <loc>https://pickafight.now/previews/ufc-fight-night-buckley-vs-malott.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/winknockout-r2ko-r2-vs-khunsuk-t1-fight-academy-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/yodudon-k-tongtalingchan-vs-sitthichai-sor-dechapan-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/renato-moicano-vs-tom-nolan-prediction.html</loc>
@@ -106,12 +96,22 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/gabriel-bonfim-vs-sean-brady-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/waldo-cortes-acosta-vs-johnny-walker-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/mantas-kondratavicius-vs-andre-petroski-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/rodtang-jitmuangnon-vs-nong-o-hama-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/shimon-yoshinari-vs-ramadan-ondash-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
