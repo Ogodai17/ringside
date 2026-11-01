@@ -285,10 +285,18 @@ def t_hostile_names(browser):
     payload = '<img src=x onerror="window.__xss=1">'
     def mutate(d):
         p = d / "data" / "events.json"; j = json.loads(p.read_text())
-        f = j["events"][0]["fights"][0]
+        ev = j["events"][0]
+        # Keep this event open for picks — the names are checked on My Picks,
+        # which only shows them once a pick is placed (fight day locks it).
+        ev["date"] = (date.today() + timedelta(days=7)).isoformat()
+        ev["status"] = "upcoming"
+        ev.pop("start", None)
+        for fx in ev["fights"]:
+            fx["result"] = None
+        f = ev["fights"][0]
         f["fighter_a"]["name"] = payload
         f["fighter_b"]["name"] = "Lone'er O\"Brien Ñúñez 李"
-        j["events"][0]["venue"] = '<b onmouseover="window.__xss=2">Venue</b>'
+        ev["venue"] = '<b onmouseover="window.__xss=2">Venue</b>'
         p.write_text(json.dumps(j))
     pg = Page(browser, make_site(mutate))
     pg.js("switchEvent(events.findIndex(e=>e.fights.some(f=>f.a.name.includes('img src'))))")
@@ -404,6 +412,8 @@ def t_share_and_stats(browser):
     p.click(".share-btn"); p.wait_for_timeout(200)
     toast = p.evaluate("document.getElementById('toast').textContent")
     check("first" in toast.lower(), "Share with no picks explains what to do", toast)
+    # Open the first event still taking picks (the default tab can be a locked fight-day card)
+    p.evaluate("(()=>{ const i=events.findIndex(e=>!eventLocked(e)); if(i>=0) switchEvent(i); })()"); p.wait_for_timeout(150)
     fid = p.evaluate("document.querySelector('.fight-card .odd-btn:not([disabled])').closest('.fight-card').id.replace('fight-','')")
     p.evaluate(f"selectWinner('{fid}','A')"); p.fill("#stakeInput", "250"); p.evaluate("updatePayout()"); p.click("#placeBetBtn")
     with p.expect_download() as dl:
@@ -630,7 +640,9 @@ def t_accounts(browser):
     p.goto(url + "index.html"); p.wait_for_timeout(700)
     check(p.is_visible("#authBtn") and p.inner_text("#authBtn") == "Sign in", "Sign-in button shows when the database is connected", "")
     # guest makes an open pick
-    fid = p.evaluate("""()=>{ for(let i=0;i<events.length;i++){ if(!eventLocked(events[i])) { switchEvent(i); return events[i].fights[0].id; } } }""")
+    # Needs an open event with 2+ fights (a second pick is placed below);
+    # real cards are sometimes announced with just one bout.
+    fid = p.evaluate("""()=>{ for(let i=0;i<events.length;i++){ if(!eventLocked(events[i]) && events[i].fights.length>=2) { switchEvent(i); return events[i].fights[0].id; } } }""")
     p.evaluate(f"selectWinner('{fid}','A')"); p.fill("#stakeInput", "200"); p.evaluate("updatePayout()"); p.click("#placeBetBtn"); p.wait_for_timeout(100)
     check(p.evaluate("balance") == 4800 and p.evaluate("bets.length") == 1, "Guest pick works before signing in", "")
     # sign in
