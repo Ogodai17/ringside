@@ -514,7 +514,8 @@ def t_scorecard_one(browser):
         e["fights"][0]["result"] = {"winner": "a", "method": "Decision", "round": None}
         p.write_text(json.dumps(j))
     pg = Page(browser, make_site(mutate))
-    idx = pg.js("events.findIndex(e=>e.promotion==='ONE' && e.status==='completed')")
+    # Find the event set up above (real finished ONE events can exist too)
+    idx = pg.js("events.findIndex(e=>e.promotion==='ONE' && e.date==='2026-01-01')")
     pg.js(f"switchEvent({idx})")
     fid = pg.js("events[activeEventIdx].fights[0].id")
     pg.js(f"toggleCard('{fid}')")
