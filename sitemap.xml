@@ -76,7 +76,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/christian-lee-vs-tye-ruotolo-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/isannuea-sor-sasiwat-vs-jack-siatanyokkrok-pk-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/saksri-superlek-muaythai-vs-superball-sitcho-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
