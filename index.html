@@ -511,6 +511,10 @@ function resolveResults(){
     if(!fight || !fight.result) return;
     const r = fight.result;
     const market = bet.type || bet.market;
+    if(r.winner==='void'){                           // bout cancelled: refund every pick
+      bet.resolved = true; bet.result = 'void'; bet.payout = bet.stake;
+      balance += bet.stake; changed = true; return;
+    }
     // UFC data can say "finished in round N" without saying KO vs submission.
     const isDecision = r.method==='Decision';
     const isFinish = r.finish===true || (!!r.method && !isDecision && r.method!=='Draw');
@@ -609,7 +613,9 @@ function renderFights(){
     const done = !!f.result || eventLocked(ev);
     const res = f.result || {};
     const winnerName = res.winner==='a'?f.a.name:res.winner==='b'?f.b.name:res.winner==='draw'?'Draw':'';
-    const resultBadge = !done ? '' : f.result
+    const resultBadge = !done ? '' : res.winner==='void'
+      ? `<div class="result-badge">Bout cancelled — picks refunded</div>`
+      : f.result
       ? `<div class="result-badge">${winnerName} — ${res.method||'Finish'}${res.round?' (Rd '+res.round+')':''}</div>`
       : `<div class="result-badge">Betting closed — awaiting result</div>`;
     const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
@@ -653,7 +659,7 @@ function renderFights(){
           <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
         </div>
       </div>`}
-      ${done?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
+      ${done&&res.winner!=='void'?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
       ${DB?`<div class="tk-wrap" id="tk-${f.id}">${takesHtml(f,ev)}</div>`:''}
     </div>`;
   }).join('');

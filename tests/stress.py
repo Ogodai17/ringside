@@ -231,6 +231,36 @@ def t_stale_event(browser):
     pg.close()
 
 
+def t_cancelled_bout(browser):
+    """A bout that never happened refunds every pick on it, and says so."""
+    site = make_site()
+    pg = Page(browser, site)
+    fid = first_open_fight(pg)["id"]
+    pg.js("(id)=>selectWinner(id,'A')", fid)
+    pg.p.fill("#stakeInput", "250"); pg.js("updatePayout()")
+    pg.p.click("#placeBetBtn"); pg.p.wait_for_timeout(150)
+    bal_after_pick = pg.js("balance")
+    a_name = pg.js("(id)=>{for(const e of events)for(const f of e.fights)if(f.id===id)return f.a.name}", fid)
+    for fn in ("events.json", "ufc_events.json"):
+        fp = site / "data" / fn; j = json.loads(fp.read_text())
+        for e in j["events"]:
+            for f in e.get("fights", []):
+                if f["fighter_a"]["name"] == a_name:
+                    f["result"] = {"winner": "void", "method": "Cancelled", "round": None}
+        fp.write_text(json.dumps(j))
+    pg.reload()
+    check(pg.js("balance") - bal_after_pick == 250 and pg.js("bets[0].result") == "void",
+          "Cancelled bout refunds the stake", f"refunded {pg.js('balance') - bal_after_pick}, {pg.js('bets[0].result')}")
+    pg.js("(id)=>{const i=events.findIndex(e=>e.fights.some(f=>f.id===id)); switchEvent(i);}", fid)
+    card = pg.js("(id)=>document.getElementById('fight-'+id).innerText", fid)
+    check("cancelled" in card.lower() and "Score this fight" not in card,
+          "Cancelled bout is labelled, with no scorecard", card[:160])
+    pg.p.click('[data-tab="mybets"]'); pg.p.wait_for_timeout(150)
+    check("Refunded" in pg.js("document.body.innerText"), "My Picks shows the refund", "")
+    check(not pg.errors, "No JS errors on a cancelled bout", "; ".join(pg.errors[:2]))
+    pg.close()
+
+
 def t_payout_consistency(browser):
     """Place a pick, finish the fight, reload: credited amount must equal the slip's promise."""
     site = make_site()
@@ -814,7 +844,7 @@ def t_secret_key_guard(browser):
 
 def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
-             t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
+             t_payout_consistency, t_cancelled_bout, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
              t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts,
              t_leagues, t_hot_takes, t_badges]

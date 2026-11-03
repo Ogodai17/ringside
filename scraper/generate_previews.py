@@ -306,6 +306,8 @@ def result_line(fight: dict) -> str:
     r = fight.get("result")
     if not r:
         return ""
+    if r.get("winner") == "void":
+        return '\n      <div class="result-badge">Bout cancelled</div>'
     fa, fb = fight["fighter_a"], fight["fighter_b"]
     who = h(fa["name"]) if r.get("winner") == "a" else h(fb["name"]) if r.get("winner") == "b" else "Draw"
     how = h(r.get("method") or "finish")
