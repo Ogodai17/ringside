@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-03T17:25:52Z",
+  "scraped_at": "2026-11-03T18:50:58Z",
   "source": "onefc.com",
   "event_count": 4,
   "events": [
@@ -1093,7 +1093,11 @@
             "finish_rate": 0
           },
           "main_event": true,
-          "result": null,
+          "result": {
+            "winner": "void",
+            "method": "Cancelled",
+            "round": null
+          },
           "p_a": 0.715,
           "odds": [
             1.32,
@@ -1120,7 +1124,11 @@
             "record": "1-1-0",
             "finish_rate": 100
           },
-          "result": null,
+          "result": {
+            "winner": "void",
+            "method": "Cancelled",
+            "round": null
+          },
           "p_a": 0.636,
           "odds": [
             1.48,
