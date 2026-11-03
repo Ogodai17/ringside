@@ -1,0 +1,1948 @@
+{
+ "fixture_anchor": "2026-11-02",
+ "scraped_at": "2026-11-01T17:56:01Z",
+ "source": "espn.com",
+ "promotion": "UFC",
+ "event_count": 6,
+ "events": [
+  {
+   "name": "UFC Fight Night",
+   "subtitle": "Cortes Acosta vs. Walker",
+   "date": "2026-11-07",
+   "start": "2026-11-07T22:00:00Z",
+   "venue": "Meta APEX, Las Vegas, USA",
+   "url": "https://www.espn.com/mma/fightcenter/_/id/600061268/league/ufc",
+   "status": "upcoming",
+   "promotion": "UFC",
+   "fight_count": 14,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Heavyweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Waldo Cortes Acosta",
+      "country": "Dominican Republic",
+      "flag": "🇩🇴",
+      "record": "17-4-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Johnny Walker",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "23-10-0",
+      "profile": ""
+     },
+     "result": null,
+     "main_event": true,
+     "p_a": 0.538,
+     "odds": [
+      1.75,
+      2.04
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Mantas Kondratavičius",
+      "country": "Lithuania",
+      "flag": "🇱🇹",
+      "record": "9-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Andre Petroski",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "13-7-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.568,
+     "odds": [
+      1.66,
+      2.18
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Light Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Billy Elekana",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "10-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Lucas Fernando",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "14-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.445,
+     "odds": [
+      2.12,
+      1.7
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Seokhyeon Ko",
+      "country": "South Korea",
+      "flag": "🇰🇷",
+      "record": "13-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Wellington Turman",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "18-8-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.528,
+     "odds": [
+      1.79,
+      2.0
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Davey Grant",
+      "country": "England",
+      "flag": "🇬🇧",
+      "record": "18-8-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Elijah Smith",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "10-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.472,
+     "odds": [
+      2.0,
+      1.79
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Women's Strawweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Tatiana Suarez",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "13-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Virna Jandiroba",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "23-4-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.439,
+     "odds": [
+      2.15,
+      1.68
+     ]
+    },
+    {
+     "id": 7,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jonny Parsons",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "9-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Jose Henrique",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "9-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.435,
+     "odds": [
+      2.17,
+      1.67
+     ]
+    },
+    {
+     "id": 8,
+     "label": "Women's Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Priscila Cachoeira",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "13-9-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Nina Milošević",
+      "country": "Serbia",
+      "flag": "🇷🇸",
+      "record": "9-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.398,
+     "odds": [
+      2.37,
+      1.57
+     ]
+    },
+    {
+     "id": 9,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Austin Bashi",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "14-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Lucas Brennan",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "11-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.593,
+     "odds": [
+      1.59,
+      2.32
+     ]
+    },
+    {
+     "id": 10,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Keiichiro Nakamura",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "record": "8-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Ollie Schmid",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "record": "4-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.689,
+     "odds": [
+      1.37,
+      3.03
+     ]
+    },
+    {
+     "id": 11,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jose Delano",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "17-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Murtazali Magomedov",
+      "country": "Kyrgyzstan",
+      "flag": "🇰🇬",
+      "record": "11-0-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.504,
+     "odds": [
+      1.87,
+      1.9
+     ]
+    },
+    {
+     "id": 12,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Mitch Raposo",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "11-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Marcos Degli",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "15-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.42,
+     "odds": [
+      2.25,
+      1.63
+     ]
+    },
+    {
+     "id": 13,
+     "label": "Women's Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Karine Silva",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "19-7-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Gabriella Fernandes",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "11-4-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.575,
+     "odds": [
+      1.64,
+      2.22
+     ]
+    },
+    {
+     "id": 14,
+     "label": "Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Gabriel Lorenço",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "8-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Thomas Petersen",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "11-5-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.54,
+     "odds": [
+      1.75,
+      2.05
+     ]
+    }
+   ]
+  },
+  {
+   "name": "UFC 334",
+   "subtitle": "Gane vs. Hokit",
+   "date": "2026-11-14",
+   "start": "2026-11-14T22:00:00Z",
+   "venue": "Madison Square Garden, New York, USA",
+   "url": "https://www.espn.com/mma/fightcenter/_/id/600061400/league/ufc",
+   "status": "upcoming",
+   "promotion": "UFC",
+   "fight_count": 14,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Heavyweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Ciryl Gane",
+      "country": "France",
+      "flag": "🇫🇷",
+      "record": "14-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Josh Hokit",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "10-0-0",
+      "profile": ""
+     },
+     "result": null,
+     "main_event": true,
+     "p_a": 0.508,
+     "odds": [
+      1.86,
+      1.92
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Bilal Hasan",
+      "country": "Indonesia",
+      "flag": "🇮🇩",
+      "record": "10-0-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Luis Gurule",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "11-4-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.611,
+     "odds": [
+      1.54,
+      2.43
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Uroš Medić",
+      "country": "Serbia",
+      "flag": "🇷🇸",
+      "record": "14-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Kevin Holland",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "29-15-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.516,
+     "odds": [
+      1.83,
+      1.95
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Caio Borralho",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "18-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Yousri Belgaroui",
+      "country": "Netherlands",
+      "flag": "🇳🇱",
+      "record": "11-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.659,
+     "odds": [
+      1.43,
+      2.76
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Women's Bantamweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Kayla Harrison",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "19-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Amanda Nunes",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "23-5-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.571,
+     "odds": [
+      1.65,
+      2.2
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Donte Johnson",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "9-0-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Cesar Almeida",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "7-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.658,
+     "odds": [
+      1.43,
+      2.76
+     ]
+    },
+    {
+     "id": 7,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jim Miller",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "39-19-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Terrance McKinney",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "18-9-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.591,
+     "odds": [
+      1.6,
+      2.3
+     ]
+    },
+    {
+     "id": 8,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Drew Dober",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "29-15-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Chris Duncan",
+      "country": "Scotland",
+      "flag": "🇬🇧",
+      "record": "15-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.465,
+     "odds": [
+      2.03,
+      1.76
+     ]
+    },
+    {
+     "id": 9,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Stephen Thompson",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "17-9-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Charles Radtke",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "12-5-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.515,
+     "odds": [
+      1.83,
+      1.94
+     ]
+    },
+    {
+     "id": 10,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Evan Elder",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "10-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Samuel Sanches",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "11-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.44,
+     "odds": [
+      2.14,
+      1.69
+     ]
+    },
+    {
+     "id": 11,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jared Gordon",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "21-9-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Melquizael Costa",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "26-8-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.422,
+     "odds": [
+      2.24,
+      1.63
+     ]
+    },
+    {
+     "id": 12,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Nazim Sadykhov",
+      "country": "Azerbaijan",
+      "flag": "🇦🇿",
+      "record": "11-3-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Jefferson Nascimento",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "13-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.395,
+     "odds": [
+      2.39,
+      1.56
+     ]
+    },
+    {
+     "id": 13,
+     "label": "Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Adrian Yañez",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "18-6-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Juan Diaz",
+      "country": "Peru",
+      "flag": "🇵🇪",
+      "record": "16-1-1",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.386,
+     "odds": [
+      2.44,
+      1.54
+     ]
+    },
+    {
+     "id": 14,
+     "label": "Women's Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Macy Chiasson",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "11-6-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Bia Mesquita",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "8-0-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.399,
+     "odds": [
+      2.37,
+      1.57
+     ]
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night",
+   "subtitle": "Procházka vs. Stirling",
+   "date": "2026-11-21",
+   "start": "2026-11-21T15:00:00Z",
+   "venue": "ABHA Arena, Doha, Qatar",
+   "url": "https://www.espn.com/mma/fightcenter/_/id/600061665/league/ufc",
+   "status": "upcoming",
+   "promotion": "UFC",
+   "fight_count": 9,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Light Heavyweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jiří Procházka",
+      "country": "Czechia",
+      "flag": "🇨🇿",
+      "record": "32-6-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Navajo Stirling",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "record": "11-0-0",
+      "profile": ""
+     },
+     "result": null,
+     "main_event": true,
+     "p_a": 0.611,
+     "odds": [
+      1.54,
+      2.43
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Shamil Gaziev",
+      "country": "Bahrain",
+      "flag": "",
+      "record": "15-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Tallison Teixeira",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "9-2-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.598,
+     "odds": [
+      1.58,
+      2.35
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jared Cannonier",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "18-10-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Ikram Aliskerov",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "18-2-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.325,
+     "odds": [
+      2.9,
+      1.4
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Dan Hooker",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "record": "24-15-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Brian Ortega",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "16-5-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.448,
+     "odds": [
+      2.11,
+      1.71
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Aljamain Sterling",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "26-5-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Kevin Vallejos",
+      "country": "Argentina",
+      "flag": "🇦🇷",
+      "record": "18-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.48,
+     "odds": [
+      1.96,
+      1.82
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Amir Albazi",
+      "country": "Iraq",
+      "flag": "",
+      "record": "17-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Alessandro Costa",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "17-5-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.554,
+     "odds": [
+      1.7,
+      2.11
+     ]
+    },
+    {
+     "id": 7,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Asu Almabayev",
+      "country": "Kazakhstan",
+      "flag": "🇰🇿",
+      "record": "24-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Kyoji Horiguchi",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "record": "36-6-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.457,
+     "odds": [
+      2.06,
+      1.74
+     ]
+    },
+    {
+     "id": 8,
+     "label": "Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Aleksandre Topuria",
+      "country": "Georgia",
+      "flag": "🇬🇪",
+      "record": "7-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Santiago Luna",
+      "country": "Mexico",
+      "flag": "🇲🇽",
+      "record": "8-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.469,
+     "odds": [
+      2.01,
+      1.78
+     ]
+    },
+    {
+     "id": 9,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jake Matthews",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "23-8-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Tahir Abdullayev",
+      "country": "Azerbaijan",
+      "flag": "🇦🇿",
+      "record": "20-3-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.422,
+     "odds": [
+      2.24,
+      1.63
+     ]
+    }
+   ]
+  },
+  {
+   "name": "UFC 335",
+   "subtitle": "Oliveira vs. Lopes",
+   "date": "2026-12-12",
+   "start": "2026-12-12T22:00:00Z",
+   "venue": "T-Mobile Arena, Las Vegas, USA",
+   "url": "https://www.espn.com/mma/fightcenter/_/id/600061401/league/ufc",
+   "status": "upcoming",
+   "promotion": "UFC",
+   "fight_count": 6,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Lightweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Charles Oliveira",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "37-11-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Diego Lopes",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "28-8-0",
+      "profile": ""
+     },
+     "result": null,
+     "main_event": true,
+     "p_a": 0.532,
+     "odds": [
+      1.77,
+      2.02
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Brandon Moreno",
+      "country": "Mexico",
+      "flag": "🇲🇽",
+      "record": "24-10-2",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Charles Johnson",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "20-9-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.539,
+     "odds": [
+      1.75,
+      2.05
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Joe Pyfer",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "16-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Bo Nickal",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "9-1-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.581,
+     "odds": [
+      1.62,
+      2.25
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Heavyweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Sergei Pavlovich",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "21-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Alex Pereira",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "13-4-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.655,
+     "odds": [
+      1.44,
+      2.74
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Women's Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Maycee Barber",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "15-3-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Carli Judice",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "7-2-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.652,
+     "odds": [
+      1.45,
+      2.71
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Light Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Quentin Pasley",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "4-0-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Junior Tafa",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "7-6-0",
+      "profile": ""
+     },
+     "result": null,
+     "p_a": 0.553,
+     "odds": [
+      1.71,
+      2.11
+     ]
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night",
+   "subtitle": "Moicano vs. Nolan",
+   "date": "2026-10-31",
+   "start": "2026-10-31T21:00:00Z",
+   "venue": "Meta APEX, Las Vegas, USA",
+   "url": "https://www.espn.com/mma/fightcenter/_/id/600061420/league/ufc",
+   "status": "completed",
+   "promotion": "UFC",
+   "fight_count": 12,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Lightweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Renato Moicano",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "21-8-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Tom Nolan",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "12-1-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": null,
+      "round": 3,
+      "finish": true
+     },
+     "main_event": true,
+     "p_a": 0.47,
+     "odds": [
+      2.01,
+      1.78
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Jean-Paul Lebosnoyani",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "12-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Farman Hasanov",
+      "country": "Azerbaijan",
+      "flag": "🇦🇿",
+      "record": "5-1-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 3,
+      "finish": true
+     },
+     "p_a": 0.661,
+     "odds": [
+      1.43,
+      2.78
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Women's Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Yana Santos",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "17-9-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Luana Santos",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "12-2-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.429,
+     "odds": [
+      2.2,
+      1.65
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Ode' Osbourne",
+      "country": "Jamaica",
+      "flag": "🇯🇲",
+      "record": "13-10-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Cody Durden",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "19-11-1",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.416,
+     "odds": [
+      2.27,
+      1.61
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Randy Brown",
+      "country": "Jamaica",
+      "flag": "🇯🇲",
+      "record": "20-9-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Jacobe Smith",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "14-0-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.354,
+     "odds": [
+      2.67,
+      1.46
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Women's Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Lucia Szabová",
+      "country": "Slovakia",
+      "flag": "",
+      "record": "13-0-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Tainara Lisboa",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "7-5-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 3,
+      "finish": true
+     },
+     "p_a": 0.774,
+     "odds": [
+      1.22,
+      4.18
+     ]
+    },
+    {
+     "id": 7,
+     "label": "Women's Strawweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Talita Alencar",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "8-2-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Piera Rodriguez",
+      "country": "Venezuela",
+      "flag": "",
+      "record": "13-2-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.389,
+     "odds": [
+      2.43,
+      1.54
+     ]
+    },
+    {
+     "id": 8,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Nick Klein",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "6-4-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Joe Kropschot",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "10-3-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": null,
+      "round": 2,
+      "finish": true
+     },
+     "p_a": 0.366,
+     "odds": [
+      2.58,
+      1.49
+     ]
+    },
+    {
+     "id": 9,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Zach Reese",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "11-4-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Mickey Gall",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "7-8-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.673,
+     "odds": [
+      1.4,
+      2.88
+     ]
+    },
+    {
+     "id": 10,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Julian Erosa",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "32-14-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "JeongYeong Lee",
+      "country": "South Korea",
+      "flag": "🇰🇷",
+      "record": "11-4-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.612,
+     "odds": [
+      1.54,
+      2.43
+     ]
+    },
+    {
+     "id": 11,
+     "label": "Welterweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Rodrigo Sezinando",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "10-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Theodor Berggren",
+      "country": "Sweden",
+      "flag": "🇸🇪",
+      "record": "8-5-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 2,
+      "finish": true
+     },
+     "p_a": 0.628,
+     "odds": [
+      1.5,
+      2.54
+     ]
+    },
+    {
+     "id": 12,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Francis Marshall",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "10-4-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Dakota Hope",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "12-2-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.398,
+     "odds": [
+      2.37,
+      1.57
+     ]
+    }
+   ]
+  },
+  {
+   "name": "UFC 333",
+   "subtitle": "Volkanovski vs. Evloev",
+   "date": "2026-10-24",
+   "start": "2026-10-24T14:00:00Z",
+   "venue": "Etihad Arena, Abu Dhabi, United Arab Emirates",
+   "url": "https://www.espn.com/mma/fightcenter/_/id/600061267/league/ufc",
+   "status": "completed",
+   "promotion": "UFC",
+   "fight_count": 14,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Featherweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Alexander Volkanovski",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "29-4-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Movsar Evloev",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "20-1-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 2,
+      "finish": true
+     },
+     "main_event": true,
+     "p_a": 0.509,
+     "odds": [
+      1.85,
+      1.92
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Aaron Pico",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "15-5-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Losene Keita",
+      "country": "Belgium",
+      "flag": "🇧🇪",
+      "record": "17-3-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.413,
+     "odds": [
+      2.28,
+      1.61
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Alexander Volkov",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "41-11-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Rizvan Kuniev",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "14-4-1",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.66,
+     "odds": [
+      1.43,
+      2.77
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Flyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Lone'er Kavanagh",
+      "country": "England",
+      "flag": "🇬🇧",
+      "record": "11-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Ramazan Temirov",
+      "country": "Uzbekistan",
+      "flag": "🇺🇿",
+      "record": "20-4-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.4,
+     "odds": [
+      2.36,
+      1.57
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Bantamweight (5 rds)",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Petr Yan",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "21-5-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Merab Dvalishvili",
+      "country": "Georgia",
+      "flag": "🇬🇪",
+      "record": "21-6-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.523,
+     "odds": [
+      1.8,
+      1.98
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Grant Dawson",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "25-3-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Nurullo Aliev",
+      "country": "Tajikistan",
+      "flag": "🇹🇯",
+      "record": "12-1-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.636,
+     "odds": [
+      1.48,
+      2.59
+     ]
+    },
+    {
+     "id": 7,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Abus Magomedov",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "record": "30-7-1",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Cam Rowston",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "15-4-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.627,
+     "odds": [
+      1.5,
+      2.53
+     ]
+    },
+    {
+     "id": 8,
+     "label": "Light Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Nikita Krylov",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "31-13-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Abdul-Rakhman Yakhyaev",
+      "country": "Türkiye",
+      "flag": "",
+      "record": "11-0-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.48,
+     "odds": [
+      1.97,
+      1.81
+     ]
+    },
+    {
+     "id": 9,
+     "label": "Light Heavyweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Azamat Murzakanov",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "16-2-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Dominick Reyes",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "17-5-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.569,
+     "odds": [
+      1.66,
+      2.19
+     ]
+    },
+    {
+     "id": 10,
+     "label": "Women's Strawweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Iasmin Lucindo",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "19-6-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Nicolle Caliari",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "9-5-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.661,
+     "odds": [
+      1.43,
+      2.79
+     ]
+    },
+    {
+     "id": 11,
+     "label": "Lightweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Kody Steele",
+      "country": "USA",
+      "flag": "🇺🇸",
+      "record": "9-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Noah Gugnon",
+      "country": "France",
+      "flag": "🇫🇷",
+      "record": "10-3-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": null,
+      "round": 1,
+      "finish": true
+     },
+     "p_a": 0.54,
+     "odds": [
+      1.75,
+      2.05
+     ]
+    },
+    {
+     "id": 12,
+     "label": "Featherweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Bolaji Oki",
+      "country": "Belgium",
+      "flag": "🇧🇪",
+      "record": "10-5-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Daniel Santos",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "record": "15-3-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.35,
+     "odds": [
+      2.69,
+      1.45
+     ]
+    },
+    {
+     "id": 13,
+     "label": "Middleweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Abubakar Vagaev",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "26-4-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Jacob Malkoun",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "10-4-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.738,
+     "odds": [
+      1.28,
+      3.61
+     ]
+    },
+    {
+     "id": 14,
+     "label": "Bantamweight",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Colby Thicknesse",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "record": "10-1-0",
+      "profile": ""
+     },
+     "fighter_b": {
+      "name": "Asaf Chopurov",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "record": "11-1-0",
+      "profile": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": null,
+      "finish": false
+     },
+     "p_a": 0.476,
+     "odds": [
+      1.98,
+      1.8
+     ]
+    }
+   ]
+  }
+ ]
+}
