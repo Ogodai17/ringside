@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-02T19:53:17Z",
+  "scraped_at": "2026-11-03T17:25:53Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -178,7 +178,7 @@
             "profile": ""
           },
           "fighter_b": {
-            "name": "Jose Henrique",
+            "name": "José Souza",
             "country": "Brazil",
             "flag": "🇧🇷",
             "record": "9-1-0",
@@ -771,31 +771,6 @@
         },
         {
           "id": 2,
-          "label": "Heavyweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Shamil Gaziev",
-            "country": "Bahrain",
-            "flag": "",
-            "record": "15-3-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Tallison Teixeira",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "record": "9-2-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.598,
-          "odds": [
-            1.58,
-            2.35
-          ]
-        },
-        {
-          "id": 3,
           "label": "Middleweight",
           "discipline": "mma",
           "fighter_a": {
@@ -820,7 +795,7 @@
           ]
         },
         {
-          "id": 4,
+          "id": 3,
           "label": "Lightweight",
           "discipline": "mma",
           "fighter_a": {
@@ -845,7 +820,7 @@
           ]
         },
         {
-          "id": 5,
+          "id": 4,
           "label": "Featherweight",
           "discipline": "mma",
           "fighter_a": {
@@ -870,7 +845,7 @@
           ]
         },
         {
-          "id": 6,
+          "id": 5,
           "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -895,7 +870,7 @@
           ]
         },
         {
-          "id": 7,
+          "id": 6,
           "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -920,7 +895,7 @@
           ]
         },
         {
-          "id": 8,
+          "id": 7,
           "label": "Bantamweight",
           "discipline": "mma",
           "fighter_a": {
@@ -945,7 +920,7 @@
           ]
         },
         {
-          "id": 9,
+          "id": 8,
           "label": "Welterweight",
           "discipline": "mma",
           "fighter_a": {
@@ -967,6 +942,31 @@
           "odds": [
             2.24,
             1.63
+          ]
+        },
+        {
+          "id": 9,
+          "label": "Heavyweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Shamil Gaziev",
+            "country": "Bahrain",
+            "flag": "",
+            "record": "15-3-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Tallison Teixeira",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "record": "9-2-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.598,
+          "odds": [
+            1.58,
+            2.35
           ]
         }
       ]
