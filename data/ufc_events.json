@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-03T18:50:59Z",
+  "scraped_at": "2026-11-04T17:38:55Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -43,31 +43,56 @@
         },
         {
           "id": 2,
-          "label": "Middleweight",
+          "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
-            "name": "Mantas Kondratavičius",
-            "country": "Lithuania",
-            "flag": "🇱🇹",
-            "record": "9-1-0",
+            "name": "Mitch Raposo",
+            "country": "USA",
+            "flag": "🇺🇸",
+            "record": "11-3-0",
             "profile": ""
           },
           "fighter_b": {
-            "name": "Andre Petroski",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "record": "13-7-0",
+            "name": "Marcos Degli",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "record": "15-3-0",
             "profile": ""
           },
           "result": null,
-          "p_a": 0.568,
+          "p_a": 0.42,
           "odds": [
-            1.66,
-            2.18
+            2.25,
+            1.63
           ]
         },
         {
           "id": 3,
+          "label": "Women's Bantamweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Priscila Cachoeira",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "record": "13-9-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Nina Milošević",
+            "country": "Serbia",
+            "flag": "🇷🇸",
+            "record": "9-1-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.398,
+          "odds": [
+            2.37,
+            1.57
+          ]
+        },
+        {
+          "id": 4,
           "label": "Light Heavyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -89,31 +114,6 @@
           "odds": [
             2.12,
             1.7
-          ]
-        },
-        {
-          "id": 4,
-          "label": "Welterweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Seokhyeon Ko",
-            "country": "South Korea",
-            "flag": "🇰🇷",
-            "record": "13-3-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Wellington Turman",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "record": "18-8-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.528,
-          "odds": [
-            1.79,
-            2.0
           ]
         },
         {
@@ -193,31 +193,56 @@
         },
         {
           "id": 8,
-          "label": "Women's Bantamweight",
+          "label": "Welterweight",
           "discipline": "mma",
           "fighter_a": {
-            "name": "Priscila Cachoeira",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "record": "13-9-0",
+            "name": "Seokhyeon Ko",
+            "country": "South Korea",
+            "flag": "🇰🇷",
+            "record": "13-3-0",
             "profile": ""
           },
           "fighter_b": {
-            "name": "Nina Milošević",
-            "country": "Serbia",
-            "flag": "🇷🇸",
-            "record": "9-1-0",
+            "name": "Wellington Turman",
+            "country": "Brazil",
+            "flag": "🇧🇷",
+            "record": "18-8-0",
             "profile": ""
           },
           "result": null,
-          "p_a": 0.398,
+          "p_a": 0.528,
           "odds": [
-            2.37,
-            1.57
+            1.79,
+            2.0
           ]
         },
         {
           "id": 9,
+          "label": "Middleweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Mantas Kondratavičius",
+            "country": "Lithuania",
+            "flag": "🇱🇹",
+            "record": "9-1-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Andre Petroski",
+            "country": "USA",
+            "flag": "🇺🇸",
+            "record": "13-7-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.568,
+          "odds": [
+            1.66,
+            2.18
+          ]
+        },
+        {
+          "id": 10,
           "label": "Featherweight",
           "discipline": "mma",
           "fighter_a": {
@@ -239,31 +264,6 @@
           "odds": [
             1.59,
             2.32
-          ]
-        },
-        {
-          "id": 10,
-          "label": "Featherweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Keiichiro Nakamura",
-            "country": "Japan",
-            "flag": "🇯🇵",
-            "record": "8-1-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Ollie Schmid",
-            "country": "New Zealand",
-            "flag": "🇳🇿",
-            "record": "4-3-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.689,
-          "odds": [
-            1.37,
-            3.03
           ]
         },
         {
@@ -293,31 +293,6 @@
         },
         {
           "id": 12,
-          "label": "Flyweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Mitch Raposo",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "record": "11-3-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Marcos Degli",
-            "country": "Brazil",
-            "flag": "🇧🇷",
-            "record": "15-3-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.42,
-          "odds": [
-            2.25,
-            1.63
-          ]
-        },
-        {
-          "id": 13,
           "label": "Women's Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -342,7 +317,7 @@
           ]
         },
         {
-          "id": 14,
+          "id": 13,
           "label": "Heavyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -364,6 +339,31 @@
           "odds": [
             1.75,
             2.05
+          ]
+        },
+        {
+          "id": 14,
+          "label": "Featherweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Keiichiro Nakamura",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "record": "8-1-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Ollie Schmid",
+            "country": "New Zealand",
+            "flag": "🇳🇿",
+            "record": "4-3-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.689,
+          "odds": [
+            1.37,
+            3.03
           ]
         }
       ]
