@@ -115,14 +115,20 @@ def fmt_date(d: date | None) -> str:
 
 
 def bout_line(f: dict, with_odds: bool = True) -> str:
+    """⭐ 🇹🇭 **A** (1.80) vs **B** (1.98) 🇹🇭 · *Bantamweight Muay Thai*
+
+    Each fighter's odds sit right after their name, so nobody has to work out
+    which number belongs to whom.
+    """
     a, b = f.get("fighter_a", {}), f.get("fighter_b", {})
-    line = f"{a.get('flag', '')} **{a.get('name', '?')}** vs **{b.get('name', '?')}** {b.get('flag', '')}".strip()
     odds = f.get("odds") or []
-    if with_odds and len(odds) == 2:
-        line += f" · {odds[0]:.2f} / {odds[1]:.2f}"
+    show = with_odds and len(odds) == 2
+    left = f"**{a.get('name', '?')}**" + (f" ({odds[0]:.2f})" if show else "")
+    right = f"**{b.get('name', '?')}**" + (f" ({odds[1]:.2f})" if show else "")
+    line = f"{a.get('flag', '')} {left} vs {right} {b.get('flag', '')}".strip()
     label = f.get("label")
     if label:
-        line += f" · {label}"
+        line += f" · *{label}*"
     if f.get("main_event"):
         line = "⭐ " + line
     return line

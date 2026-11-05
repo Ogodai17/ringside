@@ -128,6 +128,12 @@ def main():
     desc = feed.results_embed([ev], {}, "https://pickafight.now/")["description"]
     check(desc.index("Winner") < desc.index("cancelled"), "real results are listed before cancelled bouts", desc)
 
+    # 8. odds sit next to their own fighter
+    bl = feed.bout_line({"fighter_a": {"name": "A", "flag": "🇹🇭"}, "fighter_b": {"name": "B", "flag": "🇧🇷"},
+                         "odds": [1.8, 1.98], "label": "Flyweight Muay Thai", "main_event": True})
+    check(bl == "⭐ 🇹🇭 **A** (1.80) vs **B** (1.98) 🇧🇷 · *Flyweight Muay Thai*", "odds next to each fighter's name", bl)
+    check("(" not in feed.bout_line({"fighter_a": {"name": "A"}, "fighter_b": {"name": "B"}}), "no odds = no empty brackets")
+
     srv.shutdown()
     bad = RESULTS.count(False)
     print(f"\n{len(RESULTS) - bad} passed, {bad} failed")
