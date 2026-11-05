@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-05T07:47:33Z",
+  "scraped_at": "2026-11-05T17:45:08Z",
   "source": "onefc.com",
   "event_count": 4,
   "events": [
@@ -75,7 +75,7 @@
           "label": "Atomweight Muay Thai",
           "discipline": "mt",
           "fighter_a": {
-            "name": "Chatpet Suablackmuaythai",
+            "name": "Chatpet NP Suablackmuaythai",
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/chatpet-suablackmuaythai/",
@@ -243,10 +243,10 @@
           "label": "Flyweight Kickboxing",
           "discipline": "kb",
           "fighter_a": {
-            "name": "Marats Jankovskis",
+            "name": "Marat Jankovskij",
             "country": "Latvia",
             "flag": "🇱🇻",
-            "profile": "https://www.onefc.com/athletes/marats-jankovskis/",
+            "profile": "https://www.onefc.com/athletes/marat-jankovskij/",
             "record": "",
             "country_src": "profile"
           },
