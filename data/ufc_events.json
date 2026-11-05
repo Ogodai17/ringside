@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-04T17:38:55Z",
+  "scraped_at": "2026-11-05T07:30:15Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -253,17 +253,17 @@
             "profile": ""
           },
           "fighter_b": {
-            "name": "Lucas Brennan",
+            "name": "Carlos Calderon",
             "country": "USA",
             "flag": "🇺🇸",
-            "record": "11-3-0",
+            "record": "11-4-0",
             "profile": ""
           },
           "result": null,
-          "p_a": 0.593,
+          "p_a": 0.619,
           "odds": [
-            1.59,
-            2.32
+            1.52,
+            2.48
           ]
         },
         {

@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-04T17:38:54Z",
+  "scraped_at": "2026-11-05T07:30:14Z",
   "source": "onefc.com",
   "event_count": 4,
   "events": [
@@ -22,7 +22,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/isannuea-tor-tanjaroen/",
             "record": "4-4-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Jack Siatanyokkrok PK",
@@ -30,7 +31,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/jack-siatanyokkrok-pk/",
             "record": "2-1-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "main_event": true,
           "result": null,
@@ -50,14 +52,16 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/saksri-superlek-muaythai/",
             "record": "1-1-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Superball Sitcho",
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/superball-sitcho/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.447,
@@ -76,15 +80,17 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/chatpet-suablackmuaythai/",
             "record": "1-1-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Saipetlek Rongsamak Orborjor Udon Thani",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "Laos",
+            "flag": "🇱🇦",
             "profile": "https://www.onefc.com/athletes/saipetlek-rongsamak-orborjor-udon-thani/",
             "record": "1-0-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.483,
@@ -102,14 +108,16 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/petdam-bs-muaythai/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Chaisongkram Looksuan",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "Laos",
+            "flag": "🇱🇦",
             "profile": "https://www.onefc.com/athletes/chaisongkram-looksuan/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.448,
@@ -128,7 +136,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/klinphaka-por-thaisong/",
             "record": "1-1-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Ran Longshu",
@@ -136,7 +145,8 @@
             "flag": "🇨🇳",
             "profile": "https://www.onefc.com/athletes/ran-longshu/",
             "record": "0-2-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.591,
@@ -154,7 +164,8 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/phun-suea-muang/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Kazuteru Yamazaki",
@@ -162,7 +173,8 @@
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/kazuteru-yamazaki/",
             "record": "3-2-0",
-            "finish_rate": 33
+            "finish_rate": 33,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.507,
@@ -181,14 +193,16 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/bos-chayut/",
             "record": "1-0-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Kentaro Okumura",
             "country": "Japan",
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/kentaro-okumura/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.455,
@@ -206,14 +220,16 @@
             "country": "Thailand",
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/okazaki-silkmuaythai/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Yuto",
             "country": "Japan",
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/yuto/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.54,
@@ -228,10 +244,11 @@
           "discipline": "kb",
           "fighter_a": {
             "name": "Marats Jankovskis",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "Latvia",
+            "flag": "🇱🇻",
             "profile": "https://www.onefc.com/athletes/marats-jankovskis/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Retsu Sashida",
@@ -239,7 +256,8 @@
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/retsu-sashida/",
             "record": "1-2-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.563,
@@ -254,19 +272,21 @@
           "discipline": "mma",
           "fighter_a": {
             "name": "Christian Lee",
-            "country": "United States",
-            "flag": "🇺🇸",
+            "country": "Singapore / United States",
+            "flag": "🇸🇬",
             "profile": "https://www.onefc.com/athletes/christian-lee/",
             "record": "18-4-0",
-            "finish_rate": 94
+            "finish_rate": 94,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Tye Ruotolo",
-            "country": "Brazil",
-            "flag": "🇧🇷",
+            "country": "United States",
+            "flag": "🇺🇸",
             "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
             "record": "11-0-0",
-            "finish_rate": 55
+            "finish_rate": 55,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.492,
@@ -285,7 +305,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/komawut-fa-group/",
             "record": "8-7-0",
-            "finish_rate": 13
+            "finish_rate": 13,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Yodphupa Petkiatpet",
@@ -293,7 +314,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/yodphupa/",
             "record": "7-5-0",
-            "finish_rate": 29
+            "finish_rate": 29,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.489,
@@ -312,15 +334,17 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/kongchai-chanaidonmueang/",
             "record": "12-6-0",
-            "finish_rate": 25
+            "finish_rate": 25,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Tantawy Ahmed",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "Egypt",
+            "flag": "🇪🇬",
             "profile": "https://www.onefc.com/athletes/tantawy-ahmed-hafez/",
             "record": "2-0-0",
-            "finish_rate": 50
+            "finish_rate": 50,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.672,
@@ -339,15 +363,17 @@
             "flag": "🇳🇿",
             "profile": "https://www.onefc.com/athletes/titus-proctor/",
             "record": "2-0-0",
-            "finish_rate": 50
+            "finish_rate": 50,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Maciej Karpinski",
-            "country": "United Kingdom",
-            "flag": "🇬🇧",
+            "country": "Poland",
+            "flag": "🇵🇱",
             "profile": "https://www.onefc.com/athletes/maciej-karpinski/",
             "record": "1-1-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.591,
@@ -363,10 +389,11 @@
           "fighter_a": {
             "name": "Cal Cook",
             "country": "England",
-            "flag": "🇬🇧",
+            "flag": "🇪🇳",
             "profile": "https://www.onefc.com/athletes/cal-cook/",
             "record": "1-0-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Dabdam Por Tor Tor Thongtawee",
@@ -374,7 +401,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/dabdam-por-tor-tor-thongtawee/",
             "record": "2-5-0",
-            "finish_rate": 50
+            "finish_rate": 50,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.534,
@@ -400,18 +428,20 @@
           "discipline": "mma",
           "fighter_a": {
             "name": "Lucas Gabriel",
-            "country": "Thailand",
-            "flag": "🇹🇭",
+            "country": "Brazil",
+            "flag": "🇧🇷",
             "profile": "https://www.onefc.com/athletes/lucas-gabriel/",
             "record": "5-0-0",
-            "finish_rate": 20
+            "finish_rate": 20,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Magomed Magomedov",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "Bahrain",
+            "flag": "🇧🇭",
             "profile": "https://www.onefc.com/athletes/magomed-magomedov-3/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "main_event": true,
           "result": null,
@@ -431,7 +461,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/kongthoranee-sor-sommai/",
             "record": "12-6-0",
-            "finish_rate": 25
+            "finish_rate": 25,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Taiki Naito",
@@ -439,7 +470,8 @@
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/taiki-naito/",
             "record": "10-6-0",
-            "finish_rate": 20
+            "finish_rate": 20,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.543,
@@ -458,7 +490,8 @@
             "flag": "🇰🇷",
             "profile": "https://www.onefc.com/athletes/lee-seung-cheol/",
             "record": "6-0-0",
-            "finish_rate": 50
+            "finish_rate": 50,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Nazareth Lalthazuala",
@@ -466,7 +499,8 @@
             "flag": "🇮🇳",
             "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
             "record": "3-0-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.631,
@@ -485,7 +519,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/nontachai-jitmuangnon/",
             "record": "6-2-0",
-            "finish_rate": 33
+            "finish_rate": 33,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Felipe Lobo",
@@ -493,7 +528,8 @@
             "flag": "🇧🇷",
             "profile": "https://www.onefc.com/athletes/felipe-lobo/",
             "record": "4-6-0",
-            "finish_rate": 50
+            "finish_rate": 50,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.657,
@@ -512,7 +548,8 @@
             "flag": "🇨🇳",
             "profile": "https://www.onefc.com/athletes/zhou-jiaqiang/",
             "record": "0-1-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Mamuka Usubyan",
@@ -520,7 +557,8 @@
             "flag": "🇷🇺",
             "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
             "record": "4-1-0",
-            "finish_rate": 25
+            "finish_rate": 25,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.267,
@@ -539,15 +577,17 @@
             "flag": "🇧🇷",
             "profile": "https://www.onefc.com/athletes/vick-souza/",
             "record": "4-3-0",
-            "finish_rate": 25
+            "finish_rate": 25,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Magdalena Czaban",
-            "country": "United States",
-            "flag": "🇺🇸",
+            "country": "Poland",
+            "flag": "🇵🇱",
             "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
             "record": "1-0-0",
-            "finish_rate": 0
+            "finish_rate": 0,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.595,
@@ -562,18 +602,20 @@
           "discipline": "kb",
           "fighter_a": {
             "name": "Bogdan Shumarov",
-            "country": "Netherlands",
-            "flag": "🇳🇱",
+            "country": "Bulgaria",
+            "flag": "🇧🇬",
             "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
             "record": "3-1-0",
-            "finish_rate": 100
+            "finish_rate": 100,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Gasham Mammadov",
             "country": "Azerbaijan",
             "flag": "🇦🇿",
             "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.507,
@@ -588,15 +630,15 @@
           "discipline": "mma",
           "fighter_a": {
             "name": "Victor Hugo",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "",
+            "flag": "",
             "profile": "https://www.onefc.com/athletes/victor-hugo-costa-marques/",
             "record": ""
           },
           "fighter_b": {
             "name": "Devhonte Johnson",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "",
+            "flag": "",
             "profile": "https://www.onefc.com/athletes/devhonte-johnson/",
             "record": ""
           },
@@ -613,17 +655,19 @@
           "discipline": "unknown",
           "fighter_a": {
             "name": "Kalandar Tabarov",
-            "country": "Indonesia",
-            "flag": "🇮🇩",
+            "country": "Tajikistan",
+            "flag": "🇹🇯",
             "profile": "https://www.onefc.com/athletes/kalandar-tabarov/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Ilmadi Israilov",
             "country": "Russia",
             "flag": "🇷🇺",
             "profile": "https://www.onefc.com/athletes/ilmadi-israilov/",
-            "record": ""
+            "record": "",
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.441,
@@ -653,7 +697,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/rodtang/",
             "record": "17-3-0",
-            "finish_rate": 24
+            "finish_rate": 24,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Nong-O Hama",
@@ -661,7 +706,8 @@
             "flag": "🇹🇭",
             "profile": "https://www.onefc.com/athletes/nong-o/",
             "record": "13-5-0",
-            "finish_rate": 38
+            "finish_rate": 38,
+            "country_src": "profile"
           },
           "main_event": true,
           "result": null,
@@ -681,15 +727,17 @@
             "flag": "🇯🇵",
             "profile": "https://www.onefc.com/athletes/shimon-yoshinari/",
             "record": "6-0-0",
-            "finish_rate": 50
+            "finish_rate": 50,
+            "country_src": "profile"
           },
           "fighter_b": {
             "name": "Ramadan Ondash",
-            "country": "United States",
-            "flag": "🇺🇸",
+            "country": "Lebanon",
+            "flag": "🇱🇧",
             "profile": "https://www.onefc.com/athletes/ramadan-ondash/",
             "record": "6-1-0",
-            "finish_rate": 33
+            "finish_rate": 33,
+            "country_src": "profile"
           },
           "result": null,
           "p_a": 0.539,
