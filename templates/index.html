@@ -198,6 +198,11 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .modal-link { background:none; border:none; color:var(--text-muted); font-size:13px; cursor:pointer; padding:4px; }
 .modal-input { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:16px; }
 .modal-err { color:var(--accent); font-size:13px; min-height:16px; }
+.pw-box { display:flex; flex-direction:column; gap:8px; }
+.pw-or { display:flex; align-items:center; gap:10px; color:var(--text-muted); font-size:12px; }
+.pw-or::before, .pw-or::after { content:''; flex:1; height:1px; background:var(--border); }
+.pw-actions { display:flex; gap:8px; } .pw-actions .oauth-btn { flex:1; }
+#pwCaptcha:empty { display:none; }
 .lb-row.me { background:var(--accent-glow); }
 /* Leagues, Hot Takes, Badges */
 .lg-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px; }
@@ -377,6 +382,18 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
     <p>Keep your picks on every device, climb the leaderboard, and add your scorecards to the fan vote.</p>
     <button class="oauth-btn google" data-provider="google" onclick="signIn('google')">Continue with Google</button>
     <button class="oauth-btn discord" data-provider="discord" onclick="signIn('discord')">Continue with Discord</button>
+    <div class="pw-box" data-provider="password">
+      <div class="pw-or">or use a username</div>
+      <input id="pwUser" class="modal-input" maxlength="20" autocomplete="username" placeholder="Username" autocapitalize="off" spellcheck="false">
+      <input id="pwPass" class="modal-input" type="password" maxlength="72" autocomplete="current-password" placeholder="Password (8+ characters)" onkeydown="if(event.key==='Enter')pwSubmit('signin')">
+      <div id="pwCaptcha"></div>
+      <div id="pwErr" class="modal-err"></div>
+      <div class="pw-actions">
+        <button class="oauth-btn primary" id="pwSignin" onclick="pwSubmit('signin')">Sign in</button>
+        <button class="oauth-btn" id="pwSignup" onclick="pwSubmit('signup')">Create account</button>
+      </div>
+      <p class="modal-fine">No email needed — so there's no password reset. Pick one you'll remember.</p>
+    </div>
     <p class="modal-fine">Your username is public. Your email isn't, and we never post anything for you.</p>
     <button class="modal-link" onclick="closeModal('signinModal')">Not now</button>
   </div>
@@ -394,7 +411,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="modal">
     <h3 id="accountName">Account</h3>
     <p>Your picks, balance and scorecards are saved to your account.</p>
-    <button class="oauth-btn" onclick="closeModal('accountModal');openModal('usernameModal')">Change name</button>
+    <button class="oauth-btn" id="changeNameBtn" onclick="closeModal('accountModal');openModal('usernameModal')">Change name</button>
     <button class="oauth-btn" onclick="signOut()">Sign out</button>
     <button class="modal-link" onclick="closeModal('accountModal')">Close</button>
   </div>
@@ -738,6 +755,7 @@ async function initAuth(){
   await onSession(session);
   sb.auth.onAuthStateChange((_evt, sess)=>{ if((sess?.user?.id||null)!==(user?.id||null)) onSession(sess); });
   loadCommunity(events[activeEventIdx], true);
+  if((DB.providers||[]).includes('password')) initCaptcha();
 }
 async function onSession(session){
   user = session?.user || null;
@@ -745,6 +763,11 @@ async function onSession(session){
     closeModal('signinModal');
     if(!guestStash) guestStash={balance, bets:bets.slice(), lastUBIClaim};
     try{ await refreshAccount(); }catch(e){ showToast('Could not load your account — try again'); }
+    if(!profile?.username && isPasswordUser()){
+      const name = pwPendingName || user.email.split('@')[0];
+      try{ await rpc('set_username',{p_name:name}); profile={...(profile||{}), username:name}; }catch(e){}
+      pwPendingName=null;
+    }
     if(!profile?.username) openModal('usernameModal');
     await carryOverGuestPicks();
   } else {
@@ -770,10 +793,57 @@ function renderAuth(){
   }
 }
 function authClick(){ if(!user) return openModal('signinModal');
-  document.getElementById('accountName').textContent = profile?.username || 'Your account'; openModal('accountModal'); }
+  document.getElementById('accountName').textContent = profile?.username || 'Your account';
+  document.getElementById('changeNameBtn').style.display = isPasswordUser() ? 'none' : '';
+  openModal('accountModal'); }
 function openModal(id){ const m=document.getElementById(id); m.classList.add('open');
   if(id==='usernameModal'){ const i=document.getElementById('usernameInput'); i.value=profile?.username||''; document.getElementById('usernameErr').textContent=''; setTimeout(()=>i.focus(),50); } }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+/* Username + password accounts. Supabase signs these in with an email, so each
+   one gets a hidden login address built from the username — never emailed
+   (email confirmation is off). The database ties the username to that
+   address, so a password account keeps its name. */
+const PW_DOMAIN='users.pickafight.now';
+let pwPendingName=null, captchaToken=null, captchaId=null;
+const pwLogin = name => `${name.toLowerCase()}@${PW_DOMAIN}`;
+const isPasswordUser = () => !!user?.email?.endsWith('@'+PW_DOMAIN);
+async function initCaptcha(){
+  if(!DB?.captcha || window.__PAF_SUPABASE__) return;              // tests run without Turnstile
+  try{ await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit');
+       captchaId = window.turnstile.render('#pwCaptcha', { sitekey: DB.captcha, theme:'dark', size:'flexible',
+         callback: t => { captchaToken=t; }, 'expired-callback': () => { captchaToken=null; }, 'error-callback': () => { captchaToken=null; } }); }
+  catch(e){ console.warn('Captcha unavailable', e); }
+}
+function resetCaptcha(){ captchaToken=null; try{ if(captchaId!==null) window.turnstile.reset(captchaId); }catch(e){} }
+async function pwSubmit(mode){
+  const name=document.getElementById('pwUser').value.trim(), pass=document.getElementById('pwPass').value, err=document.getElementById('pwErr');
+  err.textContent='';
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(name)){ err.textContent='Usernames are 3–20 letters, numbers or underscores'; return; }
+  if(pass.length<8){ err.textContent='Passwords are at least 8 characters'; return; }
+  if(DB?.captcha && !window.__PAF_SUPABASE__ && !captchaToken){ err.textContent='Finish the "are you human" check first'; return; }
+  const btns=[document.getElementById('pwSignin'), document.getElementById('pwSignup')]; btns.forEach(b=>b.disabled=true);
+  const options = captchaToken ? {captchaToken} : {};
+  try{
+    if(mode==='signup'){
+      if(!(await rpc('username_available',{p_name:name}))){ err.textContent='That username is taken'; return; }
+      pwPendingName=name;
+      const {data,error}=await sb.auth.signUp({email:pwLogin(name), password:pass, options});
+      if(error){ pwPendingName=null; throw error; }
+      if(!data?.session){ pwPendingName=null; err.textContent='Account made — now sign in'; }
+    } else {
+      const {error}=await sb.auth.signInWithPassword({email:pwLogin(name), password:pass, options});
+      if(error) throw error;
+    }
+    document.getElementById('pwPass').value='';
+  }catch(e){
+    const m=(e?.message||'').toLowerCase();
+    err.textContent = m.includes('invalid login') ? 'Wrong username or password'
+      : m.includes('already registered') ? 'That username is taken'
+      : m.includes('captcha') ? 'The human check failed — try it again'
+      : m.includes('password') ? (e.message||'Password not accepted')
+      : 'Something went wrong — try again';
+  }finally{ btns.forEach(b=>b.disabled=false); resetCaptcha(); }
+}
 async function signIn(provider){
   try{ const {error}=await sb.auth.signInWithOAuth({provider, options:{redirectTo: location.origin+location.pathname}});
        if(error) throw error; }

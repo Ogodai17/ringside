@@ -561,7 +561,7 @@ def t_scorecard_one(browser):
 
 FAKE_SUPABASE = r"""
 (() => {
-  const st = window.__fake = { session:null, cb:null, accounts:{}, profiles:{}, picks:[], calls:[], scores:[],
+  const st = window.__fake = { session:null, cb:null, pwUsers:{}, authCalls:[], accounts:{}, profiles:{}, picks:[], calls:[], scores:[],
                                summary:[], verdicts:[], leagues:[], takes:[], others:[{username:'TopDog',balance:9000,won:9,settled:12}] };
   const err = m => ({ data:null, error:{ message:m } });
   const me = () => st.session && st.session.user.id;
@@ -570,7 +570,11 @@ FAKE_SUPABASE = r"""
     my_account(){ if(!me()) return err('sign in first'); st.accounts[me()] ??= {balance:5000,last_topup:null};
       const a=st.accounts[me()]; return {data:[{balance:a.balance, username:st.profiles[me()]||null, last_topup:a.last_topup}], error:null}; },
     set_username({p_name}){ if(!/^[A-Za-z0-9_]{3,20}$/.test(p_name)) return err('bad name');
+      const login = (st.session.user.email||'').endsWith('@users.pickafight.now') ? st.session.user.email.split('@')[0] : null;
+      if(login && login!==p_name.toLowerCase()) return err('Password accounts keep the username they signed up with');
       if(p_name.toLowerCase()==='taken_name') return err('That username is taken'); st.profiles[me()]=p_name; return {data:p_name,error:null}; },
+    username_available({p_name}){ const n=p_name.toLowerCase();
+      return {data: n!=='taken_name' && !Object.values(st.profiles).some(u=>u.toLowerCase()===n) && !st.pwUsers[n+'@users.pickafight.now'], error:null}; },
     place_pick({p_fight,p_market,p_selection,p_stake}){
       if(!me()) return err('sign in first'); const [e,f]=lockedFight(p_fight);
       if(!f || eventLocked(e)) return err('Betting is closed for this fight');
@@ -613,6 +617,13 @@ FAKE_SUPABASE = r"""
       getSession: async () => ({ data:{ session: st.session } }),
       onAuthStateChange: (cb) => { st.cb = cb; return { data:{ subscription:{ unsubscribe(){} } } }; },
       signInWithOAuth: async ({provider}) => { st.provider=provider; st.session={ user:{ id:'user-'+provider } }; setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {error:null}; },
+      signUp: async ({email,password,options}) => { st.authCalls.push(['signUp',email,!!options?.captchaToken]);
+        if(st.pwUsers[email]) return {data:{session:null}, error:{message:'User already registered'}};
+        st.pwUsers[email]={password, id:'pw-'+email.split('@')[0]}; st.session={ user:{ id:st.pwUsers[email].id, email } };
+        setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {data:{session:st.session}, error:null}; },
+      signInWithPassword: async ({email,password,options}) => { st.authCalls.push(['signIn',email,!!options?.captchaToken]);
+        const u=st.pwUsers[email]; if(!u || u.password!==password) return {data:{session:null}, error:{message:'Invalid login credentials'}};
+        st.session={ user:{ id:u.id, email } }; setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {data:{session:st.session}, error:null}; },
       signOut: async () => { st.session=null; setTimeout(()=>st.cb && st.cb('SIGNED_OUT', null), 0); return {error:null}; },
     },
   };
@@ -697,6 +708,40 @@ def t_scorecard_community(browser):
     sub = p.evaluate("__fake.calls.filter(c=>c[0]==='submit_score').map(c=>c[1])")
     check(bool(sub) and sub[-1] == {"p_fight": fid, "p_round": 3, "p_pick": "b109"}, "Signed-in scorecards go to the fan vote", str(sub[-1:]))
     check(not errs, "No JS errors with community data", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_password_accounts(browser):
+    site = with_db(make_site(), providers=("google", "discord", "password"))
+    srv, url = serve(site)
+    ctx = browser.new_context(viewport={"width": 390, "height": 900}); p = ctx.new_page(); errs = []
+    p.on("pageerror", lambda e: errs.append(str(e)))
+    p.add_init_script(FAKE_SUPABASE)
+    p.goto(url + "index.html"); p.wait_for_timeout(700)
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check(p.is_visible("#pwUser") and p.is_visible("#pwPass"), "Username + password form shows when 'password' is enabled", "")
+    def submit(mode, name, pw):
+        p.fill("#pwUser", name); p.fill("#pwPass", pw); p.click("#pwSignup" if mode == "signup" else "#pwSignin"); p.wait_for_timeout(500)
+        return p.inner_text("#pwErr")
+    check("3–20" in submit("signup", "x!", "longenough"), "Bad usernames are rejected before anything is sent", "")
+    check("8 characters" in submit("signup", "RoundOne", "short"), "Short passwords are rejected", "")
+    check("taken" in submit("signup", "taken_name", "longenough1"), "Sign-up checks the username is free first", p.inner_text("#pwErr"))
+    check(p.evaluate("__fake.authCalls.length") == 0, "Nothing reaches the auth server for invalid sign-ups", str(p.evaluate("__fake.authCalls")))
+    submit("signup", "RoundOne", "longenough1")
+    check(p.evaluate("__fake.authCalls[0]") == ["signUp", "roundone@users.pickafight.now", False], "Sign-up uses the hidden login address (lower-cased)", str(p.evaluate("__fake.authCalls")))
+    check(p.inner_text("#authBtn") == "RoundOne" and not p.evaluate("document.getElementById('usernameModal').classList.contains('open')"),
+          "New password account gets its username straight away (no name picker)", p.inner_text("#authBtn"))
+    check(p.evaluate("__fake.profiles['pw-roundone']") == "RoundOne", "Username saved with the case the player typed", str(p.evaluate("__fake.profiles")))
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check(not p.is_visible("#changeNameBtn"), "Password accounts can't change their name (it's their login)", "")
+    p.click("#accountModal .oauth-btn >> text=Sign out"); p.wait_for_timeout(400)
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check("Wrong username or password" in submit("signin", "RoundOne", "wrongpassword"), "Wrong password shows a clear error", p.inner_text("#pwErr"))
+    check("taken" in submit("signup", "roundone", "longenough1"), "Same name in other case can't be registered twice", p.inner_text("#pwErr"))
+    submit("signin", "ROUNDONE", "longenough1")
+    check(p.inner_text("#authBtn") == "RoundOne", "Sign-in works and ignores username case", p.inner_text("#authBtn"))
+    check(p.evaluate("document.getElementById('pwPass').value") == "", "Password field is cleared after signing in", "")
+    check(not errs, "No JS errors in the password flow", str(errs[:3]))
     ctx.close(); srv.shutdown()
 
 
@@ -884,7 +929,7 @@ def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
              t_payout_consistency, t_cancelled_bout, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
-             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_one_country, t_accounts,
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_one_country, t_password_accounts, t_accounts,
              t_leagues, t_hot_takes, t_badges]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:

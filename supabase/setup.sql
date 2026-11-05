@@ -116,13 +116,29 @@ begin
     where a.user_id = auth.uid();
 end $$;
 
+-- Username + password accounts sign in with a hidden login address built from
+-- the username (<name>@users.pickafight.now, never emailed). Their username is
+-- their login, so it must match that address and can't be changed later.
+create or replace function public.password_login_name()
+returns text
+language sql stable security definer set search_path = public, auth as $$
+  select case when u.email like '%@users.pickafight.now'
+              then split_part(u.email, '@', 1) end
+  from auth.users u where u.id = auth.uid();
+$$;
+
 create or replace function public.set_username(p_name text)
 returns text
 language plpgsql security definer set search_path = public as $$
+declare login text;
 begin
   if auth.uid() is null then raise exception 'sign in first'; end if;
   if p_name !~ '^[A-Za-z0-9_]{3,20}$' then
     raise exception 'Usernames are 3-20 letters, numbers or underscores';
+  end if;
+  login := password_login_name();
+  if login is not null and lower(p_name) <> lower(login) then
+    raise exception 'Password accounts keep the username they signed up with';
   end if;
   if exists (select 1 from profiles where lower(username) = lower(p_name) and id <> auth.uid()) then
     raise exception 'That username is taken';
@@ -131,6 +147,16 @@ begin
   on conflict (id) do update set username = excluded.username;
   return p_name;
 end $$;
+
+-- Sign-up form check before creating a password account. Also counts names
+-- already used as a password login, even if that account never saved a profile.
+create or replace function public.username_available(p_name text)
+returns boolean
+language sql stable security definer set search_path = public, auth as $$
+  select p_name ~ '^[A-Za-z0-9_]{3,20}$'
+     and not exists (select 1 from profiles where lower(username) = lower(p_name))
+     and not exists (select 1 from auth.users where lower(email) = lower(p_name) || '@users.pickafight.now');
+$$;
 
 -- Odds for every market come from the server, never from the browser.
 create or replace function public.market_odds(f public.fights, p_market text, p_selection text)
@@ -526,6 +552,9 @@ revoke all on function public.my_account(), public.set_username(text),
   from public, anon, authenticated;
 grant execute on function public.leaderboard(integer), public.score_summary(text[]), public.fan_verdicts(text[])
   to anon, authenticated;
+revoke all on function public.password_login_name(), public.username_available(text) from public, anon, authenticated;
+grant execute on function public.username_available(text) to anon, authenticated;
+grant execute on function public.password_login_name() to authenticated;
 grant execute on function public.my_account(), public.set_username(text),
   public.place_pick(text, text, text, integer), public.claim_topup(),
   public.submit_score(text, int, text)
