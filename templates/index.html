@@ -375,8 +375,8 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="modal">
     <h3>Sign in to Pick A Fight</h3>
     <p>Keep your picks on every device, climb the leaderboard, and add your scorecards to the fan vote.</p>
-    <button class="oauth-btn google" onclick="signIn('google')">Continue with Google</button>
-    <button class="oauth-btn discord" onclick="signIn('discord')">Continue with Discord</button>
+    <button class="oauth-btn google" data-provider="google" onclick="signIn('google')">Continue with Google</button>
+    <button class="oauth-btn discord" data-provider="discord" onclick="signIn('discord')">Continue with Discord</button>
     <p class="modal-fine">Your username is public. Your email isn't, and we never post anything for you.</p>
     <button class="modal-link" onclick="closeModal('signinModal')">Not now</button>
   </div>
@@ -404,7 +404,10 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = {{AFFILIATE_URL_JSON}};
 const SITE_URL = {{SITE_URL_JSON}};
-const DB = {{DB_JSON}};  // {url,key} when the Supabase database is connected, else null
+const DB = {{DB_JSON}};  // {url,key,providers} when the Supabase database is connected, else null
+// Only show sign-in buttons for providers switched on in site_config.json (sign_in_providers).
+document.addEventListener('DOMContentLoaded',()=>{ if(!DB) return; const on=DB.providers||['google','discord'];
+  document.querySelectorAll('#signinModal [data-provider]').forEach(b=>{ if(!on.includes(b.dataset.provider)) b.remove(); }); });
 const SCORE_API = DB;
 function loadState(){
   let s = {};

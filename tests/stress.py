@@ -8,6 +8,7 @@ and attacks it. Prints PASS/FAIL/WARN lines and a summary.
 """
 import http.server
 import json
+import re
 import shutil
 import socketserver
 import sys
@@ -619,11 +620,25 @@ FAKE_SUPABASE = r"""
 """
 
 
-def with_db(site):
+def with_db(site, providers=("google", "discord")):
+    """Point the page at the fake database, whatever site_config.json says
+    (the real config may already hold the live Supabase URL)."""
     html = (site / "index.html").read_text()
-    html = html.replace("const DB = null", 'const DB = {"url":"https://fake-db.test","key":"sb_publishable_test"}')
+    fake = json.dumps({"url": "https://fake-db.test", "key": "sb_publishable_test", "providers": list(providers)})
+    html, n = re.subn(r"const DB = (?:null|\{[^\n]*?\});", "const DB = " + fake + ";", html, count=1)
+    assert n == 1, "with_db: couldn't find the DB line in index.html"
+    assert "supabase.co" not in html.split("const DB = ", 1)[1].split("\n", 1)[0]
     (site / "index.html").write_text(html)
     return site
+
+
+def t_sign_in_providers(browser):
+    site = with_db(make_site(), providers=("google",))
+    p = browser.new_page()
+    p.goto((site / "index.html").as_uri()); p.wait_for_timeout(800)
+    check(p.locator("#signinModal .oauth-btn.google").count() == 1 and p.locator("#signinModal .oauth-btn.discord").count() == 0,
+          "sign_in_providers=google hides the Discord button", "")
+    p.close()
 
 
 def t_scorecard_community(browser):
@@ -846,7 +861,7 @@ def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
              t_payout_consistency, t_cancelled_bout, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
-             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts,
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_accounts,
              t_leagues, t_hot_takes, t_badges]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
