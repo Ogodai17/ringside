@@ -3,7 +3,7 @@
 --
 -- What lives here
 --   profiles    public usernames (one per account)
---   accounts    each player's R balance + daily top-up
+--   accounts    each player's Chang balance + daily top-up
 --   fights      fight list, odds, start times and results — written ONLY by
 --               the GitHub sync job (secret key), readable by everyone
 --   picks       every pick; created only through place_pick(), settled only
@@ -103,7 +103,7 @@ drop policy if exists "see own picks" on public.picks;
 create policy "see own picks" on public.picks for select to authenticated using (user_id = auth.uid());
 
 -- ───────────────────────── player functions ─────────────────────────
--- Creates the 5,000 R account on first sign-in; returns balance + username.
+-- Creates the 5,000 Chang account on first sign-in; returns balance + username.
 create or replace function public.my_account()
 returns table (balance integer, username text, last_topup date)
 language plpgsql security definer set search_path = public as $$
@@ -198,7 +198,7 @@ begin
   update accounts set balance = accounts.balance - p_stake
     where user_id = auth.uid() and accounts.balance >= p_stake
     returning accounts.balance into b;
-  if not found then raise exception 'Not enough R'; end if;
+  if not found then raise exception 'Not enough Chang'; end if;
   insert into picks (user_id, fight_key, market, selection, odds, stake)
     values (auth.uid(), p_fight, p_market, p_selection, o, p_stake)
     returning id into new_id;

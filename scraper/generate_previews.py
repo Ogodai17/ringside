@@ -379,7 +379,7 @@ def build_preview_html(event: dict, idx: int) -> str:
 
   <div class="cta-banner">
     <a href="../index.html">Ready to make your picks? Play on Pick A Fight &rarr;</a>
-    <p>5,000 R starting balance. No real money. Just bragging rights.</p>
+    <p>5,000 Chang starting balance. No real money. Just bragging rights.</p>
   </div>
 """ + page_footer("../")
 

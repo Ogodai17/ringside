@@ -578,7 +578,7 @@ FAKE_SUPABASE = r"""
     place_pick({p_fight,p_market,p_selection,p_stake}){
       if(!me()) return err('sign in first'); const [e,f]=lockedFight(p_fight);
       if(!f || eventLocked(e)) return err('Betting is closed for this fight');
-      const a=st.accounts[me()]; if(p_stake>a.balance) return err('Not enough R');
+      const a=st.accounts[me()]; if(p_stake>a.balance) return err('Not enough Chang');
       const odds = p_market==='winner' ? (p_selection==='a'?f.oddsA:f.oddsB) : 1.9;
       a.balance-=p_stake; st.picks.push({id:st.picks.length+1,user:me(),fight_key:p_fight,market:p_market,selection:p_selection,odds,stake:p_stake,status:'pending',payout:0,created_at:new Date().toISOString()});
       return {data:[{pick_id:st.picks.length,balance:a.balance,odds}],error:null}; },
@@ -825,7 +825,7 @@ def t_leagues(browser):
     p.fill("#lgName", "Fight Club"); p.click(".lg-forms .oauth-btn.primary"); p.wait_for_timeout(300)
     txt = p.inner_text("#leagues-panel")
     check("Fight Club" in txt and "ABC234" in txt and "LegKickLarry" in txt, "Creating a league shows its code and table", txt[:160])
-    check(p.locator("#lg-table .lb-row.me").count() == 1 and "+420 R" in txt, "Standings show profit with you highlighted", "")
+    check(p.locator("#lg-table .lb-row.me").count() == 1 and "+420 Chang" in txt, "Standings show profit with you highlighted", "")
     p.click(".lg-period button:nth-child(2)"); p.wait_for_timeout(250)
     check(p.evaluate("__fake.lastPeriod") == "all", "All-time toggle asks for all-time standings", "")
     check(p.evaluate("inviteLink('ABC234')").endswith("?join=ABC234"), "Invite links carry the league code", "")

@@ -96,7 +96,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .logo { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; letter-spacing:-0.5px; }
 .logo span { color:var(--accent); }
 .balance-pill { display:flex; align-items:center; gap:8px; background:var(--gold-dim); border:1px solid rgba(212,168,67,0.25); border-radius:100px; padding:6px 14px 6px 10px; font-size:14px; font-weight:600; color:var(--gold); }
-.coin-icon { width:18px; height:18px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--bg); }
+.coin-icon { width:18px; height:18px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--bg); }
 
 .nav { display:flex; gap:4px; padding:16px 0; overflow-x:auto; }
 .nav button { background:none; border:1px solid var(--border); color:var(--text-dim); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:500; padding:7px 16px; border-radius:8px; cursor:pointer; white-space:nowrap; transition:all .15s; }
@@ -334,7 +334,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <header class="header">
     <div class="logo">pick a <span>fight</span></div>
     <div class="header-right"><button id="authBtn" class="auth-btn" onclick="authClick()" style="display:none">Sign in</button>
-    <div class="balance-pill"><div class="coin-icon">R</div><span id="balanceDisplay">5,000</span></div></div>
+    <div class="balance-pill"><div class="coin-icon">🐘</div><span id="balanceDisplay">5,000</span></div></div>
   </header>
   <nav class="nav">
     <button class="active" data-tab="fights">Upcoming</button>
@@ -345,7 +345,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="connect-bar">
     <span id="connectText">Playing as guest — picks stay on this device</span>
   </div>
-  <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 R.</div>
+  <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 Chang.</div>
 
   <div id="tab-fights">
     <div class="event-picker" id="eventPicker"></div>
@@ -751,7 +751,7 @@ async function sharePicks(){
    job settles them — so the leaderboard can't be edited from the browser. */
 let sb=null, user=null, profile=null, guestStash=null, placing=false;
 function loadScript(src){ return new Promise((res,rej)=>{ const el=document.createElement('script'); el.src=src; el.onload=res; el.onerror=rej; document.head.appendChild(el); }); }
-async function rpc(name, args){ const {data,error}=await sb.rpc(name, args||{}); if(error) throw new Error(error.message||'Something went wrong'); return data; }
+async function rpc(name, args){ const {data,error}=await sb.rpc(name, args||{}); if(error) throw new Error((error.message||'Something went wrong').replace('Not enough R','Not enough Chang')); return data; }
 async function initAuth(){
   if(!DB) return;
   try{
@@ -898,12 +898,12 @@ async function placeBetServer(stake){
   try{
     if(!sp) throw new Error('That pick is no longer available');
     await rpc('place_pick',{p_fight:selectedPick.fightId, p_market:sp.market, p_selection:sp.selection, p_stake:stake});
-    closeBetSlip(); await refreshAccount(); updateBal(); checkUBI(); showToast(`Placed ${stake} R on ${placed}`);
+    closeBetSlip(); await refreshAccount(); updateBal(); checkUBI(); showToast(`Placed ${stake} Chang on ${placed}`);
   }catch(e){ showToast(e.message); }
   finally{ placing=false; }
 }
 async function claimTopupServer(){
-  try{ await rpc('claim_topup'); await refreshAccount(); updateBal(); checkUBI(); showToast('Claimed 300 R daily top-up'); }
+  try{ await rpc('claim_topup'); await refreshAccount(); updateBal(); checkUBI(); showToast('Claimed 300 Chang daily top-up'); }
   catch(e){ showToast(e.message); checkUBI(); }
 }
 /* First sign-in on this device: move the guest's open picks (on fights that
@@ -938,7 +938,7 @@ async function loadLeaderboard(){
     const me = profile?.username;
     el.innerHTML = `<h3 class="section-title">Leaderboard</h3><div class="leaderboard">${rows.map((r,i)=>`
       <div class="lb-row ${r.username===me?'me':''}"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${esc(r.username).charAt(0).toUpperCase()}</div>
-      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance">${Number(r.balance).toLocaleString()} R</div>
+      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance">${Number(r.balance).toLocaleString()} Chang</div>
       <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`).join('')}</div>
       ${user?'':'<p class="stats-note"><a href="#" onclick="openModal(\'signinModal\');return false">Sign in</a> to get on the board.</p>'}`;
   }catch(e){ el.innerHTML=''; }
@@ -999,7 +999,7 @@ async function loadLeagueTable(id){
     const me=profile?.username;
     box.innerHTML = rows.map((r,i)=>{ const p=Number(r.profit);
       return `<div class="lb-row ${r.username===me?'me':''}"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${esc(r.username).charAt(0).toUpperCase()}</div>
-      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance ${p>0?'pos':p<0?'neg':''}">${p>0?'+':''}${p.toLocaleString()} R</div>
+      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance ${p>0?'pos':p<0?'neg':''}">${p>0?'+':''}${p.toLocaleString()} Chang</div>
       <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`; }).join('')
       + (leaguePeriod==='week'?'<p class="stats-note" style="padding:0 12px 8px">Profit on picks settled since Monday. Resets every week.</p>':'');
   }catch(e){ box.innerHTML=`<div class="empty-state">${esc(e.message)}</div>`; }
@@ -1309,7 +1309,7 @@ function readStake(){
 function updatePayout(){
   const s=readStake();
   const btn=document.getElementById('placeBetBtn');
-  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=payoutFor(s,selectedPick.odds).toLocaleString()+' R';btn.disabled=false;}
+  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=payoutFor(s,selectedPick.odds).toLocaleString()+' Chang';btn.disabled=false;}
   else{document.getElementById('payoutDisplay').textContent='—';btn.disabled=true;}
 }
 function placeBet(){
@@ -1321,7 +1321,7 @@ function placeBet(){
   balance-=s;
   bets.push({...selectedPick,stake:s,payout:payoutFor(s,selectedPick.odds),result:'pending',time:Date.now()});
   const placed=selectedPick.pick;  // closeBetSlip() clears selectedPick
-  save();updateBal();closeBetSlip();showToast(`Placed ${s} R on ${placed}`);checkUBI();
+  save();updateBal();closeBetSlip();showToast(`Placed ${s} Chang on ${placed}`);checkUBI();
 }
 
 function showTab(t){
@@ -1343,8 +1343,8 @@ function renderMyBets(){
   const l=document.getElementById('my-bets-list');
   if(!bets.length){l.innerHTML='<div class="empty-state">No picks yet. Go make some calls.</div>';return;}
   l.innerHTML=bets.slice().reverse().map(b=>`
-    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${esc(b.type||'pick')} · ${b.stake} R @ ${Number(b.odds).toFixed(2)}x</div></div>
-    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
+    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${esc(b.type||'pick')} · ${b.stake} Chang @ ${Number(b.odds).toFixed(2)}x</div></div>
+    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} Chang`:`-${b.stake} Chang`}</div></div>`).join('');
 }
 /* Honest personal stats (replaces a leaderboard of made-up bot names) */
 function computeStats(){
@@ -1380,7 +1380,7 @@ function renderStats(){
   el.innerHTML = `
     <div class="stat-grid">
       ${tile(s.hit===null?'—':s.hit+'%','Hit rate')}
-      ${tile(sign(s.profit)+' R','Profit on picks', s.profit>0?'pos':s.profit<0?'neg':'')}
+      ${tile(sign(s.profit)+' Chang','Profit on picks', s.profit>0?'pos':s.profit<0?'neg':'')}
       ${tile(s.streak?`${s.streak}${s.streakKind==='won'?'W':'L'}`:'—','Current streak', s.streakKind==='won'?'pos':s.streak?'neg':'')}
       ${tile(s.upsets,'Underdog hits')}
     </div>
@@ -1389,7 +1389,7 @@ function renderStats(){
       <div class="mk-row"><span>Settled / pending</span><span>${s.settled} / ${s.pending}</span></div>
       ${s.scored?`<div class="mk-row"><span>Fights you scored</span><span>${s.scored}</span></div>`:''}
       ${s.decided?`<div class="mk-row"><span>Agreed with the judges</span><span>${s.agreed}/${s.decided} decisions</span></div>`:''}
-      ${s.best?`<div class="mk-row"><span>Best hit</span><span>${s.best.pick} +${(s.best.payout-s.best.stake).toLocaleString()} R</span></div>`:''}
+      ${s.best?`<div class="mk-row"><span>Best hit</span><span>${s.best.pick} +${(s.best.payout-s.best.stake).toLocaleString()} Chang</span></div>`:''}
       ${markets}
     </div>
     ${s.total?'':'<div class="empty-state">Make a few picks — your hit rate, streaks and upsets show up here once fights are scored.</div>'}
@@ -1403,7 +1403,7 @@ function checkUBI(){
   const b=document.getElementById('ubi-banner'),today=new Date().toDateString();
   b.style.display=(balance<300&&lastUBIClaim!==today)?'block':'none';
 }
-function claimUBI(){if(user){claimTopupServer();return;}balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 R daily top-up');}
+function claimUBI(){if(user){claimTopupServer();return;}balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 Chang daily top-up');}
 
 loadEvents().then(()=>{ checkUBI(); initAuth(); });
 </script>
