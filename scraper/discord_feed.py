@@ -136,8 +136,11 @@ def result_line(f: dict, verdict: dict | None) -> str:
         who, loser = a.get("name", "?"), b.get("name", "?")
     elif w == "b":
         who, loser = b.get("name", "?"), a.get("name", "?")
+    elif w == "void":
+        return f"❌ {a.get('name', '?')} vs {b.get('name', '?')} — cancelled · picks refunded"
     else:
-        return f"🤝 {a.get('name', '?')} vs {b.get('name', '?')} — draw / no contest"
+        what = "no contest" if "contest" in (r.get("method") or "").lower() else "draw"
+        return f"🤝 {a.get('name', '?')} vs {b.get('name', '?')} — {what}"
     how = r.get("method") or ("finish" if r.get("finish") else "decision")
     rnd = f" R{int(r['round'])}" if r.get("round") else ""
     line = f"✅ **{who}** def. {loser} — {how}{rnd}"
@@ -191,6 +194,7 @@ def results_embed(events: list[dict], verdicts: dict[str, dict], site_url: str) 
     parts = []
     for ev in events:
         fights = [f for f in ev.get("fights", []) if f.get("result")]
+        fights.sort(key=lambda f: (f["result"].get("winner") == "void"))  # cancelled bouts last
         head = f"**{event_title(ev)}** — results"
         lines = []
         for f in fights[:MAX_BOUTS_RESULTS]:

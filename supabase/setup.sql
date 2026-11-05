@@ -42,7 +42,7 @@ create table if not exists public.fights (
   rounds        smallint not null default 3 check (rounds in (3, 5)),
   odds_a        numeric(6,2) not null check (odds_a > 1),
   odds_b        numeric(6,2) not null check (odds_b > 1),
-  result_winner text check (result_winner in ('a', 'b', 'draw')),
+  result_winner text check (result_winner in ('a', 'b', 'draw', 'void')),  -- void = bout cancelled
   result_method text,                  -- 'KO/TKO' | 'Submission' | 'Decision' | null (unknown)
   result_round  smallint,
   result_finish boolean,               -- true = stopped early, false = went the distance
@@ -75,6 +75,11 @@ create table if not exists public.fan_scores (
 );
 
 -- ───────────────────────── security ─────────────────────────
+-- Re-runs: older setups only allowed a/b/draw (void = bout cancelled, picks refunded)
+alter table public.fights drop constraint if exists fights_result_winner_check;
+alter table public.fights add constraint fights_result_winner_check
+  check (result_winner in ('a', 'b', 'draw', 'void'));
+
 alter table public.profiles   enable row level security;
 alter table public.accounts   enable row level security;
 alter table public.fights     enable row level security;
@@ -278,7 +283,9 @@ begin
     for update of p
   loop
     outcome := null;
-    if k.market = 'winner' then
+    if k.w = 'void' then
+      outcome := 'void';                -- bout cancelled: refund every market
+    elsif k.market = 'winner' then
       outcome := case when k.w = 'draw' then 'void' when k.selection = k.w then 'won' else 'lost' end;
     elsif k.m = 'Draw' or k.w = 'draw' then
       outcome := 'void';
@@ -503,7 +510,7 @@ create or replace function public.grade_takes()
 returns integer
 language sql security definer set search_path = public as $$
   with g as (
-    update takes t set status = case when f.result_winner = 'draw' then 'void'
+    update takes t set status = case when f.result_winner in ('draw', 'void') then 'void'
                                      when t.side = f.result_winner then 'aged_well' else 'aged_badly' end
     from fights f
     where f.fight_key = t.fight_key and t.status = 'open' and f.result_winner is not null

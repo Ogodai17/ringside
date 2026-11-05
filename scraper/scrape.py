@@ -163,7 +163,40 @@ def event_is_past(event_date: str, today: date | None = None) -> bool:
         return False
 
 
-def detect_results(soup: BeautifulSoup, fights: list[dict], event_past: bool):
+RESULT_MARK = re.compile(r"^\s*(WIN|WINNER|DRAW|NO\s*CONTEST|NC)(?![A-Za-z])")
+# Same marker with the method glued on, as get_text(strip=True) shows it:
+# "WINKnockout (R2)KO (R2)", "DRAWMajority Draw (R3)"
+RESULT_MARK_JOINED = re.compile(
+    r"^(WIN|DRAW|NO CONTEST|NC)(?=(Knockout|Technical|TKO|KO|Submission|Unanimous|Split|"
+    r"Majority|Decision|Disqualification|DQ|Draw|No Contest)\b)")
+
+
+def result_from_marks(fa: dict, fb: dict, marks: dict) -> dict | None:
+    """Read a bout result from onefc.com's WIN/DRAW profile-link markers."""
+    ma, mb = marks.get(fa.get("_slug", "")), marks.get(fb.get("_slug", ""))
+    if not ma and not mb:
+        return None
+    m = ma or mb
+    outcome = m["outcome"].replace(" ", "")
+    txt = m["text"].lower()
+    rm = re.search(r"\(\s*r(?:ound)?\s*([1-5])\s*\)|\bround\s*([1-5])\b", txt)
+    rnd = int(rm.group(1) or rm.group(2)) if rm else None
+    if outcome in ("DRAW", "NOCONTEST", "NC"):
+        return {"winner": "draw", "method": "Draw" if outcome == "DRAW" else "No Contest", "round": rnd}
+    if ma and mb:
+        return None  # both marked as winner — don't guess
+    if re.search(r"\b(t?ko|knockout)\b", txt):
+        method = "KO/TKO"
+    elif re.search(r"\b(submission|sub)\b", txt):
+        method = "Submission"
+    elif re.search(r"\b(decision|ud|sd|md)\b", txt):
+        method = "Decision"
+    else:
+        method = None
+    return {"winner": "a" if ma else "b", "method": method, "round": rnd}
+
+
+def detect_results(soup: BeautifulSoup, fights: list[dict], event_past: bool, marks: dict | None = None):
     """Annotate fights with winner/method — only for events that already happened.
 
     Old version matched words like "Results" in the site menu and the
@@ -177,6 +210,11 @@ def detect_results(soup: BeautifulSoup, fights: list[dict], event_past: bool):
     for f in fights:
         f["result"] = None
     if not event_past:
+        return
+
+    if marks:
+        for f in fights:
+            f["result"] = result_from_marks(f["fighter_a"], f["fighter_b"], marks)
         return
 
     win_label = re.compile(r"^\s*(WIN|WINNER|WINS)\s*$", re.I)
@@ -263,25 +301,36 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
             if any(d in s for d in ["MMA", "Muay Thai", "Kickboxing", "Grappling"]):
                 disc_labels.append(s)
 
-    # Fighter pairs — find all athlete profile links
+    # Fighter pairs — find all athlete profile links.
+    # After an event, onefc.com adds a second link to the WINNER's profile
+    # whose text is the result, e.g. "WIN" + "Knockout (R2)" + "KO (R2)".
+    # Those are result markers, not fighters — treating them as names
+    # shifted every pairing on the first real results page (FF176).
     athlete_links = []
+    result_marks = {}  # profile slug -> {"outcome", "text"}
     for a in soup.find_all("a", href=True):
         href = a["href"].rstrip("/")
         # Skip the generic "/athletes" directory link
         if href.endswith("/athletes") or href == "/athletes":
             continue
         if "/athletes/" in a["href"]:
+            slug = href.split("/")[-1].lower()
             name = a.get_text(strip=True)
+            mark = RESULT_MARK.match(a.get_text(" ", strip=True)) or RESULT_MARK_JOINED.match(name)
+            if mark:
+                result_marks.setdefault(slug, {"outcome": mark.group(1).upper(),
+                                               "text": a.get_text(" ", strip=True)})
+                continue
             # Skip empty, single-char, or generic nav text
             if name and len(name) > 1 and name.lower() not in ("all athletes", "athletes", "view all"):
-                athlete_links.append({"name": name, "href": a["href"]})
+                athlete_links.append({"name": name, "href": a["href"], "slug": slug})
 
-    # Deduplicate preserving order
-    seen_names = []
+    # Deduplicate by profile (same athlete linked from photo + name)
+    seen = set()
     unique = []
     for al in athlete_links:
-        if al["name"] not in seen_names:
-            seen_names.append(al["name"])
+        if al["slug"] not in seen:
+            seen.add(al["slug"])
             unique.append(al)
 
     # Pair fighters into bouts
@@ -304,12 +353,14 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
                 "country": "",
                 "flag": "",
                 "profile": urljoin(BASE, fa["href"]),
+                "_slug": fa["slug"],
             },
             "fighter_b": {
                 "name": fb["name"],
                 "country": "",
                 "flag": "",
                 "profile": urljoin(BASE, fb["href"]),
+                "_slug": fb["slug"],
             },
         })
 
@@ -323,7 +374,10 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
     # Date first — status and results depend on it
     event_date = detect_event_date(soup)
     past = event_is_past(event_date)
-    detect_results(soup, fights, past)
+    detect_results(soup, fights, past, result_marks)
+    for f in fights:
+        f["fighter_a"].pop("_slug", None)
+        f["fighter_b"].pop("_slug", None)
 
     return {
         "name": event_name,
@@ -337,34 +391,37 @@ def parse_event(soup: BeautifulSoup, url: str) -> dict | None:
     }
 
 
-def extract_country(soup: BeautifulSoup) -> str:
-    """Try to pull country from a fighter profile page."""
-    # Common patterns: country appears in meta tags, structured data, or text near flag/nationality
-    # Try og:description or meta description first
-    for meta in soup.find_all("meta"):
-        content = meta.get("content", "")
-        for country in COUNTRY_FLAGS:
-            if country in content:
-                return country
+def flag_from_code(code: str) -> str:
+    """'br' -> 🇧🇷 (regional-indicator letters), '' for anything that isn't 2 letters."""
+    code = (code or "").strip().upper()
+    if len(code) != 2 or not code.isalpha():
+        return ""
+    return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in code)
 
-    # Try finding country names in text near common labels
-    text = soup.get_text(" ", strip=True)
-    for label in ["Nationality", "Country", "Born", "Fighting out of", "Hometown"]:
-        idx = text.find(label)
-        if idx != -1:
-            snippet = text[idx:idx+80]
-            for country in COUNTRY_FLAGS:
-                if country in snippet:
-                    return country
 
-    # Fallback: scan full text for any known country name
-    # (check longer names first to avoid "New" matching before "New Zealand")
-    sorted_countries = sorted(COUNTRY_FLAGS.keys(), key=len, reverse=True)
-    for country in sorted_countries:
-        if country in text:
-            return country
+def extract_country(soup: BeautifulSoup) -> tuple[str, str]:
+    """(country name, flag) from the COUNTRY field of a ONE athlete profile.
 
-    return ""
+    The profile has a block like
+      <div class="attr"><h5 class="title">Country</h5>
+        <div class="value"><a href=".../athletes/country/br/">Brazil</a></div></div>
+    Only that field is trusted. Bios mention where fighters train ("moved to
+    Phuket, Thailand") and the site's language menu says "INDONESIA", so
+    scanning page text gave wrong flags. No field -> ("", ""), never a guess.
+    """
+    for attr in soup.select(".attributes .attr, .attr"):
+        title = attr.select_one(".title")
+        if not title or title.get_text(strip=True).lower() not in ("country", "nationality"):
+            continue
+        value = attr.select_one(".value")
+        if not value:
+            continue
+        name = value.get_text(" ", strip=True)
+        link = value.select_one("a[href]")
+        m = re.search(r"/country/([a-z]{2})/?", link["href"]) if link else None
+        flag = flag_from_code(m.group(1)) if m else COUNTRY_FLAGS.get(name, "")
+        return name, flag
+    return "", ""
 
 
 def parse_record(text: str) -> str:
@@ -402,11 +459,14 @@ def enrich_fighters(event: dict, delay: float = 0.5):
                 if fr:
                     fighter["finish_rate"] = int(fr.group(1))
 
-                # Country + flag
-                if not fighter.get("country"):
-                    country = extract_country(soup)
-                    fighter["country"] = country
-                    fighter["flag"] = COUNTRY_FLAGS.get(country, "")
+                # Country + flag, from the profile's Country field only.
+                # Older data guessed from page text (often wrong), so anything
+                # not marked as coming from that field gets replaced or cleared.
+                country, flag = extract_country(soup)
+                if country:
+                    fighter["country"], fighter["flag"], fighter["country_src"] = country, flag, "profile"
+                elif fighter.get("country_src") != "profile":
+                    fighter["country"], fighter["flag"] = "", ""
 
                 status = fighter["record"] or "no record"
                 if fighter["country"]:
@@ -417,6 +477,150 @@ def enrich_fighters(event: dict, delay: float = 0.5):
                 print("failed")
 
             time.sleep(delay)
+
+
+RECHECK_DAYS = 4         # re-read a finished event's page for results this long
+KEEP_FINISHED_DAYS = 14  # keep it on the site this long so late visitors' picks settle
+CANCELLED = {"winner": "void", "method": "Cancelled", "round": None}
+
+
+def _slug_of(fighter: dict) -> str:
+    return (fighter.get("profile") or "").rstrip("/").split("/")[-1].lower()
+
+
+def _fighter_key(name: str) -> str:
+    return re.sub(r"\s+", " ", (name or "").strip().lower())
+
+
+def merge_previous(new_ev: dict, old_ev: dict) -> tuple[dict, list[dict]]:
+    """Carry over fighter details (country, record...) and any result we
+    already had, so a re-check never loses data or re-fetches profiles.
+    Also returns the saved bouts the new page no longer shows."""
+    # Picks are keyed on event name + fighter names (A then B), so keep the
+    # saved name and each bout's A/B order exactly as players saw them.
+    for k in ("name", "subtitle", "venue"):
+        if old_ev.get(k):
+            new_ev[k] = old_ev[k]
+    old_by_pair, old_by_slug = {}, {}
+    for f in old_ev.get("fights", []):
+        key = (_fighter_key(f["fighter_a"]["name"]), _fighter_key(f["fighter_b"]["name"]))
+        old_by_pair[key] = f
+        slugs = (_slug_of(f["fighter_a"]), _slug_of(f["fighter_b"]))
+        if all(slugs):
+            old_by_slug[slugs] = f
+    matched = set()
+    for f in new_ev.get("fights", []):
+        a, b = _fighter_key(f["fighter_a"]["name"]), _fighter_key(f["fighter_b"]["name"])
+        sa, sb = _slug_of(f["fighter_a"]), _slug_of(f["fighter_b"])
+        # Same bout by name, or by profile link if a name's spelling changed
+        old = old_by_pair.get((a, b)) or old_by_slug.get((sa, sb))
+        if old is None and ((b, a) in old_by_pair or (sb, sa) in old_by_slug):
+            # Results page lists this bout the other way round — flip it back.
+            old = old_by_pair.get((b, a)) or old_by_slug[(sb, sa)]
+            f["fighter_a"], f["fighter_b"] = f["fighter_b"], f["fighter_a"]
+            r = f.get("result")
+            if r and r.get("winner") in ("a", "b"):
+                r["winner"] = "b" if r["winner"] == "a" else "a"
+        if old is None:
+            continue
+        matched.add(id(old))
+        f["fighter_a"]["name"], f["fighter_b"]["name"] = old["fighter_a"]["name"], old["fighter_b"]["name"]
+        for side in ("fighter_a", "fighter_b"):
+            for k, v in old[side].items():
+                if k not in f[side] or not f[side][k]:
+                    f[side][k] = v
+        for k in ("odds", "id", "label", "discipline", "main_event"):
+            if k in old and k not in f:
+                f[k] = old[k]
+        old_r = old.get("result")
+        # A cancelled bout stays cancelled: its picks were already refunded
+        if old_r and (old_r.get("winner") == "void" or not f.get("result")):
+            f["result"] = old_r
+    # Bouts we had but the results page doesn't show: keep them so picks
+    # on them aren't orphaned.
+    missing = [f for f in old_ev.get("fights", []) if id(f) not in matched]
+    new_ev["fights"].extend(missing)
+    return new_ev, missing
+
+
+def mark_cancelled(missing: list[dict], saved_total: int, page_total: int, page_with_result: int) -> int:
+    """A bout that's gone from a finished event's results page didn't happen.
+    Only trust that when the page clearly shows results (at least half of
+    its bouts have one) AND it matched most of the saved card (at most 2
+    bouts or a quarter missing) — so a half-loaded or mis-read page can
+    never cancel a whole card."""
+    if not page_total or page_with_result * 2 < page_total:
+        return 0
+    if not missing or len(missing) >= saved_total or len(missing) > max(2, saved_total // 4):
+        if missing:
+            print(f"::warning title=ONE bouts not cancelled::{len(missing)} of {saved_total} saved bouts "
+                  f"weren't found on the results page — too many to trust; left open for a human to check.")
+        return 0
+    n = 0
+    for f in missing:
+        if not f.get("result"):
+            f["result"] = dict(CANCELLED)
+            n += 1
+    return n
+
+
+def recheck_recent_events(out_file: Path, scraped_urls: set, today: date | None = None) -> list[dict]:
+    """Re-scrape events from the previous run that are no longer on the
+    upcoming list: re-read pages for RECHECK_DAYS, then keep the saved card
+    until KEEP_FINISHED_DAYS so late visitors' picks still settle."""
+    today = today or date.today()
+    try:
+        previous = json.loads(out_file.read_text(encoding="utf-8")).get("events", [])
+    except (OSError, ValueError):
+        return []
+
+    kept = []
+    for old in previous:
+        url, ev_date = old.get("url"), old.get("date") or ""
+        if not url or url in scraped_urls:
+            continue
+        try:
+            age = (today - date.fromisoformat(ev_date)).days
+        except ValueError:
+            continue
+        if age < 0 or age > KEEP_FINISHED_DAYS:
+            continue  # still upcoming but unlisted (postponed?) or too old
+        if age > RECHECK_DAYS:
+            kept.append(old)  # results are settled by now; keep as saved
+            continue
+
+        print(f"\n  [re-check finished] {old.get('name')} ({ev_date})")
+        soup = fetch(url)
+        parsed = parse_event(soup, url) if soup else None
+        names = lambda e: {_fighter_key(f[s]["name"]) for f in (e or {}).get("fights", [])
+                           for s in ("fighter_a", "fighter_b")}
+        if parsed and names(old) & names(parsed):
+            # Count before merging — merging copies in results we already had
+            page_total = len(parsed["fights"])
+            page_with_result = sum(1 for f in parsed["fights"] if f.get("result"))
+            ev, missing = merge_previous(parsed, old)
+            ev["date"] = ev_date or ev.get("date")
+            if age > 0:
+                n_cx = mark_cancelled(missing, len(old.get("fights", [])), page_total, page_with_result)
+                if n_cx:
+                    print(f"::notice title=ONE bouts cancelled::{ev.get('name')}: {n_cx} bout(s) not on the "
+                          f"results page — marked cancelled, picks refunded")
+        else:
+            # Page failed or looks totally different — keep what we had.
+            print("  -> couldn't re-read the page, keeping saved card", file=sys.stderr)
+            ev = old
+        if age > 0:
+            ev["status"] = "completed"
+        ev["fight_count"] = len(ev.get("fights", []))
+        n_res = sum(1 for f in ev.get("fights", []) if f.get("result"))
+        print(f"  -> {n_res}/{ev['fight_count']} results")
+        if age > 0 and n_res == 0:
+            print(f"::warning title=ONE results missing::{ev.get('name')} finished but no results "
+                  f"were found on {url} — the results reader may need updating.")
+        else:
+            print(f"::notice title=ONE results::{ev.get('name')}: {n_res}/{ev['fight_count']} results")
+        kept.append(ev)
+    return kept
 
 
 def main():
@@ -456,6 +660,12 @@ def main():
             results.append(parsed)
         else:
             print("  -> no fights found, skipping")
+
+    # Finished events drop off onefc.com's upcoming list, so without this
+    # they'd vanish the day after (before results are read) and picks on
+    # them would never settle. Re-check them by their saved URL.
+    out_file = Path(args.out) / "events.json"
+    results += recheck_recent_events(out_file, {e["url"] for e in results})
 
     # Safety net: never overwrite good data with an empty scrape.
     # Exit non-zero so the GitHub Actions run shows a red X.

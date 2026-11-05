@@ -60,6 +60,10 @@ After step 6, Claude adds the URL + publishable key to `site_config.json`, the
 site rebuilds with a **Sign in** button, and the next daily run syncs fights
 into the database.
 
+`sign_in_providers` in `site_config.json` lists which sign-in buttons show
+(`"google,discord"` by default). Set it to `"google"` until the Discord app in
+step 4 exists, so players never see a button that doesn't work.
+
 ---
 
 # Discord feed (optional, works without the database)

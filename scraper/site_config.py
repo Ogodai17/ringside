@@ -22,6 +22,7 @@ DEFAULTS = {
     "affiliate_url": "",
     "database_url": "",
     "database_publishable_key": "",
+    "sign_in_providers": "google,discord",
 }
 
 
@@ -136,4 +137,10 @@ def db_api(cfg: dict):
                          "Use the publishable (sb_publishable_...) or anon key only.")
     if not url.startswith("https://"):
         raise SystemExit("database_url must start with https://")
-    return {"url": url.rstrip("/"), "key": key}
+    allowed = ("google", "discord")
+    raw = cfg.get("sign_in_providers") or DEFAULTS["sign_in_providers"]
+    providers = [p.strip().lower() for p in raw.split(",") if p.strip()]
+    bad = [p for p in providers if p not in allowed]
+    if bad:
+        raise SystemExit(f"sign_in_providers: unknown provider(s) {bad} - use google and/or discord")
+    return {"url": url.rstrip("/"), "key": key, "providers": providers}

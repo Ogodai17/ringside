@@ -89,7 +89,11 @@ def rows_from_data():
                     "odds_a": round(odds[0], 2), "odds_b": round(odds[1], 2),
                 }
                 r = f.get("result")
-                if r and r.get("winner") in ("a", "b", "draw"):
+                if r and r.get("winner") == "void":
+                    # Bout cancelled: settle_all refunds every pick on it
+                    row.update(result_winner="void", result_method=None,
+                               result_round=None, result_finish=None)
+                elif r and r.get("winner") in ("a", "b", "draw"):
                     method = r.get("method")
                     if method == "Draw":
                         row["result_winner"] = "draw"

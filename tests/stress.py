@@ -8,6 +8,7 @@ and attacks it. Prints PASS/FAIL/WARN lines and a summary.
 """
 import http.server
 import json
+import re
 import shutil
 import socketserver
 import sys
@@ -231,6 +232,36 @@ def t_stale_event(browser):
     pg.close()
 
 
+def t_cancelled_bout(browser):
+    """A bout that never happened refunds every pick on it, and says so."""
+    site = make_site()
+    pg = Page(browser, site)
+    fid = first_open_fight(pg)["id"]
+    pg.js("(id)=>selectWinner(id,'A')", fid)
+    pg.p.fill("#stakeInput", "250"); pg.js("updatePayout()")
+    pg.p.click("#placeBetBtn"); pg.p.wait_for_timeout(150)
+    bal_after_pick = pg.js("balance")
+    a_name = pg.js("(id)=>{for(const e of events)for(const f of e.fights)if(f.id===id)return f.a.name}", fid)
+    for fn in ("events.json", "ufc_events.json"):
+        fp = site / "data" / fn; j = json.loads(fp.read_text())
+        for e in j["events"]:
+            for f in e.get("fights", []):
+                if f["fighter_a"]["name"] == a_name:
+                    f["result"] = {"winner": "void", "method": "Cancelled", "round": None}
+        fp.write_text(json.dumps(j))
+    pg.reload()
+    check(pg.js("balance") - bal_after_pick == 250 and pg.js("bets[0].result") == "void",
+          "Cancelled bout refunds the stake", f"refunded {pg.js('balance') - bal_after_pick}, {pg.js('bets[0].result')}")
+    pg.js("(id)=>{const i=events.findIndex(e=>e.fights.some(f=>f.id===id)); switchEvent(i);}", fid)
+    card = pg.js("(id)=>document.getElementById('fight-'+id).innerText", fid)
+    check("cancelled" in card.lower() and "Score this fight" not in card,
+          "Cancelled bout is labelled, with no scorecard", card[:160])
+    pg.p.click('[data-tab="mybets"]'); pg.p.wait_for_timeout(150)
+    check("Refunded" in pg.js("document.body.innerText"), "My Picks shows the refund", "")
+    check(not pg.errors, "No JS errors on a cancelled bout", "; ".join(pg.errors[:2]))
+    pg.close()
+
+
 def t_payout_consistency(browser):
     """Place a pick, finish the fight, reload: credited amount must equal the slip's promise."""
     site = make_site()
@@ -285,10 +316,18 @@ def t_hostile_names(browser):
     payload = '<img src=x onerror="window.__xss=1">'
     def mutate(d):
         p = d / "data" / "events.json"; j = json.loads(p.read_text())
-        f = j["events"][0]["fights"][0]
+        ev = j["events"][0]
+        # Keep this event open for picks — the names are checked on My Picks,
+        # which only shows them once a pick is placed (fight day locks it).
+        ev["date"] = (date.today() + timedelta(days=7)).isoformat()
+        ev["status"] = "upcoming"
+        ev.pop("start", None)
+        for fx in ev["fights"]:
+            fx["result"] = None
+        f = ev["fights"][0]
         f["fighter_a"]["name"] = payload
         f["fighter_b"]["name"] = "Lone'er O\"Brien Ñúñez 李"
-        j["events"][0]["venue"] = '<b onmouseover="window.__xss=2">Venue</b>'
+        ev["venue"] = '<b onmouseover="window.__xss=2">Venue</b>'
         p.write_text(json.dumps(j))
     pg = Page(browser, make_site(mutate))
     pg.js("switchEvent(events.findIndex(e=>e.fights.some(f=>f.a.name.includes('img src'))))")
@@ -404,6 +443,8 @@ def t_share_and_stats(browser):
     p.click(".share-btn"); p.wait_for_timeout(200)
     toast = p.evaluate("document.getElementById('toast').textContent")
     check("first" in toast.lower(), "Share with no picks explains what to do", toast)
+    # Open the first event still taking picks (the default tab can be a locked fight-day card)
+    p.evaluate("(()=>{ const i=events.findIndex(e=>!eventLocked(e)); if(i>=0) switchEvent(i); })()"); p.wait_for_timeout(150)
     fid = p.evaluate("document.querySelector('.fight-card .odd-btn:not([disabled])').closest('.fight-card').id.replace('fight-','')")
     p.evaluate(f"selectWinner('{fid}','A')"); p.fill("#stakeInput", "250"); p.evaluate("updatePayout()"); p.click("#placeBetBtn")
     with p.expect_download() as dl:
@@ -504,7 +545,8 @@ def t_scorecard_one(browser):
         e["fights"][0]["result"] = {"winner": "a", "method": "Decision", "round": None}
         p.write_text(json.dumps(j))
     pg = Page(browser, make_site(mutate))
-    idx = pg.js("events.findIndex(e=>e.promotion==='ONE' && e.status==='completed')")
+    # Find the event set up above (real finished ONE events can exist too)
+    idx = pg.js("events.findIndex(e=>e.promotion==='ONE' && e.date==='2026-01-01')")
     pg.js(f"switchEvent({idx})")
     fid = pg.js("events[activeEventIdx].fights[0].id")
     pg.js(f"toggleCard('{fid}')")
@@ -578,11 +620,48 @@ FAKE_SUPABASE = r"""
 """
 
 
-def with_db(site):
+def with_db(site, providers=("google", "discord")):
+    """Point the page at the fake database, whatever site_config.json says
+    (the real config may already hold the live Supabase URL)."""
     html = (site / "index.html").read_text()
-    html = html.replace("const DB = null", 'const DB = {"url":"https://fake-db.test","key":"sb_publishable_test"}')
+    fake = json.dumps({"url": "https://fake-db.test", "key": "sb_publishable_test", "providers": list(providers)})
+    html, n = re.subn(r"const DB = (?:null|\{[^\n]*?\});", "const DB = " + fake + ";", html, count=1)
+    assert n == 1, "with_db: couldn't find the DB line in index.html"
+    assert "supabase.co" not in html.split("const DB = ", 1)[1].split("\n", 1)[0]
     (site / "index.html").write_text(html)
     return site
+
+
+def t_one_country(browser):
+    """ONE flags come from the profile's Country field only (not bios or the language menu)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scraper"))
+    from bs4 import BeautifulSoup
+    import scrape
+    lang_menu = '<li class="lang-item with-flag with-flag-id">INDONESIA</li><li class="lang-item">ไทย Thailand</li>'
+    def page(country_html, bio):
+        return BeautifulSoup(f'<html><head><meta name="description" content="{bio}"></head><body>{lang_menu}'
+                             f'<div class="mt-4 attributes"><div class="attr"><h5 class="title">Height</h5><div class="value">175 CM</div></div>'
+                             f'{country_html}</div></body></html>', "html.parser")
+    attr = lambda code, name: (f'<div class="attr"><h5 class="title">Country</h5><div class="value">'
+                               f'<a href="https://www.onefc.com/athletes/country/{code}/">{name}</a></div></div>')
+    gabriel = page(attr("br", "Brazil"), "Lucas Gabriel originally hails from Brazil but has since moved to Phuket, Thailand")
+    check(scrape.extract_country(gabriel) == ("Brazil", "🇧🇷"), "Brazilian who trains in Thailand gets 🇧🇷, not 🇹🇭", str(scrape.extract_country(gabriel)))
+    laos = page(attr("la", "Laos"), "Muay Thai star from the north")
+    check(scrape.extract_country(laos) == ("Laos", "🇱🇦"), "country missing from our list still gets a flag (Laos 🇱🇦)", str(scrape.extract_country(laos)))
+    uz = page(attr("uz", "Uzbekistan"), "Magomed Magomedov")
+    check(scrape.extract_country(uz)[1] == "🇺🇿", "Uzbekistan 🇺🇿 (was wrongly 🇮🇩 from the language menu)", str(scrape.extract_country(uz)))
+    none = page("", "Fights out of Bangkok, Thailand")
+    check(scrape.extract_country(none) == ("", ""), "no Country field = no flag (never a guess)", str(scrape.extract_country(none)))
+    check(scrape.flag_from_code("kr") == "🇰🇷" and scrape.flag_from_code("x") == "", "flag_from_code builds flags from 2-letter codes", "")
+
+
+def t_sign_in_providers(browser):
+    site = with_db(make_site(), providers=("google",))
+    p = browser.new_page()
+    p.goto((site / "index.html").as_uri()); p.wait_for_timeout(800)
+    check(p.locator("#signinModal .oauth-btn.google").count() == 1 and p.locator("#signinModal .oauth-btn.discord").count() == 0,
+          "sign_in_providers=google hides the Discord button", "")
+    p.close()
 
 
 def t_scorecard_community(browser):
@@ -630,7 +709,9 @@ def t_accounts(browser):
     p.goto(url + "index.html"); p.wait_for_timeout(700)
     check(p.is_visible("#authBtn") and p.inner_text("#authBtn") == "Sign in", "Sign-in button shows when the database is connected", "")
     # guest makes an open pick
-    fid = p.evaluate("""()=>{ for(let i=0;i<events.length;i++){ if(!eventLocked(events[i])) { switchEvent(i); return events[i].fights[0].id; } } }""")
+    # Needs an open event with 2+ fights (a second pick is placed below);
+    # real cards are sometimes announced with just one bout.
+    fid = p.evaluate("""()=>{ for(let i=0;i<events.length;i++){ if(!eventLocked(events[i]) && events[i].fights.length>=2) { switchEvent(i); return events[i].fights[0].id; } } }""")
     p.evaluate(f"selectWinner('{fid}','A')"); p.fill("#stakeInput", "200"); p.evaluate("updatePayout()"); p.click("#placeBetBtn"); p.wait_for_timeout(100)
     check(p.evaluate("balance") == 4800 and p.evaluate("bets.length") == 1, "Guest pick works before signing in", "")
     # sign in
@@ -801,9 +882,9 @@ def t_secret_key_guard(browser):
 
 def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
-             t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
+             t_payout_consistency, t_cancelled_bout, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
-             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts,
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_one_country, t_accounts,
              t_leagues, t_hot_takes, t_badges]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:

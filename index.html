@@ -345,7 +345,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
     <div class="event-picker" id="eventPicker"></div>
     <div class="event-header" id="eventHeader"></div>
     
-    <div id="fight-cards"><div class="static-fights"><h2>Upcoming UFC &amp; ONE Championship fights</h2><p>Free fight predictions with fake money — pick winners, methods and rounds.</p><ul><li><a href="previews/one-friday-fights-176-the-inner-circle-36.html">ONE Friday Fights 176 &amp; The Inner Circle 36</a> — Fri, Oct 30, 2026 · 14 bouts. Main event: <a href="previews/fights/rambong-sor-therapat-vs-jacob-thompson-prediction.html">Rambong Sor Therapat vs Jacob Thompson prediction</a></li><li><a href="previews/ufc-fight-night-moicano-vs-nolan.html">UFC Fight Night: Moicano vs. Nolan</a> — Sat, Oct 31, 2026 · 13 bouts. Main event: <a href="previews/fights/renato-moicano-vs-tom-nolan-prediction.html">Renato Moicano vs Tom Nolan prediction</a></li><li><a href="previews/one-friday-fights-177-the-inner-circle-37.html">ONE Friday Fights 177 &amp; The Inner Circle 37</a> — Fri, Nov 6, 2026 · 1 bout. Main event: <a href="previews/fights/christian-lee-vs-tye-ruotolo-prediction.html">Christian Lee vs Tye Ruotolo prediction</a></li><li><a href="previews/one-fight-night-49-gabriel-vs-magomedov.html">ONE Fight Night 49: Gabriel Vs. Magomedov</a> — Sat, Nov 7, 2026 · 9 bouts. Main event: <a href="previews/fights/lucas-gabriel-vs-magomed-magomedov-prediction.html">Lucas Gabriel vs Magomed Magomedov prediction</a></li><li><a href="previews/ufc-fight-night-bonfim-vs-brady.html">UFC Fight Night: Bonfim vs. Brady</a> — Sat, Nov 7, 2026 · 13 bouts. Main event: <a href="previews/fights/gabriel-bonfim-vs-sean-brady-prediction.html">Gabriel Bonfim vs Sean Brady prediction</a></li><li><a href="previews/ufc-334-gane-vs-hokit.html">UFC 334: Gane vs. Hokit</a> — Sat, Nov 14, 2026 · 13 bouts. Main event: <a href="previews/fights/ciryl-gane-vs-josh-hokit-prediction.html">Ciryl Gane vs Josh Hokit prediction</a></li><li><a href="previews/ufc-fight-night-prochazka-vs-stirling.html">UFC Fight Night: Procházka vs. Stirling</a> — Sat, Nov 21, 2026 · 9 bouts. Main event: <a href="previews/fights/jiri-prochazka-vs-navajo-stirling-prediction.html">Jiří Procházka vs Navajo Stirling prediction</a></li></ul><p><a href="previews/index.html">All fight previews &rarr;</a></p></div></div>
+    <div id="fight-cards"><div class="static-fights"><h2>Upcoming UFC &amp; ONE Championship fights</h2><p>Free fight predictions with fake money — pick winners, methods and rounds.</p><ul><li><a href="previews/one-friday-fights-177-the-inner-circle-37.html">ONE Friday Fights 177 &amp; The Inner Circle 37</a> — Fri, Nov 6, 2026 · 14 bouts. Main event: <a href="previews/fights/isannuea-sor-sasiwat-vs-jack-siatanyokkrok-pk-prediction.html">Isannuea Sor Sasiwat vs Jack Siatanyokkrok PK prediction</a></li><li><a href="previews/one-fight-night-49-gabriel-vs-magomedov.html">ONE Fight Night 49: Gabriel Vs. Magomedov</a> — Sat, Nov 7, 2026 · 9 bouts. Main event: <a href="previews/fights/lucas-gabriel-vs-magomed-magomedov-prediction.html">Lucas Gabriel vs Magomed Magomedov prediction</a></li><li><a href="previews/ufc-fight-night-cortes-acosta-vs-walker.html">UFC Fight Night: Cortes Acosta vs. Walker</a> — Sat, Nov 7, 2026 · 14 bouts. Main event: <a href="previews/fights/waldo-cortes-acosta-vs-johnny-walker-prediction.html">Waldo Cortes Acosta vs Johnny Walker prediction</a></li><li><a href="previews/one-friday-fights-178-the-inner-circle-38.html">ONE Friday Fights 178 &amp; The Inner Circle 38</a> — Fri, Nov 13, 2026 · 2 bouts. Main event: <a href="previews/fights/rodtang-jitmuangnon-vs-nong-o-hama-prediction.html">Rodtang Jitmuangnon vs Nong-O Hama prediction</a></li><li><a href="previews/ufc-334-gane-vs-hokit.html">UFC 334: Gane vs. Hokit</a> — Sat, Nov 14, 2026 · 14 bouts. Main event: <a href="previews/fights/ciryl-gane-vs-josh-hokit-prediction.html">Ciryl Gane vs Josh Hokit prediction</a></li><li><a href="previews/ufc-fight-night-prochazka-vs-stirling.html">UFC Fight Night: Procházka vs. Stirling</a> — Sat, Nov 21, 2026 · 9 bouts. Main event: <a href="previews/fights/jiri-prochazka-vs-navajo-stirling-prediction.html">Jiří Procházka vs Navajo Stirling prediction</a></li><li><a href="previews/ufc-335-oliveira-vs-lopes.html">UFC 335: Oliveira vs. Lopes</a> — Sat, Dec 12, 2026 · 6 bouts. Main event: <a href="previews/fights/charles-oliveira-vs-diego-lopes-prediction.html">Charles Oliveira vs Diego Lopes prediction</a></li></ul><p><a href="previews/index.html">All fight previews &rarr;</a></p></div></div>
   </div>
   <div id="tab-mybets" style="display:none">
     <h3 class="section-title">My Picks</h3>
@@ -383,8 +383,8 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="modal">
     <h3>Sign in to Pick A Fight</h3>
     <p>Keep your picks on every device, climb the leaderboard, and add your scorecards to the fan vote.</p>
-    <button class="oauth-btn google" onclick="signIn('google')">Continue with Google</button>
-    <button class="oauth-btn discord" onclick="signIn('discord')">Continue with Discord</button>
+    <button class="oauth-btn google" data-provider="google" onclick="signIn('google')">Continue with Google</button>
+    <button class="oauth-btn discord" data-provider="discord" onclick="signIn('discord')">Continue with Discord</button>
     <p class="modal-fine">Your username is public. Your email isn't, and we never post anything for you.</p>
     <button class="modal-link" onclick="closeModal('signinModal')">Not now</button>
   </div>
@@ -412,7 +412,10 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = "";
 const SITE_URL = "https://pickafight.now/";
-const DB = null;  // {url,key} when the Supabase database is connected, else null
+const DB = {"url": "https://uefljfalbrutqlvnoxvv.supabase.co", "key": "sb_publishable_D7-wPhnxWcZ3CXe7r7_vow_B8OfQGpZ", "providers": ["google"]};  // {url,key,providers} when the Supabase database is connected, else null
+// Only show sign-in buttons for providers switched on in site_config.json (sign_in_providers).
+document.addEventListener('DOMContentLoaded',()=>{ if(!DB) return; const on=DB.providers||['google','discord'];
+  document.querySelectorAll('#signinModal [data-provider]').forEach(b=>{ if(!on.includes(b.dataset.provider)) b.remove(); }); });
 const SCORE_API = DB;
 function loadState(){
   let s = {};
@@ -511,6 +514,10 @@ function resolveResults(){
     if(!fight || !fight.result) return;
     const r = fight.result;
     const market = bet.type || bet.market;
+    if(r.winner==='void'){                           // bout cancelled: refund every pick
+      bet.resolved = true; bet.result = 'void'; bet.payout = bet.stake;
+      balance += bet.stake; changed = true; return;
+    }
     // UFC data can say "finished in round N" without saying KO vs submission.
     const isDecision = r.method==='Decision';
     const isFinish = r.finish===true || (!!r.method && !isDecision && r.method!=='Draw');
@@ -609,7 +616,9 @@ function renderFights(){
     const done = !!f.result || eventLocked(ev);
     const res = f.result || {};
     const winnerName = res.winner==='a'?f.a.name:res.winner==='b'?f.b.name:res.winner==='draw'?'Draw':'';
-    const resultBadge = !done ? '' : f.result
+    const resultBadge = !done ? '' : res.winner==='void'
+      ? `<div class="result-badge">Bout cancelled — picks refunded</div>`
+      : f.result
       ? `<div class="result-badge">${winnerName} — ${res.method||'Finish'}${res.round?' (Rd '+res.round+')':''}</div>`
       : `<div class="result-badge">Betting closed — awaiting result</div>`;
     const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
@@ -653,7 +662,7 @@ function renderFights(){
           <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
         </div>
       </div>`}
-      ${done?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
+      ${done&&res.winner!=='void'?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
       ${DB?`<div class="tk-wrap" id="tk-${f.id}">${takesHtml(f,ev)}</div>`:''}
     </div>`;
   }).join('');

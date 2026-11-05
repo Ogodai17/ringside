@@ -113,6 +113,21 @@ def main():
     check(feed.robbery_tag({**f, "result": {"winner": "a", "method": None, "finish": True}}, {"a": 0, "b": 20}) == "",
           "finishes never get a robbery tag")
 
+    # 7. cancelled bouts (winner "void"): shown as cancelled + refunded, never as a draw, listed last
+    A, B = {"name": "A"}, {"name": "B"}
+    void = {"result": {"winner": "void", "method": "Cancelled"}, "fighter_a": A, "fighter_b": B}
+    line = feed.result_line(void, None)
+    check("cancelled" in line and "refunded" in line and "draw" not in line, "cancelled bout says cancelled + refunded", line)
+    check(feed.robbery_tag(void, {"a": 0, "b": 20}) == "", "cancelled bouts never get a fan verdict")
+    check("no contest" in feed.result_line({"result": {"winner": None, "method": "No Contest"}, "fighter_a": A, "fighter_b": B}, None),
+          "no contest is labelled no contest")
+    check("draw" in feed.result_line({"result": {"winner": "draw", "method": "Draw"}, "fighter_a": A, "fighter_b": B}, None),
+          "draw is labelled draw")
+    ev = {"promotion": "ONE", "name": "Test Night", "date": "2026-11-06", "status": "completed",
+          "fights": [void, {"result": {"winner": "a", "method": "KO"}, "fighter_a": {"name": "Winner"}, "fighter_b": {"name": "Loser"}}]}
+    desc = feed.results_embed([ev], {}, "https://pickafight.now/")["description"]
+    check(desc.index("Winner") < desc.index("cancelled"), "real results are listed before cancelled bouts", desc)
+
     srv.shutdown()
     bad = RESULTS.count(False)
     print(f"\n{len(RESULTS) - bad} passed, {bad} failed")
