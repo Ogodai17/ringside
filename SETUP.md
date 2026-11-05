@@ -83,3 +83,22 @@ to the site. Nothing else — no picks from Discord.
 
 To preview a post without sending: `python scraper/discord_feed.py --dry-run`.
 To re-post something, delete its line from `data/discord_feed_state.json`.
+
+---
+
+# Username + password accounts (optional)
+
+For players who don't want to link Google or Discord. No email is collected:
+each account signs in with a hidden address `<username>@users.pickafight.now`
+(never emailed), so **there is no password reset** — and a password account
+keeps its username for good.
+
+1. Run the latest `supabase/setup.sql` in the SQL Editor (adds
+   `username_available()` and the username lock).
+2. **Authentication → Sign In / Providers:** turn **Confirm email** off;
+   in the **Email** provider set **Minimum password length** to 8.
+3. **Cloudflare → Turnstile → Add widget**, hostname `pickafight.now`,
+   mode Managed. Put the **Site key** in `site_config.json` as
+   `turnstile_site_key` (public). Paste the **Secret key** into Supabase
+   **Authentication → Attack Protection → Captcha** (provider: Turnstile).
+4. Add `password` to `sign_in_providers` (e.g. `"google,discord,password"`).
