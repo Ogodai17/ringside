@@ -412,7 +412,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = "";
 const SITE_URL = "https://pickafight.now/";
-const DB = {"url": "https://uefljfalbrutqlvnoxvv.supabase.co", "key": "sb_publishable_D7-wPhnxWcZ3CXe7r7_vow_B8OfQGpZ", "providers": ["google"]};  // {url,key,providers} when the Supabase database is connected, else null
+const DB = {"url": "https://uefljfalbrutqlvnoxvv.supabase.co", "key": "sb_publishable_D7-wPhnxWcZ3CXe7r7_vow_B8OfQGpZ", "providers": ["google", "discord"]};  // {url,key,providers} when the Supabase database is connected, else null
 // Only show sign-in buttons for providers switched on in site_config.json (sign_in_providers).
 document.addEventListener('DOMContentLoaded',()=>{ if(!DB) return; const on=DB.providers||['google','discord'];
   document.querySelectorAll('#signinModal [data-provider]').forEach(b=>{ if(!on.includes(b.dataset.provider)) b.remove(); }); });
