@@ -8,5 +8,6 @@
   "affiliate_url": "",
   "database_url": "https://uefljfalbrutqlvnoxvv.supabase.co",
   "database_publishable_key": "sb_publishable_D7-wPhnxWcZ3CXe7r7_vow_B8OfQGpZ",
-  "sign_in_providers": "google,discord"
+  "sign_in_providers": "google,discord,password",
+  "turnstile_site_key": "0x4AAAAAAF1OUK_6XQcT-beq"
 }
