@@ -63,6 +63,44 @@ def serve(directory):
     return srv, f"http://127.0.0.1:{srv.server_address[1]}/"
 
 
+# Third-party scripts the live site loads. Tests run on 127.0.0.1, where the
+# real ones misbehave in CI: Cloudflare Turnstile's site key only allows
+# pickafight.now, so its challenge calls answer 400 and trip the "no JS errors"
+# checks. Serve stand-ins so every test is offline and deterministic.
+FAKE_TURNSTILE = ("window.turnstile={render:function(el,o){window.__tsOpts=o;return 0;},"
+                  "reset:function(){},remove:function(){}};")
+THIRD_PARTY = [
+    ("**/challenges.cloudflare.com/**", FAKE_TURNSTILE),
+    ("**/www.googletagmanager.com/**", ""),
+    ("**/www.google-analytics.com/**", ""),
+    ("**/*.google-analytics.com/**", ""),
+]
+
+
+def stub_third_party(target):
+    for pattern, body in THIRD_PARTY:
+        target.route(pattern, lambda route, *_, b=body: route.fulfill(status=200, content_type="application/javascript", body=b))
+    return target
+
+
+class StubbedBrowser:
+    """Wraps the Playwright browser so every new context/page gets the stubs."""
+
+    def __init__(self, browser):
+        self._b = browser
+
+    def new_context(self, *a, **k):
+        return stub_third_party(self._b.new_context(*a, **k))
+
+    def new_page(self, *a, **k):
+        p = self._b.new_page(*a, **k)
+        stub_third_party(p)
+        return p
+
+    def __getattr__(self, name):
+        return getattr(self._b, name)
+
+
 class Page:
     """One browser page on one site copy, collecting JS errors."""
 
@@ -631,11 +669,14 @@ FAKE_SUPABASE = r"""
 """
 
 
-def with_db(site, providers=("google", "discord")):
+def with_db(site, providers=("google", "discord"), captcha=None):
     """Point the page at the fake database, whatever site_config.json says
     (the real config may already hold the live Supabase URL)."""
     html = (site / "index.html").read_text()
-    fake = json.dumps({"url": "https://fake-db.test", "key": "sb_publishable_test", "providers": list(providers)})
+    cfg = {"url": "https://fake-db.test", "key": "sb_publishable_test", "providers": list(providers)}
+    if captcha:
+        cfg["captcha"] = captcha
+    fake = json.dumps(cfg)
     html, n = re.subn(r"const DB = (?:null|\{[^\n]*?\});", "const DB = " + fake + ";", html, count=1)
     assert n == 1, "with_db: couldn't find the DB line in index.html"
     assert "supabase.co" not in html.split("const DB = ", 1)[1].split("\n", 1)[0]
@@ -894,6 +935,20 @@ def t_hot_takes(browser):
     ctx.close(); srv.shutdown()
 
 
+def t_third_party_stubbed(browser):
+    """Turnstile + Analytics are served by stand-ins, never the real servers.
+    The real Turnstile answers 400 on 127.0.0.1 (its key only allows
+    pickafight.now), which failed every CI site test from Nov 5 to Nov 6."""
+    pg = Page(browser, make_site())
+    got = pg.js("loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit')"
+                ".then(() => typeof window.turnstile.render).catch(e => 'failed')")
+    check(got == "function", "Turnstile script is served by the test stand-in", got)
+    got = pg.js("loadScript('https://www.googletagmanager.com/gtag/js?id=G-TEST').then(() => 'ok').catch(e => 'failed')")
+    check(got == "ok", "Analytics script is served by the test stand-in", got)
+    check(not pg.errors, "No JS errors with the live site config", "; ".join(pg.errors)[:300])
+    pg.close()
+
+
 def t_badges(browser):
     now = int(time.time() * 1000)
     bets = [{"fightId": "x", "type": "method", "pick": "KO/TKO", "odds": 2.8, "stake": 10, "payout": 28, "result": "won", "time": now + i} for i in range(3)]
@@ -930,10 +985,10 @@ def main():
              t_payout_consistency, t_cancelled_bout, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
              t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_one_country, t_password_accounts, t_accounts,
-             t_leagues, t_hot_takes, t_badges]
+             t_leagues, t_hot_takes, t_badges, t_third_party_stubbed]
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = StubbedBrowser(pw.chromium.launch())
         for t in tests:
             if only and t.__name__ not in only:
                 continue
