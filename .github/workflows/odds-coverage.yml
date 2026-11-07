@@ -1,0 +1,28 @@
+name: Odds coverage check
+
+# One-off check of how many fights The Odds API prices. Runs by hand
+# (Actions → Odds coverage check → Run workflow) or when this file or the
+# script changes. Reads only; changes nothing in the repo.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/odds-coverage.yml
+      - scraper/odds_coverage.py
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check coverage
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python scraper/odds_coverage.py data/events.json data/ufc_events.json
