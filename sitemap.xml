@@ -26,11 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-friday-fights-177-the-inner-circle-37.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -56,12 +51,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/one-friday-fights-179-the-inner-circle-39.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/ufc-fight-night-prochazka-vs-stirling.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/ufc-335-oliveira-vs-lopes.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/one-friday-fights-177-the-inner-circle-37.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -79,16 +84,6 @@
     <loc>https://pickafight.now/previews/ufc-333-volkanovski-vs-evloev.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/isannuea-sor-sasiwat-vs-jack-siatanyokkrok-pk-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/saksri-superlek-muaythai-vs-superball-sitcho-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/lucas-gabriel-vs-magomed-magomedov-prediction.html</loc>
@@ -137,6 +132,16 @@
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/ryujin-nasukawa-vs-elmehdi-el-jamari-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/asadula-imangazaliev-vs-aslamjon-ortikov-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/black-panther-vs-ubaid-hussain-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
