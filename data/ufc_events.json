@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-07T15:58:11Z",
+  "scraped_at": "2026-11-07T20:34:00Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -35,10 +35,15 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.538,
+          "p_a": 0.662,
           "odds": [
-            1.75,
-            2.04
+            1.43,
+            2.8
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Waldo Cortes Acosta",
+            "Johnny Walker"
           ]
         },
         {
@@ -60,10 +65,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.42,
+          "p_a": 0.327,
           "odds": [
-            2.25,
-            1.63
+            2.9,
+            1.41
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Mitch Raposo",
+            "Marcos Degli"
           ]
         },
         {
@@ -85,10 +95,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.398,
+          "p_a": 0.211,
           "odds": [
-            2.37,
-            1.57
+            4.5,
+            1.2
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Priscila Cachoeira",
+            "Nina Milošević"
           ]
         },
         {
@@ -110,10 +125,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.445,
+          "p_a": 0.265,
           "odds": [
-            2.12,
-            1.7
+            3.58,
+            1.29
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Billy Elekana",
+            "Lucas Fernando"
           ]
         },
         {
@@ -135,10 +155,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.472,
+          "p_a": 0.272,
           "odds": [
-            2.0,
-            1.79
+            3.5,
+            1.31
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Davey Grant",
+            "Elijah Smith"
           ]
         },
         {
@@ -160,10 +185,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.439,
+          "p_a": 0.642,
           "odds": [
-            2.15,
-            1.68
+            1.48,
+            2.65
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Tatiana Suarez",
+            "Virna Jandiroba"
           ]
         },
         {
@@ -185,10 +215,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.435,
+          "p_a": 0.333,
           "odds": [
-            2.17,
-            1.67
+            2.88,
+            1.44
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jonny Parsons",
+            "José Souza"
           ]
         },
         {
@@ -210,10 +245,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.528,
+          "p_a": 0.835,
           "odds": [
-            1.79,
-            2.0
+            1.14,
+            5.75
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Seokhyeon Ko",
+            "Wellington Turman"
           ]
         },
         {
@@ -235,10 +275,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.568,
+          "p_a": 0.72,
           "odds": [
-            1.66,
-            2.18
+            1.32,
+            3.4
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Mantas Kondratavičius",
+            "Andre Petroski"
           ]
         },
         {
@@ -260,10 +305,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.619,
+          "p_a": 0.827,
           "odds": [
-            1.52,
-            2.48
+            1.15,
+            5.5
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Austin Bashi",
+            "Carlos Calderon"
           ]
         },
         {
@@ -285,10 +335,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.504,
+          "p_a": 0.522,
           "odds": [
-            1.87,
-            1.9
+            1.83,
+            2.0
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jose Delano",
+            "Murtazali Magomedov"
           ]
         },
         {
@@ -310,10 +365,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.575,
+          "p_a": 0.659,
           "odds": [
-            1.64,
-            2.22
+            1.45,
+            2.8
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Karine Silva",
+            "Gabriella Fernandes"
           ]
         },
         {
@@ -360,10 +420,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.689,
+          "p_a": 0.75,
           "odds": [
-            1.37,
-            3.03
+            1.28,
+            3.85
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Keiichiro Nakamura",
+            "Ollie Schmid"
           ]
         }
       ]
@@ -399,10 +464,15 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.508,
+          "p_a": 0.677,
           "odds": [
-            1.86,
-            1.92
+            1.4,
+            2.93
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Ciryl Gane",
+            "Josh Hokit"
           ]
         },
         {
@@ -424,10 +494,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.611,
+          "p_a": 0.857,
           "odds": [
-            1.54,
-            2.43
+            1.11,
+            6.65
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Bilal Hasan",
+            "Luis Gurule"
           ]
         },
         {
@@ -449,10 +524,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.516,
+          "p_a": 0.605,
           "odds": [
-            1.83,
-            1.95
+            1.57,
+            2.4
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Uroš Medić",
+            "Kevin Holland"
           ]
         },
         {
@@ -474,10 +554,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.659,
+          "p_a": 0.577,
           "odds": [
-            1.43,
-            2.76
+            1.61,
+            2.2
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Caio Borralho",
+            "Yousri Belgaroui"
           ]
         },
         {
@@ -499,10 +584,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.571,
+          "p_a": 0.628,
           "odds": [
-            1.65,
-            2.2
+            1.5,
+            2.53
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Kayla Harrison",
+            "Amanda Nunes"
           ]
         },
         {
@@ -524,10 +614,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.658,
+          "p_a": 0.602,
           "odds": [
-            1.43,
-            2.76
+            1.59,
+            2.4
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Donte Johnson",
+            "Cesar Almeida"
           ]
         },
         {
@@ -549,10 +644,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.591,
+          "p_a": 0.336,
           "odds": [
-            1.6,
-            2.3
+            2.8,
+            1.42
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jim Miller",
+            "Terrance McKinney"
           ]
         },
         {
@@ -574,10 +674,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.465,
+          "p_a": 0.416,
           "odds": [
-            2.03,
-            1.76
+            2.26,
+            1.61
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Drew Dober",
+            "Chris Duncan"
           ]
         },
         {
@@ -599,10 +704,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.515,
+          "p_a": 0.539,
           "odds": [
-            1.83,
-            1.94
+            1.73,
+            2.02
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Stephen Thompson",
+            "Charles Radtke"
           ]
         },
         {
@@ -624,10 +734,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.44,
+          "p_a": 0.52,
           "odds": [
-            2.14,
-            1.69
+            1.83,
+            1.98
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Evan Elder",
+            "Samuel Sanches"
           ]
         },
         {
@@ -674,10 +789,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.399,
+          "p_a": 0.344,
           "odds": [
-            2.37,
-            1.57
+            2.75,
+            1.44
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Macy Chiasson",
+            "Bia Mesquita"
           ]
         },
         {
@@ -699,10 +819,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.422,
+          "p_a": 0.244,
           "odds": [
-            2.24,
-            1.63
+            3.87,
+            1.25
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jared Gordon",
+            "Melquizael Costa"
           ]
         }
       ]
@@ -738,10 +863,15 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.611,
+          "p_a": 0.439,
           "odds": [
-            1.54,
-            2.43
+            2.16,
+            1.69
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jiří Procházka",
+            "Navajo Stirling"
           ]
         },
         {
@@ -977,10 +1107,15 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.532,
+          "p_a": 0.576,
           "odds": [
-            1.77,
-            2.02
+            1.64,
+            2.23
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Charles Oliveira",
+            "Diego Lopes"
           ]
         },
         {
@@ -1052,10 +1187,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.655,
+          "p_a": 0.637,
           "odds": [
-            1.44,
-            2.74
+            1.48,
+            2.6
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Sergei Pavlovich",
+            "Alex Pereira"
           ]
         },
         {
