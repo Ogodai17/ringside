@@ -51,6 +51,16 @@ jobs:
       - name: Set odds from fighter records
         run: python scraper/odds.py data/events.json data/ufc_events.json
 
+      # Real sportsbook lines (median across books) for UFC fights The Odds
+      # API prices; ONE keeps record odds. 3 of 500 free credits per run, so
+      # scheduled/manual runs only. Never fails the run.
+      - name: Market lines for UFC
+        if: github.event_name != 'push'
+        continue-on-error: true
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python tests/market_odds_test.py && python scraper/market_odds.py data/ufc_events.json
+
       - name: Build pages from site_config.json
         run: python scraper/build_pages.py
 

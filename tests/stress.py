@@ -459,15 +459,39 @@ def t_odds(browser):
     pg = Page(browser, make_site())
     bad = pg.js("""() => events.flatMap(e=>e.fights).filter(f=>!(f.oddsA>1&&f.oddsB>1&&f.oddsA<20&&f.oddsB<20)).map(f=>f.a.name+' '+f.oddsA+'/'+f.oddsB)""")
     check(not bad, "Every fight has sane odds (1.01–20)", str(bad[:4]))
-    over = pg.js("() => events.flatMap(e=>e.fights).map(f=>1/f.oddsA+1/f.oddsB)")
-    check(all(1.0 <= o <= 1.12 for o in over), "Odds carry a small, consistent margin (like a real line)",
+    over = pg.js("() => events.flatMap(e=>e.fights).filter(f=>!f.market).map(f=>1/f.oddsA+1/f.oddsB)")
+    check(all(1.0 <= o <= 1.12 for o in over), "Record odds carry a small, consistent margin (like a real line)",
           f"implied totals {min(over):.3f}–{max(over):.3f}")
+    mk = pg.js("() => events.flatMap(e=>e.fights).filter(f=>f.market).map(f=>1/f.oddsA+1/f.oddsB)")
+    check(all(1.0 <= o <= 1.2 for o in mk), "Market lines never offer free money", str(mk[:5]))
     # records drive odds: the clearly better record should be the favorite
     wrong = pg.js("""() => { const r=s=>{const m=/^(\\d+)-(\\d+)/.exec(s||'');return m?[+m[1],+m[2]]:null};
-        return events.flatMap(e=>e.fights).filter(f=>{const a=r(f.a.record),b=r(f.b.record); if(!a||!b) return false;
+        return events.flatMap(e=>e.fights).filter(f=>!f.market).filter(f=>{const a=r(f.a.record),b=r(f.b.record); if(!a||!b) return false;
           const strong=(x,y)=>x[0]>=y[0]+8&&x[1]<=y[1]; return (strong(a,b)&&f.oddsA>f.oddsB)||(strong(b,a)&&f.oddsB>f.oddsA);})
           .map(f=>f.a.name+' '+f.a.record+' '+f.oddsA+' vs '+f.b.name+' '+f.b.record+' '+f.oddsB); }""")
-    check(not wrong, "Much better record is always the favorite", str(wrong[:3]))
+    check(not wrong, "Much better record is always the favorite (record odds)", str(wrong[:3]))
+    pg.close()
+
+    # A fight on a sportsbook line shows the small "market line" tag; others don't.
+    def mark(d):
+        p = d / "data" / "ufc_events.json"; data = json.loads(p.read_text())
+        for ev in data["events"]:
+            if ev.get("status") != "completed" and ev.get("fights"):
+                f = ev["fights"][0]; f["odds"] = [1.75, 2.1]; f["odds_src"] = "market"
+                f["market_for"] = [f["fighter_a"]["name"], f["fighter_b"]["name"]]; break
+        for ev in data["events"]:
+            for f in ev.get("fights", []):
+                if f.get("odds_src") == "market" and f["odds"] != [1.75, 2.1]:
+                    f.pop("odds_src")
+        p.write_text(json.dumps(data))
+    pg = Page(browser, make_site(mark))
+    n = pg.js("""() => { for (let i=0;i<events.length;i++){ if(events[i].fights.some(f=>f.market)){ return i; } } return -1; }""")
+    if n >= 0:
+        pg.js(f"() => switchEvent({n})")
+        pg.p.wait_for_timeout(200)
+    tags = pg.js("() => document.querySelectorAll('.market-tag').length")
+    check(n >= 0 and tags == 1, "Market-line tag shows on exactly the market-priced fight", f"event {n}, tags {tags}")
+    check(not pg.errors, "No JS errors with a market line", "; ".join(pg.errors)[:200])
     pg.close()
 
 

@@ -144,6 +144,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .fighter-record { font-size:12px; color:var(--text-dim); }
 .vs-badge { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted); background:var(--surface-raised); border-radius:6px; padding:4px 8px; flex-shrink:0; }
 .fight-odds { display:flex; gap:8px; }
+.market-tag { margin-top:6px; font-size:10px; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-muted); text-align:center; }
 .odd-btn { flex:1; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:10px; cursor:pointer; transition:all .15s; display:flex; flex-direction:column; align-items:center; gap:2px; }
 .odd-btn:hover { background:var(--surface-hover); border-color:var(--text-muted); }
 .odd-btn.selected { background:var(--accent-glow); border-color:var(--accent); }
@@ -493,6 +494,7 @@ function mapFight(f,ev){
     a:{ name:esc(f.fighter_a.name), record:esc(f.fighter_a.record), flag:esc(f.fighter_a.flag) },
     b:{ name:esc(f.fighter_b.name), record:esc(f.fighter_b.record), flag:esc(f.fighter_b.flag) },
     oddsA, oddsB,
+    market: f.odds_src==='market',
     methods, rounds,
     distance:["Goes the distance","Doesn't go the distance"],
     result: f.result||null
@@ -666,6 +668,7 @@ function renderFights(){
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
         </div>
+        ${f.market&&!done?'<div class="market-tag" title="Median price across sportsbooks, updated daily. Your pick locks the odds when you place it.">market line</div>':''}
         ${AFFILIATE_URL?`<div class="affiliate-row"><a class="affiliate-btn" href="${AFFILIATE_URL}" target="_blank" rel="noopener noreferrer nofollow sponsored"><svg viewBox="0 0 24 24"><path d="M10 6V8H5V19H16V14H18V20C18 20.55 17.55 21 17 21H4C3.45 21 3 20.55 3 20V7C3 6.45 3.45 6 4 6H10ZM21 3V11H19V6.41L11.21 14.21L9.79 12.79L17.59 5H13V3H21Z"/></svg>Bet for real</a></div>`:''}
         ${done?'':'<div class="expand-hint">Tap for more markets</div>'}
       </div>

@@ -71,6 +71,14 @@ def add_odds(data: dict) -> int:
     for ev in data.get("events", []):
         for f in ev.get("fights", []):
             a, b = f.get("fighter_a") or {}, f.get("fighter_b") or {}
+            # Keep a sportsbook line from scraper/market_odds.py while the same
+            # two fighters are booked; a changed matchup falls back to records.
+            if f.get("odds_src") == "market" and f.get("market_for") == [a.get("name"), b.get("name")] \
+                    and isinstance(f.get("odds"), list) and len(f["odds"]) == 2:
+                n += 1
+                continue
+            f.pop("odds_src", None)
+            f.pop("market_for", None)
             p = win_probability(a.get("record", ""), b.get("record", ""), a.get("name", ""), b.get("name", ""))
             f["p_a"] = round(p, 3)
             f["odds"] = [decimal_odds(p), decimal_odds(1 - p)]
