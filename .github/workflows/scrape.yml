@@ -1,10 +1,19 @@
 name: Scrape Fight Cards
 
 on:
-  # Daily at 10:00 UTC (3am Pacific) — catches Friday ONE and Saturday UFC
-  # results the next morning. Betting locks at event start regardless.
+  # Daily at 10:00 UTC (3am Pacific; GitHub often starts it hours late) —
+  # cards, odds, results. Betting locks at event start regardless.
+  # Extra results runs right after fight nights so picks pay out within
+  # about an hour (GitHub may start scheduled runs 10-30 min late):
+  #   Fri 18:30 UTC (10:30am PT)  ONE Friday Fights (Lumpinee, Fri afternoon Bangkok)
+  #   Sat 06:00 UTC (Fri 10pm PT) ONE Fight Night (Fri 9pm ET in the US)
+  #   Sun 05:30 + 07:30 UTC (Sat 9:30pm / 11:30pm PT)  UFC Fight Night / PPV
+  # These don't call The Odds API (see "Market lines for UFC").
   schedule:
     - cron: "0 10 * * *"
+    - cron: "30 18 * * 5"
+    - cron: "0 6 * * 6"
+    - cron: "30 5,7 * * 0"
   workflow_dispatch:
   # Rebuild pages right away when settings or templates change
   # (scrapers are skipped on these runs)
@@ -16,6 +25,11 @@ on:
       - "scraper/**"
       - "tests/**"
       - "supabase/**"
+
+# Never run two at once (both would commit data and settle picks).
+concurrency:
+  group: scrape
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -53,9 +67,9 @@ jobs:
 
       # Real sportsbook lines (median across books) for UFC fights The Odds
       # API prices; ONE keeps record odds. 3 of 500 free credits per run, so
-      # scheduled/manual runs only. Never fails the run.
+      # only the daily run and manual runs call it. Never fails the run.
       - name: Market lines for UFC
-        if: github.event_name != 'push'
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * *'
         continue-on-error: true
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
