@@ -56,6 +56,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/ufc-335-oliveira-vs-lopes.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -77,11 +82,6 @@
   </url>
   <url>
     <loc>https://pickafight.now/previews/one-friday-fights-176-the-inner-circle-36.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/ufc-333-volkanovski-vs-evloev.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -142,6 +142,16 @@
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/mairon-santos-vs-akbar-abdullaev-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/charles-oliveira-vs-diego-lopes-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/brandon-moreno-vs-charles-johnson-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
