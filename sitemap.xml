@@ -26,16 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/ufc-fight-night-cortes-acosta-vs-walker.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/one-friday-fights-178-the-inner-circle-38.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -61,7 +51,17 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/ufc-335-oliveira-vs-lopes.html</loc>
+    <loc>https://pickafight.now/previews/ufc-fight-night-adesanya-vs-magomedov.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/ufc-fight-night-cortes-acosta-vs-walker.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -84,26 +84,6 @@
     <loc>https://pickafight.now/previews/ufc-333-volkanovski-vs-evloev.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/lucas-gabriel-vs-magomed-magomedov-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/kongthoranee-sor-sommai-vs-taiki-naito-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/waldo-cortes-acosta-vs-johnny-walker-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/mitch-raposo-vs-marcos-degli-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/rodtang-jitmuangnon-vs-nong-o-hama-prediction.html</loc>
@@ -151,17 +131,17 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/aleksandre-topuria-vs-santiago-luna-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/jared-cannonier-vs-ikram-aliskerov-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/charles-oliveira-vs-diego-lopes-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/magomed-tuchalov-vs-ion-cutelaba-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/brandon-moreno-vs-charles-johnson-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/mairon-santos-vs-akbar-abdullaev-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
