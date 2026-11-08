@@ -1,0 +1,29 @@
+name: Site Test
+
+# Runs the headless-Chrome site test on pull requests, so a change is checked
+# before it reaches main. Read-only: no scraping, no commits, no secrets.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  site-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -q playwright
+          python -m playwright install --with-deps chromium > /dev/null
+
+      - name: Test site
+        run: python tests/stress.py .
