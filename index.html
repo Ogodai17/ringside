@@ -4,7 +4,8 @@
 <!-- Built from templates/index.html by scraper/build_pages.py — edit the template, not this file. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VD30V7BKLY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VD30V7BKLY');</script>
 <meta property="og:image" content="https://pickafight.now/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -95,7 +96,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .logo { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; letter-spacing:-0.5px; }
 .logo span { color:var(--accent); }
 .balance-pill { display:flex; align-items:center; gap:8px; background:var(--gold-dim); border:1px solid rgba(212,168,67,0.25); border-radius:100px; padding:6px 14px 6px 10px; font-size:14px; font-weight:600; color:var(--gold); }
-.coin-icon { width:18px; height:18px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--bg); }
+.coin-icon { width:18px; height:18px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--bg); }
 
 .nav { display:flex; gap:4px; padding:16px 0; overflow-x:auto; }
 .nav button { background:none; border:1px solid var(--border); color:var(--text-dim); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:500; padding:7px 16px; border-radius:8px; cursor:pointer; white-space:nowrap; transition:all .15s; }
@@ -143,6 +144,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .fighter-record { font-size:12px; color:var(--text-dim); }
 .vs-badge { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted); background:var(--surface-raised); border-radius:6px; padding:4px 8px; flex-shrink:0; }
 .fight-odds { display:flex; gap:8px; }
+.market-tag { margin-top:6px; font-size:10px; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-muted); text-align:center; }
 .odd-btn { flex:1; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:10px; cursor:pointer; transition:all .15s; display:flex; flex-direction:column; align-items:center; gap:2px; }
 .odd-btn:hover { background:var(--surface-hover); border-color:var(--text-muted); }
 .odd-btn.selected { background:var(--accent-glow); border-color:var(--accent); }
@@ -206,6 +208,11 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 .modal-link { background:none; border:none; color:var(--text-muted); font-size:13px; cursor:pointer; padding:4px; }
 .modal-input { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:16px; }
 .modal-err { color:var(--accent); font-size:13px; min-height:16px; }
+.pw-box { display:flex; flex-direction:column; gap:8px; }
+.pw-or { display:flex; align-items:center; gap:10px; color:var(--text-muted); font-size:12px; }
+.pw-or::before, .pw-or::after { content:''; flex:1; height:1px; background:var(--border); }
+.pw-actions { display:flex; gap:8px; } .pw-actions .oauth-btn { flex:1; }
+#pwCaptcha:empty { display:none; }
 .lb-row.me { background:var(--accent-glow); }
 /* Leagues, Hot Takes, Badges */
 .lg-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px; }
@@ -328,7 +335,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <header class="header">
     <div class="logo">pick a <span>fight</span></div>
     <div class="header-right"><button id="authBtn" class="auth-btn" onclick="authClick()" style="display:none">Sign in</button>
-    <div class="balance-pill"><div class="coin-icon">R</div><span id="balanceDisplay">5,000</span></div></div>
+    <div class="balance-pill"><div class="coin-icon">🐘</div><span id="balanceDisplay">5,000</span></div></div>
   </header>
   <nav class="nav">
     <button class="active" data-tab="fights">Upcoming</button>
@@ -339,13 +346,13 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="connect-bar">
     <span id="connectText">Playing as guest — picks stay on this device</span>
   </div>
-  <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 R.</div>
+  <div id="ubi-banner" onclick="claimUBI()"><strong>Daily top-up available.</strong> Claim your 300 Chang.</div>
 
   <div id="tab-fights">
     <div class="event-picker" id="eventPicker"></div>
     <div class="event-header" id="eventHeader"></div>
     
-    <div id="fight-cards"><div class="static-fights"><h2>Upcoming UFC &amp; ONE Championship fights</h2><p>Free fight predictions with fake money — pick winners, methods and rounds.</p><ul><li><a href="previews/one-friday-fights-177-the-inner-circle-37.html">ONE Friday Fights 177 &amp; The Inner Circle 37</a> — Fri, Nov 6, 2026 · 1 bout. Main event: <a href="previews/fights/christian-lee-vs-tye-ruotolo-prediction.html">Christian Lee vs Tye Ruotolo prediction</a></li><li><a href="previews/one-fight-night-49-gabriel-vs-magomedov.html">ONE Fight Night 49: Gabriel Vs. Magomedov</a> — Sat, Nov 7, 2026 · 9 bouts. Main event: <a href="previews/fights/lucas-gabriel-vs-magomed-magomedov-prediction.html">Lucas Gabriel vs Magomed Magomedov prediction</a></li><li><a href="previews/ufc-fight-night-cortes-acosta-vs-walker.html">UFC Fight Night: Cortes Acosta vs. Walker</a> — Sat, Nov 7, 2026 · 14 bouts. Main event: <a href="previews/fights/waldo-cortes-acosta-vs-johnny-walker-prediction.html">Waldo Cortes Acosta vs Johnny Walker prediction</a></li><li><a href="previews/one-friday-fights-178-the-inner-circle-38.html">ONE Friday Fights 178 &amp; The Inner Circle 38</a> — Fri, Nov 13, 2026 · 2 bouts. Main event: <a href="previews/fights/rodtang-jitmuangnon-vs-nong-o-hama-prediction.html">Rodtang Jitmuangnon vs Nong-O Hama prediction</a></li><li><a href="previews/ufc-334-gane-vs-hokit.html">UFC 334: Gane vs. Hokit</a> — Sat, Nov 14, 2026 · 14 bouts. Main event: <a href="previews/fights/ciryl-gane-vs-josh-hokit-prediction.html">Ciryl Gane vs Josh Hokit prediction</a></li><li><a href="previews/ufc-fight-night-prochazka-vs-stirling.html">UFC Fight Night: Procházka vs. Stirling</a> — Sat, Nov 21, 2026 · 9 bouts. Main event: <a href="previews/fights/jiri-prochazka-vs-navajo-stirling-prediction.html">Jiří Procházka vs Navajo Stirling prediction</a></li><li><a href="previews/ufc-335-oliveira-vs-lopes.html">UFC 335: Oliveira vs. Lopes</a> — Sat, Dec 12, 2026 · 6 bouts. Main event: <a href="previews/fights/charles-oliveira-vs-diego-lopes-prediction.html">Charles Oliveira vs Diego Lopes prediction</a></li></ul><p><a href="previews/index.html">All fight previews &rarr;</a></p></div></div>
+    <div id="fight-cards"><div class="static-fights"><h2>Upcoming UFC &amp; ONE Championship fights</h2><p>Free fight predictions with fake money — pick winners, methods and rounds.</p><ul><li><a href="previews/one-friday-fights-178-the-inner-circle-38.html">ONE Friday Fights 178 &amp; The Inner Circle 38</a> — Fri, Nov 13, 2026 · 2 bouts. Main event: <a href="previews/fights/rodtang-jitmuangnon-vs-nong-o-hama-prediction.html">Rodtang Jitmuangnon vs Nong-O Hama prediction</a></li><li><a href="previews/ufc-334-gane-vs-hokit.html">UFC 334: Gane vs. Hokit</a> — Sat, Nov 14, 2026 · 13 bouts. Main event: <a href="previews/fights/ciryl-gane-vs-josh-hokit-prediction.html">Ciryl Gane vs Josh Hokit prediction</a></li><li><a href="previews/one-samurai-5.html">ONE SAMURAI 5</a> — Wed, Nov 18, 2026 · 10 bouts. Main event: <a href="previews/fights/joshua-pacio-vs-keito-yamakita-prediction.html">Joshua Pacio vs Keito Yamakita prediction</a></li><li><a href="previews/one-friday-fights-179-the-inner-circle-39.html">ONE Friday Fights 179 &amp; The Inner Circle 39</a> — Fri, Nov 20, 2026 · 3 bouts. Main event: <a href="previews/fights/asadula-imangazaliev-vs-aslamjon-ortikov-prediction.html">Asadula Imangazaliev vs Aslamjon Ortikov prediction</a></li><li><a href="previews/ufc-fight-night-prochazka-vs-stirling.html">UFC Fight Night: Procházka vs. Stirling</a> — Sat, Nov 21, 2026 · 9 bouts. Main event: <a href="previews/fights/jiri-prochazka-vs-navajo-stirling-prediction.html">Jiří Procházka vs Navajo Stirling prediction</a></li><li><a href="previews/ufc-fight-night-adesanya-vs-magomedov.html">UFC Fight Night: Adesanya vs Magomedov</a> — Sat, Dec 5, 2026 · 12 bouts. Main event: <a href="previews/fights/magomed-tuchalov-vs-ion-cutelaba-prediction.html">Magomed Tuchalov vs Ion Cutelaba prediction</a></li></ul><p><a href="previews/index.html">All fight previews &rarr;</a></p></div></div>
   </div>
   <div id="tab-mybets" style="display:none">
     <h3 class="section-title">My Picks</h3>
@@ -383,8 +390,20 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="modal">
     <h3>Sign in to Pick A Fight</h3>
     <p>Keep your picks on every device, climb the leaderboard, and add your scorecards to the fan vote.</p>
-    <button class="oauth-btn google" onclick="signIn('google')">Continue with Google</button>
-    <button class="oauth-btn discord" onclick="signIn('discord')">Continue with Discord</button>
+    <button class="oauth-btn google" data-provider="google" onclick="signIn('google')">Continue with Google</button>
+    <button class="oauth-btn discord" data-provider="discord" onclick="signIn('discord')">Continue with Discord</button>
+    <div class="pw-box" data-provider="password">
+      <div class="pw-or">or use a username</div>
+      <input id="pwUser" class="modal-input" maxlength="20" autocomplete="username" placeholder="Username" autocapitalize="off" spellcheck="false">
+      <input id="pwPass" class="modal-input" type="password" maxlength="72" autocomplete="current-password" placeholder="Password (8+ characters)" onkeydown="if(event.key==='Enter')pwSubmit('signin')">
+      <div id="pwCaptcha"></div>
+      <div id="pwErr" class="modal-err"></div>
+      <div class="pw-actions">
+        <button class="oauth-btn primary" id="pwSignin" onclick="pwSubmit('signin')">Sign in</button>
+        <button class="oauth-btn" id="pwSignup" onclick="pwSubmit('signup')">Create account</button>
+      </div>
+      <p class="modal-fine">No email needed — so there's no password reset. Pick one you'll remember.</p>
+    </div>
     <p class="modal-fine">Your username is public. Your email isn't, and we never post anything for you.</p>
     <button class="modal-link" onclick="closeModal('signinModal')">Not now</button>
   </div>
@@ -402,7 +421,7 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
   <div class="modal">
     <h3 id="accountName">Account</h3>
     <p>Your picks, balance and scorecards are saved to your account.</p>
-    <button class="oauth-btn" onclick="closeModal('accountModal');openModal('usernameModal')">Change name</button>
+    <button class="oauth-btn" id="changeNameBtn" onclick="closeModal('accountModal');openModal('usernameModal')">Change name</button>
     <button class="oauth-btn" onclick="signOut()">Sign out</button>
     <button class="modal-link" onclick="closeModal('accountModal')">Close</button>
   </div>
@@ -412,7 +431,10 @@ h1,h2,h3,h4 { font-family:'Space Grotesk',system-ui,sans-serif; }
 let balance = 5000, bets = [], selectedPick = null, lastUBIClaim = null, activeEventIdx = 0;
 const AFFILIATE_URL = "";
 const SITE_URL = "https://pickafight.now/";
-const DB = null;  // {url,key} when the Supabase database is connected, else null
+const DB = {"url": "https://uefljfalbrutqlvnoxvv.supabase.co", "key": "sb_publishable_D7-wPhnxWcZ3CXe7r7_vow_B8OfQGpZ", "providers": ["google", "discord", "password"], "captcha": "0x4AAAAAAF1OUK_6XQcT-beq"};  // {url,key,providers} when the Supabase database is connected, else null
+// Only show sign-in buttons for providers switched on in site_config.json (sign_in_providers).
+document.addEventListener('DOMContentLoaded',()=>{ if(!DB) return; const on=DB.providers||['google','discord'];
+  document.querySelectorAll('#signinModal [data-provider]').forEach(b=>{ if(!on.includes(b.dataset.provider)) b.remove(); }); });
 const SCORE_API = DB;
 function loadState(){
   let s = {};
@@ -472,6 +494,7 @@ function mapFight(f,ev){
     a:{ name:esc(f.fighter_a.name), record:esc(f.fighter_a.record), flag:esc(f.fighter_a.flag) },
     b:{ name:esc(f.fighter_b.name), record:esc(f.fighter_b.record), flag:esc(f.fighter_b.flag) },
     oddsA, oddsB,
+    market: f.odds_src==='market',
     methods, rounds,
     distance:["Goes the distance","Doesn't go the distance"],
     result: f.result||null
@@ -511,6 +534,10 @@ function resolveResults(){
     if(!fight || !fight.result) return;
     const r = fight.result;
     const market = bet.type || bet.market;
+    if(r.winner==='void'){                           // bout cancelled: refund every pick
+      bet.resolved = true; bet.result = 'void'; bet.payout = bet.stake;
+      balance += bet.stake; changed = true; return;
+    }
     // UFC data can say "finished in round N" without saying KO vs submission.
     const isDecision = r.method==='Decision';
     const isFinish = r.finish===true || (!!r.method && !isDecision && r.method!=='Draw');
@@ -609,7 +636,9 @@ function renderFights(){
     const done = !!f.result || eventLocked(ev);
     const res = f.result || {};
     const winnerName = res.winner==='a'?f.a.name:res.winner==='b'?f.b.name:res.winner==='draw'?'Draw':'';
-    const resultBadge = !done ? '' : f.result
+    const resultBadge = !done ? '' : res.winner==='void'
+      ? `<div class="result-badge">Bout cancelled — picks refunded</div>`
+      : f.result
       ? `<div class="result-badge">${winnerName} — ${res.method||'Finish'}${res.round?' (Rd '+res.round+')':''}</div>`
       : `<div class="result-badge">Betting closed — awaiting result</div>`;
     const disabledAttr = done ? 'disabled style="opacity:0.5;pointer-events:none"' : '';
@@ -639,6 +668,7 @@ function renderFights(){
             <span class="value">${f.oddsB.toFixed(2)}</span>
           </button>
         </div>
+        ${f.market&&!done?'<div class="market-tag" title="Median price across sportsbooks, updated daily. Your pick locks the odds when you place it.">market line</div>':''}
         ${AFFILIATE_URL?`<div class="affiliate-row"><a class="affiliate-btn" href="${AFFILIATE_URL}" target="_blank" rel="noopener noreferrer nofollow sponsored"><svg viewBox="0 0 24 24"><path d="M10 6V8H5V19H16V14H18V20C18 20.55 17.55 21 17 21H4C3.45 21 3 20.55 3 20V7C3 6.45 3.45 6 4 6H10ZM21 3V11H19V6.41L11.21 14.21L9.79 12.79L17.59 5H13V3H21Z"/></svg>Bet for real</a></div>`:''}
         ${done?'':'<div class="expand-hint">Tap for more markets</div>'}
       </div>
@@ -653,7 +683,7 @@ function renderFights(){
           <div class="market-options">${f.distance.map(d=>`<button class="market-btn" onclick="event.stopPropagation();selectMarket('${f.id}','distance',\`${d}\`,1.9)">${d}</button>`).join('')}</div>
         </div>
       </div>`}
-      ${done?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
+      ${done&&res.winner!=='void'?`<div class="sc-wrap" id="scw-${f.id}">${scorecardHtml(f,ev)}</div>`:''}
       ${DB?`<div class="tk-wrap" id="tk-${f.id}">${takesHtml(f,ev)}</div>`:''}
     </div>`;
   }).join('');
@@ -724,7 +754,7 @@ async function sharePicks(){
    job settles them — so the leaderboard can't be edited from the browser. */
 let sb=null, user=null, profile=null, guestStash=null, placing=false;
 function loadScript(src){ return new Promise((res,rej)=>{ const el=document.createElement('script'); el.src=src; el.onload=res; el.onerror=rej; document.head.appendChild(el); }); }
-async function rpc(name, args){ const {data,error}=await sb.rpc(name, args||{}); if(error) throw new Error(error.message||'Something went wrong'); return data; }
+async function rpc(name, args){ const {data,error}=await sb.rpc(name, args||{}); if(error) throw new Error((error.message||'Something went wrong').replace('Not enough R','Not enough Chang')); return data; }
 async function initAuth(){
   if(!DB) return;
   try{
@@ -737,6 +767,7 @@ async function initAuth(){
   await onSession(session);
   sb.auth.onAuthStateChange((_evt, sess)=>{ if((sess?.user?.id||null)!==(user?.id||null)) onSession(sess); });
   loadCommunity(events[activeEventIdx], true);
+  if((DB.providers||[]).includes('password')) initCaptcha();
 }
 async function onSession(session){
   user = session?.user || null;
@@ -744,6 +775,11 @@ async function onSession(session){
     closeModal('signinModal');
     if(!guestStash) guestStash={balance, bets:bets.slice(), lastUBIClaim};
     try{ await refreshAccount(); }catch(e){ showToast('Could not load your account — try again'); }
+    if(!profile?.username && isPasswordUser()){
+      const name = pwPendingName || user.email.split('@')[0];
+      try{ await rpc('set_username',{p_name:name}); profile={...(profile||{}), username:name}; }catch(e){}
+      pwPendingName=null;
+    }
     if(!profile?.username) openModal('usernameModal');
     await carryOverGuestPicks();
   } else {
@@ -769,10 +805,57 @@ function renderAuth(){
   }
 }
 function authClick(){ if(!user) return openModal('signinModal');
-  document.getElementById('accountName').textContent = profile?.username || 'Your account'; openModal('accountModal'); }
+  document.getElementById('accountName').textContent = profile?.username || 'Your account';
+  document.getElementById('changeNameBtn').style.display = isPasswordUser() ? 'none' : '';
+  openModal('accountModal'); }
 function openModal(id){ const m=document.getElementById(id); m.classList.add('open');
   if(id==='usernameModal'){ const i=document.getElementById('usernameInput'); i.value=profile?.username||''; document.getElementById('usernameErr').textContent=''; setTimeout(()=>i.focus(),50); } }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+/* Username + password accounts. Supabase signs these in with an email, so each
+   one gets a hidden login address built from the username — never emailed
+   (email confirmation is off). The database ties the username to that
+   address, so a password account keeps its name. */
+const PW_DOMAIN='users.pickafight.now';
+let pwPendingName=null, captchaToken=null, captchaId=null;
+const pwLogin = name => `${name.toLowerCase()}@${PW_DOMAIN}`;
+const isPasswordUser = () => !!user?.email?.endsWith('@'+PW_DOMAIN);
+async function initCaptcha(){
+  if(!DB?.captcha || window.__PAF_SUPABASE__) return;              // tests run without Turnstile
+  try{ await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit');
+       captchaId = window.turnstile.render('#pwCaptcha', { sitekey: DB.captcha, theme:'dark', size:'flexible',
+         callback: t => { captchaToken=t; }, 'expired-callback': () => { captchaToken=null; }, 'error-callback': () => { captchaToken=null; } }); }
+  catch(e){ console.warn('Captcha unavailable', e); }
+}
+function resetCaptcha(){ captchaToken=null; try{ if(captchaId!==null) window.turnstile.reset(captchaId); }catch(e){} }
+async function pwSubmit(mode){
+  const name=document.getElementById('pwUser').value.trim(), pass=document.getElementById('pwPass').value, err=document.getElementById('pwErr');
+  err.textContent='';
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(name)){ err.textContent='Usernames are 3–20 letters, numbers or underscores'; return; }
+  if(pass.length<8){ err.textContent='Passwords are at least 8 characters'; return; }
+  if(DB?.captcha && !window.__PAF_SUPABASE__ && !captchaToken){ err.textContent='Finish the "are you human" check first'; return; }
+  const btns=[document.getElementById('pwSignin'), document.getElementById('pwSignup')]; btns.forEach(b=>b.disabled=true);
+  const options = captchaToken ? {captchaToken} : {};
+  try{
+    if(mode==='signup'){
+      if(!(await rpc('username_available',{p_name:name}))){ err.textContent='That username is taken'; return; }
+      pwPendingName=name;
+      const {data,error}=await sb.auth.signUp({email:pwLogin(name), password:pass, options});
+      if(error){ pwPendingName=null; throw error; }
+      if(!data?.session){ pwPendingName=null; err.textContent='Account made — now sign in'; }
+    } else {
+      const {error}=await sb.auth.signInWithPassword({email:pwLogin(name), password:pass, options});
+      if(error) throw error;
+    }
+    document.getElementById('pwPass').value='';
+  }catch(e){
+    const m=(e?.message||'').toLowerCase();
+    err.textContent = m.includes('invalid login') ? 'Wrong username or password'
+      : m.includes('already registered') ? 'That username is taken'
+      : m.includes('captcha') ? 'The human check failed — try it again'
+      : m.includes('password') ? (e.message||'Password not accepted')
+      : 'Something went wrong — try again';
+  }finally{ btns.forEach(b=>b.disabled=false); resetCaptcha(); }
+}
 async function signIn(provider){
   try{ const {error}=await sb.auth.signInWithOAuth({provider, options:{redirectTo: location.origin+location.pathname}});
        if(error) throw error; }
@@ -818,12 +901,12 @@ async function placeBetServer(stake){
   try{
     if(!sp) throw new Error('That pick is no longer available');
     await rpc('place_pick',{p_fight:selectedPick.fightId, p_market:sp.market, p_selection:sp.selection, p_stake:stake});
-    closeBetSlip(); await refreshAccount(); updateBal(); checkUBI(); showToast(`Placed ${stake} R on ${placed}`);
+    closeBetSlip(); await refreshAccount(); updateBal(); checkUBI(); showToast(`Placed ${stake} Chang on ${placed}`);
   }catch(e){ showToast(e.message); }
   finally{ placing=false; }
 }
 async function claimTopupServer(){
-  try{ await rpc('claim_topup'); await refreshAccount(); updateBal(); checkUBI(); showToast('Claimed 300 R daily top-up'); }
+  try{ await rpc('claim_topup'); await refreshAccount(); updateBal(); checkUBI(); showToast('Claimed 300 Chang daily top-up'); }
   catch(e){ showToast(e.message); checkUBI(); }
 }
 /* First sign-in on this device: move the guest's open picks (on fights that
@@ -858,7 +941,7 @@ async function loadLeaderboard(){
     const me = profile?.username;
     el.innerHTML = `<h3 class="section-title">Leaderboard</h3><div class="leaderboard">${rows.map((r,i)=>`
       <div class="lb-row ${r.username===me?'me':''}"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${esc(r.username).charAt(0).toUpperCase()}</div>
-      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance">${Number(r.balance).toLocaleString()} R</div>
+      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance">${Number(r.balance).toLocaleString()} Chang</div>
       <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`).join('')}</div>
       ${user?'':'<p class="stats-note"><a href="#" onclick="openModal(\'signinModal\');return false">Sign in</a> to get on the board.</p>'}`;
   }catch(e){ el.innerHTML=''; }
@@ -919,7 +1002,7 @@ async function loadLeagueTable(id){
     const me=profile?.username;
     box.innerHTML = rows.map((r,i)=>{ const p=Number(r.profit);
       return `<div class="lb-row ${r.username===me?'me':''}"><div class="lb-rank">${i+1}</div><div class="lb-avatar">${esc(r.username).charAt(0).toUpperCase()}</div>
-      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance ${p>0?'pos':p<0?'neg':''}">${p>0?'+':''}${p.toLocaleString()} R</div>
+      <div class="lb-name">${esc(r.username)}</div><div class="lb-balance ${p>0?'pos':p<0?'neg':''}">${p>0?'+':''}${p.toLocaleString()} Chang</div>
       <div class="lb-record">${Number(r.won)}/${Number(r.settled)}</div></div>`; }).join('')
       + (leaguePeriod==='week'?'<p class="stats-note" style="padding:0 12px 8px">Profit on picks settled since Monday. Resets every week.</p>':'');
   }catch(e){ box.innerHTML=`<div class="empty-state">${esc(e.message)}</div>`; }
@@ -1229,7 +1312,7 @@ function readStake(){
 function updatePayout(){
   const s=readStake();
   const btn=document.getElementById('placeBetBtn');
-  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=payoutFor(s,selectedPick.odds).toLocaleString()+' R';btn.disabled=false;}
+  if(s>0&&s<=balance&&selectedPick){document.getElementById('payoutDisplay').textContent=payoutFor(s,selectedPick.odds).toLocaleString()+' Chang';btn.disabled=false;}
   else{document.getElementById('payoutDisplay').textContent='—';btn.disabled=true;}
 }
 function placeBet(){
@@ -1241,7 +1324,7 @@ function placeBet(){
   balance-=s;
   bets.push({...selectedPick,stake:s,payout:payoutFor(s,selectedPick.odds),result:'pending',time:Date.now()});
   const placed=selectedPick.pick;  // closeBetSlip() clears selectedPick
-  save();updateBal();closeBetSlip();showToast(`Placed ${s} R on ${placed}`);checkUBI();
+  save();updateBal();closeBetSlip();showToast(`Placed ${s} Chang on ${placed}`);checkUBI();
 }
 
 function showTab(t){
@@ -1263,8 +1346,8 @@ function renderMyBets(){
   const l=document.getElementById('my-bets-list');
   if(!bets.length){l.innerHTML='<div class="empty-state">No picks yet. Go make some calls.</div>';return;}
   l.innerHTML=bets.slice().reverse().map(b=>`
-    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${esc(b.type||'pick')} · ${b.stake} R @ ${Number(b.odds).toFixed(2)}x</div></div>
-    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} R`:`-${b.stake} R`}</div></div>`).join('');
+    <div class="bet-history-card"><div class="bet-history-info"><strong>${b.pick}</strong><div class="bet-detail">${esc(b.type||'pick')} · ${b.stake} Chang @ ${Number(b.odds).toFixed(2)}x</div></div>
+    <div class="bet-history-result ${b.result}">${b.result==='pending'?'Pending':b.result==='void'?'Refunded':b.result==='won'?`+${b.payout} Chang`:`-${b.stake} Chang`}</div></div>`).join('');
 }
 /* Honest personal stats (replaces a leaderboard of made-up bot names) */
 function computeStats(){
@@ -1300,7 +1383,7 @@ function renderStats(){
   el.innerHTML = `
     <div class="stat-grid">
       ${tile(s.hit===null?'—':s.hit+'%','Hit rate')}
-      ${tile(sign(s.profit)+' R','Profit on picks', s.profit>0?'pos':s.profit<0?'neg':'')}
+      ${tile(sign(s.profit)+' Chang','Profit on picks', s.profit>0?'pos':s.profit<0?'neg':'')}
       ${tile(s.streak?`${s.streak}${s.streakKind==='won'?'W':'L'}`:'—','Current streak', s.streakKind==='won'?'pos':s.streak?'neg':'')}
       ${tile(s.upsets,'Underdog hits')}
     </div>
@@ -1309,7 +1392,7 @@ function renderStats(){
       <div class="mk-row"><span>Settled / pending</span><span>${s.settled} / ${s.pending}</span></div>
       ${s.scored?`<div class="mk-row"><span>Fights you scored</span><span>${s.scored}</span></div>`:''}
       ${s.decided?`<div class="mk-row"><span>Agreed with the judges</span><span>${s.agreed}/${s.decided} decisions</span></div>`:''}
-      ${s.best?`<div class="mk-row"><span>Best hit</span><span>${s.best.pick} +${(s.best.payout-s.best.stake).toLocaleString()} R</span></div>`:''}
+      ${s.best?`<div class="mk-row"><span>Best hit</span><span>${s.best.pick} +${(s.best.payout-s.best.stake).toLocaleString()} Chang</span></div>`:''}
       ${markets}
     </div>
     ${s.total?'':'<div class="empty-state">Make a few picks — your hit rate, streaks and upsets show up here once fights are scored.</div>'}
@@ -1323,7 +1406,7 @@ function checkUBI(){
   const b=document.getElementById('ubi-banner'),today=new Date().toDateString();
   b.style.display=(balance<300&&lastUBIClaim!==today)?'block':'none';
 }
-function claimUBI(){if(user){claimTopupServer();return;}balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 R daily top-up');}
+function claimUBI(){if(user){claimTopupServer();return;}balance+=300;lastUBIClaim=new Date().toDateString();updateBal();save();checkUBI();showToast('Claimed 300 Chang daily top-up');}
 
 loadEvents().then(()=>{ checkUBI(); initAuth(); });
 </script>

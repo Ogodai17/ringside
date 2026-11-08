@@ -3,7 +3,7 @@
 --
 -- What lives here
 --   profiles    public usernames (one per account)
---   accounts    each player's R balance + daily top-up
+--   accounts    each player's Chang balance + daily top-up
 --   fights      fight list, odds, start times and results — written ONLY by
 --               the GitHub sync job (secret key), readable by everyone
 --   picks       every pick; created only through place_pick(), settled only
@@ -42,7 +42,7 @@ create table if not exists public.fights (
   rounds        smallint not null default 3 check (rounds in (3, 5)),
   odds_a        numeric(6,2) not null check (odds_a > 1),
   odds_b        numeric(6,2) not null check (odds_b > 1),
-  result_winner text check (result_winner in ('a', 'b', 'draw')),
+  result_winner text check (result_winner in ('a', 'b', 'draw', 'void')),  -- void = bout cancelled
   result_method text,                  -- 'KO/TKO' | 'Submission' | 'Decision' | null (unknown)
   result_round  smallint,
   result_finish boolean,               -- true = stopped early, false = went the distance
@@ -75,6 +75,11 @@ create table if not exists public.fan_scores (
 );
 
 -- ───────────────────────── security ─────────────────────────
+-- Re-runs: older setups only allowed a/b/draw (void = bout cancelled, picks refunded)
+alter table public.fights drop constraint if exists fights_result_winner_check;
+alter table public.fights add constraint fights_result_winner_check
+  check (result_winner in ('a', 'b', 'draw', 'void'));
+
 alter table public.profiles   enable row level security;
 alter table public.accounts   enable row level security;
 alter table public.fights     enable row level security;
@@ -98,7 +103,7 @@ drop policy if exists "see own picks" on public.picks;
 create policy "see own picks" on public.picks for select to authenticated using (user_id = auth.uid());
 
 -- ───────────────────────── player functions ─────────────────────────
--- Creates the 5,000 R account on first sign-in; returns balance + username.
+-- Creates the 5,000 Chang account on first sign-in; returns balance + username.
 create or replace function public.my_account()
 returns table (balance integer, username text, last_topup date)
 language plpgsql security definer set search_path = public as $$
@@ -111,13 +116,29 @@ begin
     where a.user_id = auth.uid();
 end $$;
 
+-- Username + password accounts sign in with a hidden login address built from
+-- the username (<name>@users.pickafight.now, never emailed). Their username is
+-- their login, so it must match that address and can't be changed later.
+create or replace function public.password_login_name()
+returns text
+language sql stable security definer set search_path = public, auth as $$
+  select case when u.email like '%@users.pickafight.now'
+              then split_part(u.email, '@', 1) end
+  from auth.users u where u.id = auth.uid();
+$$;
+
 create or replace function public.set_username(p_name text)
 returns text
 language plpgsql security definer set search_path = public as $$
+declare login text;
 begin
   if auth.uid() is null then raise exception 'sign in first'; end if;
   if p_name !~ '^[A-Za-z0-9_]{3,20}$' then
     raise exception 'Usernames are 3-20 letters, numbers or underscores';
+  end if;
+  login := password_login_name();
+  if login is not null and lower(p_name) <> lower(login) then
+    raise exception 'Password accounts keep the username they signed up with';
   end if;
   if exists (select 1 from profiles where lower(username) = lower(p_name) and id <> auth.uid()) then
     raise exception 'That username is taken';
@@ -126,6 +147,16 @@ begin
   on conflict (id) do update set username = excluded.username;
   return p_name;
 end $$;
+
+-- Sign-up form check before creating a password account. Also counts names
+-- already used as a password login, even if that account never saved a profile.
+create or replace function public.username_available(p_name text)
+returns boolean
+language sql stable security definer set search_path = public, auth as $$
+  select p_name ~ '^[A-Za-z0-9_]{3,20}$'
+     and not exists (select 1 from profiles where lower(username) = lower(p_name))
+     and not exists (select 1 from auth.users where lower(email) = lower(p_name) || '@users.pickafight.now');
+$$;
 
 -- Odds for every market come from the server, never from the browser.
 create or replace function public.market_odds(f public.fights, p_market text, p_selection text)
@@ -167,7 +198,7 @@ begin
   update accounts set balance = accounts.balance - p_stake
     where user_id = auth.uid() and accounts.balance >= p_stake
     returning accounts.balance into b;
-  if not found then raise exception 'Not enough R'; end if;
+  if not found then raise exception 'Not enough Chang'; end if;
   insert into picks (user_id, fight_key, market, selection, odds, stake)
     values (auth.uid(), p_fight, p_market, p_selection, o, p_stake)
     returning id into new_id;
@@ -278,7 +309,9 @@ begin
     for update of p
   loop
     outcome := null;
-    if k.market = 'winner' then
+    if k.w = 'void' then
+      outcome := 'void';                -- bout cancelled: refund every market
+    elsif k.market = 'winner' then
       outcome := case when k.w = 'draw' then 'void' when k.selection = k.w then 'won' else 'lost' end;
     elsif k.m = 'Draw' or k.w = 'draw' then
       outcome := 'void';
@@ -503,7 +536,7 @@ create or replace function public.grade_takes()
 returns integer
 language sql security definer set search_path = public as $$
   with g as (
-    update takes t set status = case when f.result_winner = 'draw' then 'void'
+    update takes t set status = case when f.result_winner in ('draw', 'void') then 'void'
                                      when t.side = f.result_winner then 'aged_well' else 'aged_badly' end
     from fights f
     where f.fight_key = t.fight_key and t.status = 'open' and f.result_winner is not null
@@ -519,6 +552,9 @@ revoke all on function public.my_account(), public.set_username(text),
   from public, anon, authenticated;
 grant execute on function public.leaderboard(integer), public.score_summary(text[]), public.fan_verdicts(text[])
   to anon, authenticated;
+revoke all on function public.password_login_name(), public.username_available(text) from public, anon, authenticated;
+grant execute on function public.username_available(text) to anon, authenticated;
+grant execute on function public.password_login_name() to authenticated;
 grant execute on function public.my_account(), public.set_username(text),
   public.place_pick(text, text, text, integer), public.claim_topup(),
   public.submit_score(text, int, text)

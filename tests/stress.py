@@ -9,6 +9,7 @@ and attacks it. Prints PASS/FAIL/WARN lines and a summary.
 """
 import http.server
 import json
+import re
 import shutil
 import socketserver
 import sys
@@ -109,6 +110,44 @@ def serve(directory):
     srv = socketserver.TCPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv, f"http://127.0.0.1:{srv.server_address[1]}/"
+
+
+# Third-party scripts the live site loads. Tests run on 127.0.0.1, where the
+# real ones misbehave in CI: Cloudflare Turnstile's site key only allows
+# pickafight.now, so its challenge calls answer 400 and trip the "no JS errors"
+# checks. Serve stand-ins so every test is offline and deterministic.
+FAKE_TURNSTILE = ("window.turnstile={render:function(el,o){window.__tsOpts=o;return 0;},"
+                  "reset:function(){},remove:function(){}};")
+THIRD_PARTY = [
+    ("**/challenges.cloudflare.com/**", FAKE_TURNSTILE),
+    ("**/www.googletagmanager.com/**", ""),
+    ("**/www.google-analytics.com/**", ""),
+    ("**/*.google-analytics.com/**", ""),
+]
+
+
+def stub_third_party(target):
+    for pattern, body in THIRD_PARTY:
+        target.route(pattern, lambda route, *_, b=body: route.fulfill(status=200, content_type="application/javascript", body=b))
+    return target
+
+
+class StubbedBrowser:
+    """Wraps the Playwright browser so every new context/page gets the stubs."""
+
+    def __init__(self, browser):
+        self._b = browser
+
+    def new_context(self, *a, **k):
+        return stub_third_party(self._b.new_context(*a, **k))
+
+    def new_page(self, *a, **k):
+        p = self._b.new_page(*a, **k)
+        stub_third_party(p)
+        return p
+
+    def __getattr__(self, name):
+        return getattr(self._b, name)
 
 
 class Page:
@@ -280,6 +319,36 @@ def t_stale_event(browser):
     pg.close()
 
 
+def t_cancelled_bout(browser):
+    """A bout that never happened refunds every pick on it, and says so."""
+    site = make_site()
+    pg = Page(browser, site)
+    fid = first_open_fight(pg)["id"]
+    pg.js("(id)=>selectWinner(id,'A')", fid)
+    pg.p.fill("#stakeInput", "250"); pg.js("updatePayout()")
+    pg.p.click("#placeBetBtn"); pg.p.wait_for_timeout(150)
+    bal_after_pick = pg.js("balance")
+    a_name = pg.js("(id)=>{for(const e of events)for(const f of e.fights)if(f.id===id)return f.a.name}", fid)
+    for fn in ("events.json", "ufc_events.json"):
+        fp = site / "data" / fn; j = json.loads(fp.read_text())
+        for e in j["events"]:
+            for f in e.get("fights", []):
+                if f["fighter_a"]["name"] == a_name:
+                    f["result"] = {"winner": "void", "method": "Cancelled", "round": None}
+        fp.write_text(json.dumps(j))
+    pg.reload()
+    check(pg.js("balance") - bal_after_pick == 250 and pg.js("bets[0].result") == "void",
+          "Cancelled bout refunds the stake", f"refunded {pg.js('balance') - bal_after_pick}, {pg.js('bets[0].result')}")
+    pg.js("(id)=>{const i=events.findIndex(e=>e.fights.some(f=>f.id===id)); switchEvent(i);}", fid)
+    card = pg.js("(id)=>document.getElementById('fight-'+id).innerText", fid)
+    check("cancelled" in card.lower() and "Score this fight" not in card,
+          "Cancelled bout is labelled, with no scorecard", card[:160])
+    pg.p.click('[data-tab="mybets"]'); pg.p.wait_for_timeout(150)
+    check("Refunded" in pg.js("document.body.innerText"), "My Picks shows the refund", "")
+    check(not pg.errors, "No JS errors on a cancelled bout", "; ".join(pg.errors[:2]))
+    pg.close()
+
+
 def t_payout_consistency(browser):
     """Place a pick, finish the fight, reload: credited amount must equal the slip's promise."""
     site = make_site()
@@ -439,15 +508,39 @@ def t_odds(browser):
     pg = Page(browser, make_site(real_data=True))
     bad = pg.js("""() => events.flatMap(e=>e.fights).filter(f=>!(f.oddsA>1&&f.oddsB>1&&f.oddsA<20&&f.oddsB<20)).map(f=>f.a.name+' '+f.oddsA+'/'+f.oddsB)""")
     check(not bad, "Every fight has sane odds (1.01–20)", str(bad[:4]))
-    over = pg.js("() => events.flatMap(e=>e.fights).map(f=>1/f.oddsA+1/f.oddsB)")
-    check(all(1.0 <= o <= 1.12 for o in over), "Odds carry a small, consistent margin (like a real line)",
+    over = pg.js("() => events.flatMap(e=>e.fights).filter(f=>!f.market).map(f=>1/f.oddsA+1/f.oddsB)")
+    check(all(1.0 <= o <= 1.12 for o in over), "Record odds carry a small, consistent margin (like a real line)",
           f"implied totals {min(over):.3f}–{max(over):.3f}")
+    mk = pg.js("() => events.flatMap(e=>e.fights).filter(f=>f.market).map(f=>1/f.oddsA+1/f.oddsB)")
+    check(all(1.0 <= o <= 1.2 for o in mk), "Market lines never offer free money", str(mk[:5]))
     # records drive odds: the clearly better record should be the favorite
     wrong = pg.js("""() => { const r=s=>{const m=/^(\\d+)-(\\d+)/.exec(s||'');return m?[+m[1],+m[2]]:null};
-        return events.flatMap(e=>e.fights).filter(f=>{const a=r(f.a.record),b=r(f.b.record); if(!a||!b) return false;
+        return events.flatMap(e=>e.fights).filter(f=>!f.market).filter(f=>{const a=r(f.a.record),b=r(f.b.record); if(!a||!b) return false;
           const strong=(x,y)=>x[0]>=y[0]+8&&x[1]<=y[1]; return (strong(a,b)&&f.oddsA>f.oddsB)||(strong(b,a)&&f.oddsB>f.oddsA);})
           .map(f=>f.a.name+' '+f.a.record+' '+f.oddsA+' vs '+f.b.name+' '+f.b.record+' '+f.oddsB); }""")
-    check(not wrong, "Much better record is always the favorite", str(wrong[:3]))
+    check(not wrong, "Much better record is always the favorite (record odds)", str(wrong[:3]))
+    pg.close()
+
+    # A fight on a sportsbook line shows the small "market line" tag; others don't.
+    def mark(d):
+        p = d / "data" / "ufc_events.json"; data = json.loads(p.read_text())
+        for ev in data["events"]:
+            if ev.get("status") != "completed" and ev.get("fights"):
+                f = ev["fights"][0]; f["odds"] = [1.75, 2.1]; f["odds_src"] = "market"
+                f["market_for"] = [f["fighter_a"]["name"], f["fighter_b"]["name"]]; break
+        for ev in data["events"]:
+            for f in ev.get("fights", []):
+                if f.get("odds_src") == "market" and f["odds"] != [1.75, 2.1]:
+                    f.pop("odds_src")
+        p.write_text(json.dumps(data))
+    pg = Page(browser, make_site(mark))
+    n = pg.js("""() => { for (let i=0;i<events.length;i++){ if(events[i].fights.some(f=>f.market)){ return i; } } return -1; }""")
+    if n >= 0:
+        pg.js(f"() => switchEvent({n})")
+        pg.p.wait_for_timeout(200)
+    tags = pg.js("() => document.querySelectorAll('.market-tag').length")
+    check(n >= 0 and tags == 1, "Market-line tag shows on exactly the market-priced fight", f"event {n}, tags {tags}")
+    check(not pg.errors, "No JS errors with a market line", "; ".join(pg.errors)[:200])
     pg.close()
 
 
@@ -579,7 +672,7 @@ def t_scorecard_one(browser):
 
 FAKE_SUPABASE = r"""
 (() => {
-  const st = window.__fake = { session:null, cb:null, accounts:{}, profiles:{}, picks:[], calls:[], scores:[],
+  const st = window.__fake = { session:null, cb:null, pwUsers:{}, authCalls:[], accounts:{}, profiles:{}, picks:[], calls:[], scores:[],
                                summary:[], verdicts:[], leagues:[], takes:[], others:[{username:'TopDog',balance:9000,won:9,settled:12}] };
   const err = m => ({ data:null, error:{ message:m } });
   const me = () => st.session && st.session.user.id;
@@ -588,11 +681,15 @@ FAKE_SUPABASE = r"""
     my_account(){ if(!me()) return err('sign in first'); st.accounts[me()] ??= {balance:5000,last_topup:null};
       const a=st.accounts[me()]; return {data:[{balance:a.balance, username:st.profiles[me()]||null, last_topup:a.last_topup}], error:null}; },
     set_username({p_name}){ if(!/^[A-Za-z0-9_]{3,20}$/.test(p_name)) return err('bad name');
+      const login = (st.session.user.email||'').endsWith('@users.pickafight.now') ? st.session.user.email.split('@')[0] : null;
+      if(login && login!==p_name.toLowerCase()) return err('Password accounts keep the username they signed up with');
       if(p_name.toLowerCase()==='taken_name') return err('That username is taken'); st.profiles[me()]=p_name; return {data:p_name,error:null}; },
+    username_available({p_name}){ const n=p_name.toLowerCase();
+      return {data: n!=='taken_name' && !Object.values(st.profiles).some(u=>u.toLowerCase()===n) && !st.pwUsers[n+'@users.pickafight.now'], error:null}; },
     place_pick({p_fight,p_market,p_selection,p_stake}){
       if(!me()) return err('sign in first'); const [e,f]=lockedFight(p_fight);
       if(!f || eventLocked(e)) return err('Betting is closed for this fight');
-      const a=st.accounts[me()]; if(p_stake>a.balance) return err('Not enough R');
+      const a=st.accounts[me()]; if(p_stake>a.balance) return err('Not enough Chang');
       const odds = p_market==='winner' ? (p_selection==='a'?f.oddsA:f.oddsB) : 1.9;
       a.balance-=p_stake; st.picks.push({id:st.picks.length+1,user:me(),fight_key:p_fight,market:p_market,selection:p_selection,odds,stake:p_stake,status:'pending',payout:0,created_at:new Date().toISOString()});
       return {data:[{pick_id:st.picks.length,balance:a.balance,odds}],error:null}; },
@@ -631,6 +728,13 @@ FAKE_SUPABASE = r"""
       getSession: async () => ({ data:{ session: st.session } }),
       onAuthStateChange: (cb) => { st.cb = cb; return { data:{ subscription:{ unsubscribe(){} } } }; },
       signInWithOAuth: async ({provider}) => { st.provider=provider; st.session={ user:{ id:'user-'+provider } }; setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {error:null}; },
+      signUp: async ({email,password,options}) => { st.authCalls.push(['signUp',email,!!options?.captchaToken]);
+        if(st.pwUsers[email]) return {data:{session:null}, error:{message:'User already registered'}};
+        st.pwUsers[email]={password, id:'pw-'+email.split('@')[0]}; st.session={ user:{ id:st.pwUsers[email].id, email } };
+        setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {data:{session:st.session}, error:null}; },
+      signInWithPassword: async ({email,password,options}) => { st.authCalls.push(['signIn',email,!!options?.captchaToken]);
+        const u=st.pwUsers[email]; if(!u || u.password!==password) return {data:{session:null}, error:{message:'Invalid login credentials'}};
+        st.session={ user:{ id:u.id, email } }; setTimeout(()=>st.cb && st.cb('SIGNED_IN', st.session), 0); return {data:{session:st.session}, error:null}; },
       signOut: async () => { st.session=null; setTimeout(()=>st.cb && st.cb('SIGNED_OUT', null), 0); return {error:null}; },
     },
   };
@@ -638,11 +742,51 @@ FAKE_SUPABASE = r"""
 """
 
 
-def with_db(site):
+def with_db(site, providers=("google", "discord"), captcha=None):
+    """Point the page at the fake database, whatever site_config.json says
+    (the real config may already hold the live Supabase URL)."""
     html = (site / "index.html").read_text()
-    html = html.replace("const DB = null", 'const DB = {"url":"https://fake-db.test","key":"sb_publishable_test"}')
+    cfg = {"url": "https://fake-db.test", "key": "sb_publishable_test", "providers": list(providers)}
+    if captcha:
+        cfg["captcha"] = captcha
+    fake = json.dumps(cfg)
+    html, n = re.subn(r"const DB = (?:null|\{[^\n]*?\});", "const DB = " + fake + ";", html, count=1)
+    assert n == 1, "with_db: couldn't find the DB line in index.html"
+    assert "supabase.co" not in html.split("const DB = ", 1)[1].split("\n", 1)[0]
     (site / "index.html").write_text(html)
     return site
+
+
+def t_one_country(browser):
+    """ONE flags come from the profile's Country field only (not bios or the language menu)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scraper"))
+    from bs4 import BeautifulSoup
+    import scrape
+    lang_menu = '<li class="lang-item with-flag with-flag-id">INDONESIA</li><li class="lang-item">ไทย Thailand</li>'
+    def page(country_html, bio):
+        return BeautifulSoup(f'<html><head><meta name="description" content="{bio}"></head><body>{lang_menu}'
+                             f'<div class="mt-4 attributes"><div class="attr"><h5 class="title">Height</h5><div class="value">175 CM</div></div>'
+                             f'{country_html}</div></body></html>', "html.parser")
+    attr = lambda code, name: (f'<div class="attr"><h5 class="title">Country</h5><div class="value">'
+                               f'<a href="https://www.onefc.com/athletes/country/{code}/">{name}</a></div></div>')
+    gabriel = page(attr("br", "Brazil"), "Lucas Gabriel originally hails from Brazil but has since moved to Phuket, Thailand")
+    check(scrape.extract_country(gabriel) == ("Brazil", "🇧🇷"), "Brazilian who trains in Thailand gets 🇧🇷, not 🇹🇭", str(scrape.extract_country(gabriel)))
+    laos = page(attr("la", "Laos"), "Muay Thai star from the north")
+    check(scrape.extract_country(laos) == ("Laos", "🇱🇦"), "country missing from our list still gets a flag (Laos 🇱🇦)", str(scrape.extract_country(laos)))
+    uz = page(attr("uz", "Uzbekistan"), "Magomed Magomedov")
+    check(scrape.extract_country(uz)[1] == "🇺🇿", "Uzbekistan 🇺🇿 (was wrongly 🇮🇩 from the language menu)", str(scrape.extract_country(uz)))
+    none = page("", "Fights out of Bangkok, Thailand")
+    check(scrape.extract_country(none) == ("", ""), "no Country field = no flag (never a guess)", str(scrape.extract_country(none)))
+    check(scrape.flag_from_code("kr") == "🇰🇷" and scrape.flag_from_code("x") == "", "flag_from_code builds flags from 2-letter codes", "")
+
+
+def t_sign_in_providers(browser):
+    site = with_db(make_site(), providers=("google",))
+    p = browser.new_page()
+    p.goto((site / "index.html").as_uri()); p.wait_for_timeout(800)
+    check(p.locator("#signinModal .oauth-btn.google").count() == 1 and p.locator("#signinModal .oauth-btn.discord").count() == 0,
+          "sign_in_providers=google hides the Discord button", "")
+    p.close()
 
 
 def t_scorecard_community(browser):
@@ -678,6 +822,40 @@ def t_scorecard_community(browser):
     sub = p.evaluate("__fake.calls.filter(c=>c[0]==='submit_score').map(c=>c[1])")
     check(bool(sub) and sub[-1] == {"p_fight": fid, "p_round": 3, "p_pick": "b109"}, "Signed-in scorecards go to the fan vote", str(sub[-1:]))
     check(not errs, "No JS errors with community data", "; ".join(errs[:2]))
+    ctx.close(); srv.shutdown()
+
+
+def t_password_accounts(browser):
+    site = with_db(make_site(), providers=("google", "discord", "password"))
+    srv, url = serve(site)
+    ctx = browser.new_context(viewport={"width": 390, "height": 900}); p = ctx.new_page(); errs = []
+    p.on("pageerror", lambda e: errs.append(str(e)))
+    p.add_init_script(FAKE_SUPABASE)
+    p.goto(url + "index.html"); p.wait_for_timeout(700)
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check(p.is_visible("#pwUser") and p.is_visible("#pwPass"), "Username + password form shows when 'password' is enabled", "")
+    def submit(mode, name, pw):
+        p.fill("#pwUser", name); p.fill("#pwPass", pw); p.click("#pwSignup" if mode == "signup" else "#pwSignin"); p.wait_for_timeout(500)
+        return p.inner_text("#pwErr")
+    check("3–20" in submit("signup", "x!", "longenough"), "Bad usernames are rejected before anything is sent", "")
+    check("8 characters" in submit("signup", "RoundOne", "short"), "Short passwords are rejected", "")
+    check("taken" in submit("signup", "taken_name", "longenough1"), "Sign-up checks the username is free first", p.inner_text("#pwErr"))
+    check(p.evaluate("__fake.authCalls.length") == 0, "Nothing reaches the auth server for invalid sign-ups", str(p.evaluate("__fake.authCalls")))
+    submit("signup", "RoundOne", "longenough1")
+    check(p.evaluate("__fake.authCalls[0]") == ["signUp", "roundone@users.pickafight.now", False], "Sign-up uses the hidden login address (lower-cased)", str(p.evaluate("__fake.authCalls")))
+    check(p.inner_text("#authBtn") == "RoundOne" and not p.evaluate("document.getElementById('usernameModal').classList.contains('open')"),
+          "New password account gets its username straight away (no name picker)", p.inner_text("#authBtn"))
+    check(p.evaluate("__fake.profiles['pw-roundone']") == "RoundOne", "Username saved with the case the player typed", str(p.evaluate("__fake.profiles")))
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check(not p.is_visible("#changeNameBtn"), "Password accounts can't change their name (it's their login)", "")
+    p.click("#accountModal .oauth-btn >> text=Sign out"); p.wait_for_timeout(400)
+    p.click("#authBtn"); p.wait_for_timeout(100)
+    check("Wrong username or password" in submit("signin", "RoundOne", "wrongpassword"), "Wrong password shows a clear error", p.inner_text("#pwErr"))
+    check("taken" in submit("signup", "roundone", "longenough1"), "Same name in other case can't be registered twice", p.inner_text("#pwErr"))
+    submit("signin", "ROUNDONE", "longenough1")
+    check(p.inner_text("#authBtn") == "RoundOne", "Sign-in works and ignores username case", p.inner_text("#authBtn"))
+    check(p.evaluate("document.getElementById('pwPass').value") == "", "Password field is cleared after signing in", "")
+    check(not errs, "No JS errors in the password flow", str(errs[:3]))
     ctx.close(); srv.shutdown()
 
 
@@ -761,7 +939,7 @@ def t_leagues(browser):
     p.fill("#lgName", "Fight Club"); p.click(".lg-forms .oauth-btn.primary"); p.wait_for_timeout(300)
     txt = p.inner_text("#leagues-panel")
     check("Fight Club" in txt and "ABC234" in txt and "LegKickLarry" in txt, "Creating a league shows its code and table", txt[:160])
-    check(p.locator("#lg-table .lb-row.me").count() == 1 and "+420 R" in txt, "Standings show profit with you highlighted", "")
+    check(p.locator("#lg-table .lb-row.me").count() == 1 and "+420 Chang" in txt, "Standings show profit with you highlighted", "")
     p.click(".lg-period button:nth-child(2)"); p.wait_for_timeout(250)
     check(p.evaluate("__fake.lastPeriod") == "all", "All-time toggle asks for all-time standings", "")
     check(p.evaluate("inviteLink('ABC234')").endswith("?join=ABC234"), "Invite links carry the league code", "")
@@ -830,6 +1008,20 @@ def t_hot_takes(browser):
     ctx.close(); srv.shutdown()
 
 
+def t_third_party_stubbed(browser):
+    """Turnstile + Analytics are served by stand-ins, never the real servers.
+    The real Turnstile answers 400 on 127.0.0.1 (its key only allows
+    pickafight.now), which failed every CI site test from Nov 5 to Nov 6."""
+    pg = Page(browser, make_site())
+    got = pg.js("loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit')"
+                ".then(() => typeof window.turnstile.render).catch(e => 'failed')")
+    check(got == "function", "Turnstile script is served by the test stand-in", got)
+    got = pg.js("loadScript('https://www.googletagmanager.com/gtag/js?id=G-TEST').then(() => 'ok').catch(e => 'failed')")
+    check(got == "ok", "Analytics script is served by the test stand-in", got)
+    check(not pg.errors, "No JS errors with the live site config", "; ".join(pg.errors)[:300])
+    pg.close()
+
+
 def t_badges(browser):
     now = int(time.time() * 1000)
     bets = [{"fightId": "x", "type": "method", "pick": "KO/TKO", "odds": 2.8, "stake": 10, "payout": 28, "result": "won", "time": now + i} for i in range(3)]
@@ -863,16 +1055,16 @@ def t_secret_key_guard(browser):
 
 def main():
     tests = [t_load_and_render, t_stakes, t_double_submit, t_topup, t_corrupt_storage, t_stale_event,
-             t_payout_consistency, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
+             t_payout_consistency, t_cancelled_bout, t_missing_data, t_hostile_names, t_scale, t_mobile, t_pages_links,
              t_odds, t_share_and_stats, t_static_and_meta,
-             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_accounts,
-             t_leagues, t_hot_takes, t_badges]
+             t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_one_country, t_password_accounts, t_accounts,
+             t_leagues, t_hot_takes, t_badges, t_third_party_stubbed]
     if "--refresh-fixtures" in sys.argv:
         refresh_fixtures()
         return
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = StubbedBrowser(pw.chromium.launch())
         for t in tests:
             if only and t.__name__ not in only:
                 continue

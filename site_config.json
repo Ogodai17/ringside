@@ -1,11 +1,13 @@
 {
   "_help": "The ONE place to paste site IDs. Leave a value as \"\" to switch that feature off. After editing, commit \u2014 the workflow rebuilds every page automatically.",
   "site_url": "https://pickafight.now/",
-  "ga_measurement_id": "",
+  "ga_measurement_id": "G-VD30V7BKLY",
   "adsense_publisher_id": "",
   "adsense_slot_top": "",
   "adsense_slot_bottom": "",
   "affiliate_url": "",
-  "database_url": "",
-  "database_publishable_key": ""
+  "database_url": "https://uefljfalbrutqlvnoxvv.supabase.co",
+  "database_publishable_key": "sb_publishable_D7-wPhnxWcZ3CXe7r7_vow_B8OfQGpZ",
+  "sign_in_providers": "google,discord,password",
+  "turnstile_site_key": "0x4AAAAAAF1OUK_6XQcT-beq"
 }

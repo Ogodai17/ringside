@@ -306,6 +306,8 @@ def result_line(fight: dict) -> str:
     r = fight.get("result")
     if not r:
         return ""
+    if r.get("winner") == "void":
+        return '\n      <div class="result-badge">Bout cancelled</div>'
     fa, fb = fight["fighter_a"], fight["fighter_b"]
     who = h(fa["name"]) if r.get("winner") == "a" else h(fb["name"]) if r.get("winner") == "b" else "Draw"
     how = h(r.get("method") or "finish")
@@ -377,7 +379,7 @@ def build_preview_html(event: dict, idx: int) -> str:
 
   <div class="cta-banner">
     <a href="../index.html">Ready to make your picks? Play on Pick A Fight &rarr;</a>
-    <p>5,000 R starting balance. No real money. Just bragging rights.</p>
+    <p>5,000 Chang starting balance. No real money. Just bragging rights.</p>
   </div>
 """ + page_footer("../")
 

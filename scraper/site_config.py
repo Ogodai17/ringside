@@ -22,6 +22,8 @@ DEFAULTS = {
     "affiliate_url": "",
     "database_url": "",
     "database_publishable_key": "",
+    "sign_in_providers": "google,discord",
+    "turnstile_site_key": "",
 }
 
 
@@ -136,4 +138,14 @@ def db_api(cfg: dict):
                          "Use the publishable (sb_publishable_...) or anon key only.")
     if not url.startswith("https://"):
         raise SystemExit("database_url must start with https://")
-    return {"url": url.rstrip("/"), "key": key}
+    allowed = ("google", "discord", "password")
+    raw = cfg.get("sign_in_providers") or DEFAULTS["sign_in_providers"]
+    providers = [p.strip().lower() for p in raw.split(",") if p.strip()]
+    bad = [p for p in providers if p not in allowed]
+    if bad:
+        raise SystemExit(f"sign_in_providers: unknown provider(s) {bad} - use google, discord and/or password")
+    captcha = (cfg.get("turnstile_site_key") or "").strip()
+    out = {"url": url.rstrip("/"), "key": key, "providers": providers}
+    if captcha:
+        out["captcha"] = captcha  # Cloudflare Turnstile SITE key (public); the secret lives in Supabase
+    return out

@@ -1,297 +1,9 @@
 {
- "fixture_anchor": "2026-11-02",
- "scraped_at": "2026-11-01T17:56:00Z",
+ "fixture_anchor": "2026-11-08",
+ "scraped_at": "2026-11-08T09:05:29Z",
  "source": "onefc.com",
- "event_count": 4,
+ "event_count": 6,
  "events": [
-  {
-   "name": "ONE Friday Fights 177 & The Inner Circle 37",
-   "subtitle": "",
-   "date": "2026-11-06",
-   "venue": "Lumpinee Stadium, Bangkok",
-   "url": "https://www.onefc.com/events/one-friday-fights-177/",
-   "status": "upcoming",
-   "fight_count": 1,
-   "fights": [
-    {
-     "id": 1,
-     "label": "Lightweight MMA World Championship",
-     "discipline": "mma",
-     "fighter_a": {
-      "name": "Christian Lee",
-      "country": "United States",
-      "flag": "🇺🇸",
-      "profile": "https://www.onefc.com/athletes/christian-lee/",
-      "record": "18-4-0",
-      "finish_rate": 94
-     },
-     "fighter_b": {
-      "name": "Tye Ruotolo",
-      "country": "Brazil",
-      "flag": "🇧🇷",
-      "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
-      "record": "11-0-0",
-      "finish_rate": 55
-     },
-     "main_event": true,
-     "result": null,
-     "p_a": 0.492,
-     "odds": [
-      1.92,
-      1.86
-     ]
-    }
-   ]
-  },
-  {
-   "name": "ONE Fight Night 49",
-   "subtitle": "Gabriel Vs. Magomedov",
-   "date": "2026-11-07",
-   "venue": "Lumpinee Stadium, Bangkok",
-   "url": "https://www.onefc.com/events/onefightnight49/",
-   "status": "upcoming",
-   "fight_count": 9,
-   "fights": [
-    {
-     "id": 1,
-     "label": "Lightweight MMA",
-     "discipline": "mma",
-     "fighter_a": {
-      "name": "Lucas Gabriel",
-      "country": "Thailand",
-      "flag": "🇹🇭",
-      "profile": "https://www.onefc.com/athletes/lucas-gabriel/",
-      "record": "5-0-0",
-      "finish_rate": 20
-     },
-     "fighter_b": {
-      "name": "Magomed Magomedov",
-      "country": "Russia",
-      "flag": "🇷🇺",
-      "profile": "https://www.onefc.com/athletes/magomed-magomedov-3/",
-      "record": ""
-     },
-     "main_event": true,
-     "result": null,
-     "p_a": 0.57,
-     "odds": [
-      1.66,
-      2.19
-     ]
-    },
-    {
-     "id": 2,
-     "label": "Flyweight Kickboxing",
-     "discipline": "kb",
-     "fighter_a": {
-      "name": "Kongthoranee Sor Sommai",
-      "country": "Thailand",
-      "flag": "🇹🇭",
-      "profile": "https://www.onefc.com/athletes/kongthoranee-sor-sommai/",
-      "record": "12-6-0",
-      "finish_rate": 25
-     },
-     "fighter_b": {
-      "name": "Taiki Naito",
-      "country": "Japan",
-      "flag": "🇯🇵",
-      "profile": "https://www.onefc.com/athletes/taiki-naito/",
-      "record": "10-6-0",
-      "finish_rate": 20
-     },
-     "result": null,
-     "p_a": 0.543,
-     "odds": [
-      1.74,
-      2.07
-     ]
-    },
-    {
-     "id": 3,
-     "label": "Strawweight MMA",
-     "discipline": "mma",
-     "fighter_a": {
-      "name": "Lee Seung Cheol",
-      "country": "South Korea",
-      "flag": "🇰🇷",
-      "profile": "https://www.onefc.com/athletes/lee-seung-cheol/",
-      "record": "6-0-0",
-      "finish_rate": 50
-     },
-     "fighter_b": {
-      "name": "Nazareth Lalthazuala",
-      "country": "India",
-      "flag": "🇮🇳",
-      "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
-      "record": "3-0-0",
-      "finish_rate": 100
-     },
-     "result": null,
-     "p_a": 0.631,
-     "odds": [
-      1.5,
-      2.55
-     ]
-    },
-    {
-     "id": 4,
-     "label": "Bantamweight Muay Thai",
-     "discipline": "mt",
-     "fighter_a": {
-      "name": "Nontachai Jitmuangnon",
-      "country": "Thailand",
-      "flag": "🇹🇭",
-      "profile": "https://www.onefc.com/athletes/nontachai-jitmuangnon/",
-      "record": "6-2-0",
-      "finish_rate": 33
-     },
-     "fighter_b": {
-      "name": "Felipe Lobo",
-      "country": "Brazil",
-      "flag": "🇧🇷",
-      "profile": "https://www.onefc.com/athletes/felipe-lobo/",
-      "record": "4-6-0",
-      "finish_rate": 50
-     },
-     "result": null,
-     "p_a": 0.657,
-     "odds": [
-      1.44,
-      2.75
-     ]
-    },
-    {
-     "id": 5,
-     "label": "Featherweight Kickboxing",
-     "discipline": "kb",
-     "fighter_a": {
-      "name": "Zhou Jiaqiang",
-      "country": "China",
-      "flag": "🇨🇳",
-      "profile": "https://www.onefc.com/athletes/zhou-jiaqiang/",
-      "record": "0-1-0",
-      "finish_rate": 0
-     },
-     "fighter_b": {
-      "name": "Mamuka Usubyan",
-      "country": "Russia",
-      "flag": "🇷🇺",
-      "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
-      "record": "4-1-0",
-      "finish_rate": 25
-     },
-     "result": null,
-     "p_a": 0.267,
-     "odds": [
-      3.53,
-      1.29
-     ]
-    },
-    {
-     "id": 6,
-     "label": "Atomweight MMA",
-     "discipline": "mma",
-     "fighter_a": {
-      "name": "Vick Souza",
-      "country": "Brazil",
-      "flag": "🇧🇷",
-      "profile": "https://www.onefc.com/athletes/vick-souza/",
-      "record": "4-3-0",
-      "finish_rate": 25
-     },
-     "fighter_b": {
-      "name": "Magdalena Czaban",
-      "country": "United States",
-      "flag": "🇺🇸",
-      "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
-      "record": "1-0-0",
-      "finish_rate": 0
-     },
-     "result": null,
-     "p_a": 0.595,
-     "odds": [
-      1.58,
-      2.33
-     ]
-    },
-    {
-     "id": 7,
-     "label": "Lightweight Kickboxing",
-     "discipline": "kb",
-     "fighter_a": {
-      "name": "Bogdan Shumarov",
-      "country": "Netherlands",
-      "flag": "🇳🇱",
-      "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
-      "record": "3-1-0",
-      "finish_rate": 100
-     },
-     "fighter_b": {
-      "name": "Gasham Mammadov",
-      "country": "Azerbaijan",
-      "flag": "🇦🇿",
-      "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
-      "record": ""
-     },
-     "result": null,
-     "p_a": 0.507,
-     "odds": [
-      1.86,
-      1.91
-     ]
-    },
-    {
-     "id": 8,
-     "label": "Bantamweight MMA",
-     "discipline": "mma",
-     "fighter_a": {
-      "name": "Victor Hugo",
-      "country": "Indonesia",
-      "flag": "🇮🇩",
-      "profile": "https://www.onefc.com/athletes/victor-hugo-costa-marques/",
-      "record": ""
-     },
-     "fighter_b": {
-      "name": "Devhonte Johnson",
-      "country": "Indonesia",
-      "flag": "🇮🇩",
-      "profile": "https://www.onefc.com/athletes/devhonte-johnson/",
-      "record": ""
-     },
-     "result": null,
-     "p_a": 0.453,
-     "odds": [
-      2.08,
-      1.73
-     ]
-    },
-    {
-     "id": 9,
-     "label": "Bout 9",
-     "discipline": "unknown",
-     "fighter_a": {
-      "name": "Kalandar Tabarov",
-      "country": "Indonesia",
-      "flag": "🇮🇩",
-      "profile": "https://www.onefc.com/athletes/kalandar-tabarov/",
-      "record": ""
-     },
-     "fighter_b": {
-      "name": "Ilmadi Israilov",
-      "country": "Russia",
-      "flag": "🇷🇺",
-      "profile": "https://www.onefc.com/athletes/ilmadi-israilov/",
-      "record": ""
-     },
-     "result": null,
-     "p_a": 0.441,
-     "odds": [
-      2.14,
-      1.69
-     ]
-    }
-   ]
-  },
   {
    "name": "ONE Friday Fights 178 & The Inner Circle 38",
    "subtitle": "",
@@ -311,7 +23,8 @@
       "flag": "🇹🇭",
       "profile": "https://www.onefc.com/athletes/rodtang/",
       "record": "17-3-0",
-      "finish_rate": 24
+      "finish_rate": 24,
+      "country_src": "profile"
      },
      "fighter_b": {
       "name": "Nong-O Hama",
@@ -319,7 +32,8 @@
       "flag": "🇹🇭",
       "profile": "https://www.onefc.com/athletes/nong-o/",
       "record": "13-5-0",
-      "finish_rate": 38
+      "finish_rate": 38,
+      "country_src": "profile"
      },
      "main_event": true,
      "result": null,
@@ -339,15 +53,17 @@
       "flag": "🇯🇵",
       "profile": "https://www.onefc.com/athletes/shimon-yoshinari/",
       "record": "6-0-0",
-      "finish_rate": 50
+      "finish_rate": 50,
+      "country_src": "profile"
      },
      "fighter_b": {
       "name": "Ramadan Ondash",
-      "country": "United States",
-      "flag": "🇺🇸",
+      "country": "Lebanon",
+      "flag": "🇱🇧",
       "profile": "https://www.onefc.com/athletes/ramadan-ondash/",
       "record": "6-1-0",
-      "finish_rate": 33
+      "finish_rate": 33,
+      "country_src": "profile"
      },
      "result": null,
      "p_a": 0.539,
@@ -355,6 +71,1168 @@
       1.75,
       2.05
      ]
+    }
+   ]
+  },
+  {
+   "name": "ONE SAMURAI 5",
+   "subtitle": "",
+   "date": "2026-11-18",
+   "venue": "EBARA WAVE Arena Ota, Tokyo",
+   "url": "https://www.onefc.com/events/one-samurai-5/",
+   "status": "upcoming",
+   "fight_count": 10,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Strawweight MMA World Championship",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Joshua Pacio",
+      "country": "Philippines",
+      "flag": "🇵🇭",
+      "profile": "https://www.onefc.com/athletes/joshua-pacio/",
+      "record": "15-5-0",
+      "finish_rate": 67,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Keito Yamakita",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/keito-yamakita/",
+      "record": "6-1-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "main_event": true,
+     "result": null,
+     "p_a": 0.602,
+     "odds": [
+      1.57,
+      2.37
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Strawweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Ryujin Nasukawa",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/ryujin-nasukawa/",
+      "record": "1-0-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Elmehdi El Jamari",
+      "country": "Morocco",
+      "flag": "🇲🇦",
+      "profile": "https://www.onefc.com/athletes/elmehdi-el-jamari/",
+      "record": "2-2-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.475,
+     "odds": [
+      1.99,
+      1.8
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Strawweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Tatsumitsu Wada",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/tatsumitsu-wada/",
+      "record": "7-7-0",
+      "finish_rate": 29,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Jarred Brooks",
+      "country": "United States",
+      "flag": "🇺🇸",
+      "profile": "https://www.onefc.com/athletes/jarred-brooks/",
+      "record": "5-5-0",
+      "finish_rate": 60,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.526,
+     "odds": [
+      1.8,
+      1.99
+     ]
+    },
+    {
+     "id": 4,
+     "label": "Strawweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Masashi Kumura",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/masashi-kumura/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Ellis Badr Barboza",
+      "country": "United Kingdom",
+      "flag": "🇬🇧",
+      "profile": "https://www.onefc.com/athletes/ellis-badr-barboza/",
+      "record": "2-2-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.532,
+     "odds": [
+      1.77,
+      2.02
+     ]
+    },
+    {
+     "id": 5,
+     "label": "Featherweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Yutaro Asahi",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/yutaro-asahi/",
+      "record": "1-0-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Petchtanong Petchfergus",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/petchtanong/",
+      "record": "4-2-0",
+      "finish_rate": 25,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.38,
+     "odds": [
+      2.48,
+      1.52
+     ]
+    },
+    {
+     "id": 6,
+     "label": "Heavyweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Ryugo Takeuchi",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/ryugo-takeuchi/",
+      "record": "1-3-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Brandon Hashimoto",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/brandon-hashimoto/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.428,
+     "odds": [
+      2.2,
+      1.65
+     ]
+    },
+    {
+     "id": 7,
+     "label": "Strawweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Yugo Kato",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/yugo-kato/",
+      "record": "2-0-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Jurai Ishii",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/jurai-ishii/",
+      "record": "5-1-0",
+      "finish_rate": 60,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.384,
+     "odds": [
+      2.45,
+      1.53
+     ]
+    },
+    {
+     "id": 8,
+     "label": "Strawweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Reiji",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/reiji-takaki/",
+      "record": "2-0-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Rui Botelho",
+      "country": "Portugal",
+      "flag": "🇵🇹",
+      "profile": "https://www.onefc.com/athletes/rui-botelho/",
+      "record": "4-7-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.557,
+     "odds": [
+      1.69,
+      2.13
+     ]
+    },
+    {
+     "id": 9,
+     "label": "Bantamweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Gump",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/gump/",
+      "record": "2-0-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Shuto Inui",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/shuto-inui/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.493,
+     "odds": [
+      1.91,
+      1.86
+     ]
+    },
+    {
+     "id": 10,
+     "label": "Featherweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Shosuke Kinoshita",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/shosuke-kinoshita/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Takuya Shibamura",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/takuya-shibamura/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.49,
+     "odds": [
+      1.93,
+      1.85
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ONE Friday Fights 179 & The Inner Circle 39",
+   "subtitle": "",
+   "date": "2026-11-20",
+   "venue": "Lumpinee Stadium, Bangkok",
+   "url": "https://www.onefc.com/events/one-friday-fights-179/",
+   "status": "upcoming",
+   "fight_count": 3,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Flyweight Muay Thai World Championship",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Asadula Imangazaliev",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "profile": "https://www.onefc.com/athletes/asadula-imangazaliev/",
+      "record": "9-0-0",
+      "finish_rate": 78,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Aslamjon Ortikov",
+      "country": "Uzbekistan",
+      "flag": "🇺🇿",
+      "profile": "https://www.onefc.com/athletes/aslamjon-ortikov/",
+      "record": "10-1-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "main_event": true,
+     "result": null,
+     "p_a": 0.516,
+     "odds": [
+      1.83,
+      1.95
+     ]
+    },
+    {
+     "id": 2,
+     "label": "Flyweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Black Panther",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/black-panther/",
+      "record": "6-1-0",
+      "finish_rate": 33,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Ubaid Hussain",
+      "country": "Pakistan / United Kingdom",
+      "flag": "🇵🇰",
+      "profile": "https://www.onefc.com/athletes/ubaid-hussain/",
+      "record": "8-0-0",
+      "finish_rate": 25,
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.396,
+     "odds": [
+      2.38,
+      1.56
+     ]
+    },
+    {
+     "id": 3,
+     "label": "Atomweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Allycia Hellen Rodrigues",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "profile": "https://www.onefc.com/athletes/allycia-hellen-rodrigues/",
+      "record": "6-1-0",
+      "finish_rate": 33,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Charlotte Padie",
+      "country": "France",
+      "flag": "🇫🇷",
+      "profile": "https://www.onefc.com/athletes/charlotte-padie/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": null,
+     "p_a": 0.57,
+     "odds": [
+      1.66,
+      2.19
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ONE Fight Night 49",
+   "subtitle": "Gabriel Vs. Magomedov",
+   "date": "2026-11-07",
+   "venue": "Lumpinee Stadium, Bangkok",
+   "url": "https://www.onefc.com/events/onefightnight49/",
+   "status": "completed",
+   "fight_count": 9,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Lightweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Lucas Gabriel",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "profile": "https://www.onefc.com/athletes/lucas-gabriel/",
+      "record": "5-0-0",
+      "finish_rate": 20,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Magomed Magomedov",
+      "country": "Bahrain",
+      "flag": "🇧🇭",
+      "profile": "https://www.onefc.com/athletes/magomed-magomedov-3/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "main_event": true,
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.66,
+      2.19
+     ],
+     "p_a": 0.57
+    },
+    {
+     "id": 2,
+     "label": "Flyweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Kongthoranee Sor Sommai",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/kongthoranee-sor-sommai/",
+      "record": "12-6-0",
+      "finish_rate": 25,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Taiki Naito",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/taiki-naito/",
+      "record": "10-6-0",
+      "finish_rate": 20,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.74,
+      2.07
+     ],
+     "p_a": 0.543
+    },
+    {
+     "id": 3,
+     "label": "Strawweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Lee Seung Cheol",
+      "country": "South Korea",
+      "flag": "🇰🇷",
+      "profile": "https://www.onefc.com/athletes/lee-seung-cheol/",
+      "record": "6-0-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Nazareth Lalthazuala",
+      "country": "India",
+      "flag": "🇮🇳",
+      "profile": "https://www.onefc.com/athletes/nazareth-lalthazuala/",
+      "record": "3-0-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "Submission",
+      "round": 2
+     },
+     "odds": [
+      1.5,
+      2.55
+     ],
+     "p_a": 0.631
+    },
+    {
+     "id": 4,
+     "label": "Bantamweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Nontachai Jitmuangnon",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/nontachai-jitmuangnon/",
+      "record": "6-2-0",
+      "finish_rate": 33,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Felipe Lobo",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "profile": "https://www.onefc.com/athletes/felipe-lobo/",
+      "record": "4-6-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.44,
+      2.75
+     ],
+     "p_a": 0.657
+    },
+    {
+     "id": 5,
+     "label": "Featherweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Zhou Jiaqiang",
+      "country": "China",
+      "flag": "🇨🇳",
+      "profile": "https://www.onefc.com/athletes/zhou-jiaqiang/",
+      "record": "0-1-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Mamuka Usubyan",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "profile": "https://www.onefc.com/athletes/mamuka-usubyan/",
+      "record": "4-1-0",
+      "finish_rate": 25,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      3.53,
+      1.29
+     ],
+     "p_a": 0.267
+    },
+    {
+     "id": 6,
+     "label": "Atomweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Vick Souza",
+      "country": "Brazil",
+      "flag": "🇧🇷",
+      "profile": "https://www.onefc.com/athletes/vick-souza/",
+      "record": "4-3-0",
+      "finish_rate": 25,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Magdalena Czaban",
+      "country": "Poland",
+      "flag": "🇵🇱",
+      "profile": "https://www.onefc.com/athletes/magdalena-czaban/",
+      "record": "1-0-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.58,
+      2.33
+     ],
+     "p_a": 0.595
+    },
+    {
+     "id": 7,
+     "label": "Lightweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Bogdan Shumarov",
+      "country": "Bulgaria",
+      "flag": "🇧🇬",
+      "profile": "https://www.onefc.com/athletes/bogdan-shumarov/",
+      "record": "3-1-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Gasham Mammadov",
+      "country": "Azerbaijan",
+      "flag": "🇦🇿",
+      "profile": "https://www.onefc.com/athletes/gasham-mammadov/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.86,
+      1.91
+     ],
+     "p_a": 0.507
+    },
+    {
+     "id": 8,
+     "label": "Bantamweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Victor Hugo",
+      "country": "",
+      "flag": "",
+      "profile": "https://www.onefc.com/athletes/victor-hugo-costa-marques/",
+      "record": ""
+     },
+     "fighter_b": {
+      "name": "Devhonte Johnson",
+      "country": "",
+      "flag": "",
+      "profile": "https://www.onefc.com/athletes/devhonte-johnson/",
+      "record": ""
+     },
+     "result": {
+      "winner": "a",
+      "method": "Submission",
+      "round": 1
+     },
+     "odds": [
+      2.08,
+      1.73
+     ],
+     "p_a": 0.453
+    },
+    {
+     "id": 9,
+     "label": "Bout 9",
+     "discipline": "unknown",
+     "fighter_a": {
+      "name": "Kalandar Tabarov",
+      "country": "Tajikistan",
+      "flag": "🇹🇯",
+      "profile": "https://www.onefc.com/athletes/kalandar-tabarov/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Ilmadi Israilov",
+      "country": "Russia",
+      "flag": "🇷🇺",
+      "profile": "https://www.onefc.com/athletes/ilmadi-israilov/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      2.14,
+      1.69
+     ],
+     "p_a": 0.441
+    }
+   ]
+  },
+  {
+   "name": "ONE Friday Fights 177 & The Inner Circle 37",
+   "subtitle": "",
+   "date": "2026-11-06",
+   "venue": "Lumpinee Stadium, Bangkok",
+   "url": "https://www.onefc.com/events/one-friday-fights-177/",
+   "status": "completed",
+   "fight_count": 14,
+   "fights": [
+    {
+     "id": 1,
+     "label": "Bantamweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Isannuea Sor Sasiwat",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/isannuea-tor-tanjaroen/",
+      "record": "4-4-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Jack Siatanyokkrok PK",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/jack-siatanyokkrok-pk/",
+      "record": "2-1-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "main_event": true,
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.8,
+      1.98
+     ],
+     "p_a": 0.524
+    },
+    {
+     "id": 2,
+     "label": "Flyweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Saksri Superlek Muaythai",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/saksri-superlek-muaythai/",
+      "record": "1-1-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Superball Sitcho",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/superball-sitcho/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "KO/TKO",
+      "round": 1
+     },
+     "odds": [
+      2.11,
+      1.7
+     ],
+     "p_a": 0.447
+    },
+    {
+     "id": 3,
+     "label": "Atomweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Chatpet NP Suablackmuaythai",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/chatpet-suablackmuaythai/",
+      "record": "1-1-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Saipetlek Rongsamak Orborjor Udon Thani",
+      "country": "Laos",
+      "flag": "🇱🇦",
+      "profile": "https://www.onefc.com/athletes/saipetlek-rongsamak-orborjor-udon-thani/",
+      "record": "1-0-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.95,
+      1.83
+     ],
+     "p_a": 0.483
+    },
+    {
+     "id": 4,
+     "label": "Atomweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Petdam BS Muaythai",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/petdam-bs-muaythai/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Chaisongkram Looksuan",
+      "country": "Laos",
+      "flag": "🇱🇦",
+      "profile": "https://www.onefc.com/athletes/chaisongkram-looksuan/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      2.1,
+      1.71
+     ],
+     "p_a": 0.448
+    },
+    {
+     "id": 5,
+     "label": "Atomweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Klinphaka Por Thaisong",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/klinphaka-por-thaisong/",
+      "record": "1-1-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Ran Longshu",
+      "country": "China",
+      "flag": "🇨🇳",
+      "profile": "https://www.onefc.com/athletes/ran-longshu/",
+      "record": "0-2-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "KO/TKO",
+      "round": 2
+     },
+     "odds": [
+      1.59,
+      2.31
+     ],
+     "p_a": 0.591
+    },
+    {
+     "id": 6,
+     "label": "Flyweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Phun Suea Muang",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/phun-suea-muang/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Kazuteru Yamazaki",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/kazuteru-yamazaki/",
+      "record": "3-2-0",
+      "finish_rate": 33,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.86,
+      1.91
+     ],
+     "p_a": 0.507
+    },
+    {
+     "id": 7,
+     "label": "Bantamweight MMA",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Bos Chayut",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/bos-chayut/",
+      "record": "1-0-0",
+      "finish_rate": 0,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Kentaro Okumura",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/kentaro-okumura/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "KO/TKO",
+      "round": 3
+     },
+     "odds": [
+      2.07,
+      1.73
+     ],
+     "p_a": 0.455
+    },
+    {
+     "id": 8,
+     "label": "Atomweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Okazaki Silkmuaythai",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/okazaki-silkmuaythai/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Yuto",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/yuto/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.75,
+      2.05
+     ],
+     "p_a": 0.54
+    },
+    {
+     "id": 9,
+     "label": "Flyweight Kickboxing",
+     "discipline": "kb",
+     "fighter_a": {
+      "name": "Marat Jankovskij",
+      "country": "Latvia",
+      "flag": "🇱🇻",
+      "profile": "https://www.onefc.com/athletes/marat-jankovskij/",
+      "record": "",
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Retsu Sashida",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "profile": "https://www.onefc.com/athletes/retsu-sashida/",
+      "record": "1-2-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.68,
+      2.16
+     ],
+     "p_a": 0.563
+    },
+    {
+     "id": 10,
+     "label": "Lightweight MMA World Championship",
+     "discipline": "mma",
+     "fighter_a": {
+      "name": "Christian Lee",
+      "country": "Singapore / United States",
+      "flag": "🇸🇬",
+      "profile": "https://www.onefc.com/athletes/christian-lee/",
+      "record": "18-4-0",
+      "finish_rate": 94,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Tye Ruotolo",
+      "country": "United States",
+      "flag": "🇺🇸",
+      "profile": "https://www.onefc.com/athletes/tye-ruotolo/",
+      "record": "11-0-0",
+      "finish_rate": 55,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Submission",
+      "round": 1
+     },
+     "odds": [
+      1.92,
+      1.86
+     ],
+     "p_a": 0.492
+    },
+    {
+     "id": 11,
+     "label": "Bantamweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Komawut FA Group",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/komawut-fa-group/",
+      "record": "8-7-0",
+      "finish_rate": 13,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Yodphupa Petkiatpet",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/yodphupa/",
+      "record": "7-5-0",
+      "finish_rate": 29,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.93,
+      1.85
+     ],
+     "p_a": 0.489
+    },
+    {
+     "id": 12,
+     "label": "Flyweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Kongchai Chanaidonmueang",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/kongchai-chanaidonmueang/",
+      "record": "12-6-0",
+      "finish_rate": 25,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Tantawy Ahmed",
+      "country": "Egypt",
+      "flag": "🇪🇬",
+      "profile": "https://www.onefc.com/athletes/tantawy-ahmed-hafez/",
+      "record": "2-0-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.4,
+      2.88
+     ],
+     "p_a": 0.672
+    },
+    {
+     "id": 13,
+     "label": "Lightweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Titus Proctor",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "profile": "https://www.onefc.com/athletes/titus-proctor/",
+      "record": "2-0-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Maciej Karpinski",
+      "country": "Poland",
+      "flag": "🇵🇱",
+      "profile": "https://www.onefc.com/athletes/maciej-karpinski/",
+      "record": "1-1-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "a",
+      "method": "KO/TKO",
+      "round": 3
+     },
+     "odds": [
+      1.59,
+      2.31
+     ],
+     "p_a": 0.591
+    },
+    {
+     "id": 14,
+     "label": "Strawweight Muay Thai",
+     "discipline": "mt",
+     "fighter_a": {
+      "name": "Cal Cook",
+      "country": "England",
+      "flag": "🇪🇳",
+      "profile": "https://www.onefc.com/athletes/cal-cook/",
+      "record": "1-0-0",
+      "finish_rate": 100,
+      "country_src": "profile"
+     },
+     "fighter_b": {
+      "name": "Dabdam Por Tor Tor Thongtawee",
+      "country": "Thailand",
+      "flag": "🇹🇭",
+      "profile": "https://www.onefc.com/athletes/dabdam-por-tor-tor-thongtawee/",
+      "record": "2-5-0",
+      "finish_rate": 50,
+      "country_src": "profile"
+     },
+     "result": {
+      "winner": "b",
+      "method": "Decision",
+      "round": 3
+     },
+     "odds": [
+      1.77,
+      2.02
+     ],
+     "p_a": 0.534
     }
    ]
   },
@@ -751,7 +1629,11 @@
       "finish_rate": 0
      },
      "main_event": true,
-     "result": null,
+     "result": {
+      "winner": "void",
+      "method": "Cancelled",
+      "round": null
+     },
      "p_a": 0.715,
      "odds": [
       1.32,
@@ -778,7 +1660,11 @@
       "record": "1-1-0",
       "finish_rate": 100
      },
-     "result": null,
+     "result": {
+      "winner": "void",
+      "method": "Cancelled",
+      "round": null
+     },
      "p_a": 0.636,
      "odds": [
       1.48,

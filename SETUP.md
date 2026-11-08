@@ -59,3 +59,46 @@ step 5. The site build refuses to run if a secret key ends up in
 After step 6, Claude adds the URL + publishable key to `site_config.json`, the
 site rebuilds with a **Sign in** button, and the next daily run syncs fights
 into the database.
+
+`sign_in_providers` in `site_config.json` lists which sign-in buttons show
+(`"google,discord"` by default). Set it to `"google"` until the Discord app in
+step 4 exists, so players never see a button that doesn't work.
+
+---
+
+# Discord feed (optional, works without the database)
+
+Posts the week's cards and the results to a Discord channel, with links back
+to the site. Nothing else — no picks from Discord.
+
+1. In the Discord server: **Server Settings → Integrations → Webhooks → New
+   Webhook** → pick the channel → **Copy Webhook URL**. (Any server admin can
+   do this for their own server and send you the URL.)
+2. GitHub repo → **Settings → Secrets and variables → Actions → New repository
+   secret** → Name `DISCORD_WEBHOOKS`, value = the URL. Several servers: one
+   URL per line.
+3. Done. The daily run posts upcoming cards within 7 days and results the
+   morning after. Once the database (above) is live, decisions also get the
+   People's Scorecard verdict ("Fans say robbery · 72%").
+
+To preview a post without sending: `python scraper/discord_feed.py --dry-run`.
+To re-post something, delete its line from `data/discord_feed_state.json`.
+
+---
+
+# Username + password accounts (optional)
+
+For players who don't want to link Google or Discord. No email is collected:
+each account signs in with a hidden address `<username>@users.pickafight.now`
+(never emailed), so **there is no password reset** — and a password account
+keeps its username for good.
+
+1. Run the latest `supabase/setup.sql` in the SQL Editor (adds
+   `username_available()` and the username lock).
+2. **Authentication → Sign In / Providers:** turn **Confirm email** off;
+   in the **Email** provider set **Minimum password length** to 8.
+3. **Cloudflare → Turnstile → Add widget**, hostname `pickafight.now`,
+   mode Managed. Put the **Site key** in `site_config.json` as
+   `turnstile_site_key` (public). Paste the **Secret key** into Supabase
+   **Authentication → Attack Protection → Captcha** (provider: Turnstile).
+4. Add `password` to `sign_in_providers` (e.g. `"google,discord,password"`).
