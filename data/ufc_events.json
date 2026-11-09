@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-08T16:26:55Z",
+  "scraped_at": "2026-11-09T20:17:40Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -65,10 +65,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.859,
+          "p_a": 0.865,
           "odds": [
-            1.11,
-            6.75
+            1.09,
+            7.0
           ],
           "odds_src": "market",
           "market_for": [
@@ -95,10 +95,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.603,
+          "p_a": 0.578,
           "odds": [
-            1.57,
-            2.38
+            1.63,
+            2.23
           ],
           "odds_src": "market",
           "market_for": [
@@ -125,10 +125,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.589,
+          "p_a": 0.584,
           "odds": [
-            1.6,
-            2.29
+            1.61,
+            2.26
           ],
           "odds_src": "market",
           "market_for": [
@@ -155,10 +155,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.631,
+          "p_a": 0.634,
           "odds": [
             1.5,
-            2.57
+            2.6
           ],
           "odds_src": "market",
           "market_for": [
@@ -185,10 +185,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.606,
+          "p_a": 0.618,
           "odds": [
-            1.56,
-            2.4
+            1.53,
+            2.47
           ],
           "odds_src": "market",
           "market_for": [
@@ -215,10 +215,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.34,
+          "p_a": 0.349,
           "odds": [
-            2.8,
-            1.44
+            2.7,
+            1.45
           ],
           "odds_src": "market",
           "market_for": [
@@ -245,9 +245,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.399,
+          "p_a": 0.407,
           "odds": [
-            2.38,
+            2.3,
             1.58
           ],
           "odds_src": "market",
@@ -275,10 +275,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.567,
+          "p_a": 0.571,
           "odds": [
-            1.66,
-            2.17
+            1.65,
+            2.2
           ],
           "odds_src": "market",
           "market_for": [
@@ -305,10 +305,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.521,
+          "p_a": 0.489,
           "odds": [
-            1.82,
-            1.98
+            1.91,
+            1.83
           ],
           "odds_src": "market",
           "market_for": [
@@ -360,10 +360,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.344,
+          "p_a": 0.315,
           "odds": [
-            2.75,
-            1.44
+            3.0,
+            1.38
           ],
           "odds_src": "market",
           "market_for": [
@@ -390,9 +390,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.247,
+          "p_a": 0.248,
           "odds": [
-            3.85,
+            3.82,
             1.26
           ],
           "odds_src": "market",
@@ -447,6 +447,31 @@
         },
         {
           "id": 2,
+          "label": "Bantamweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Aleksandre Topuria",
+            "country": "Georgia",
+            "flag": "🇬🇪",
+            "record": "7-1-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Santiago Luna",
+            "country": "Mexico",
+            "flag": "🇲🇽",
+            "record": "8-1-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.469,
+          "odds": [
+            2.01,
+            1.78
+          ]
+        },
+        {
+          "id": 3,
           "label": "Middleweight",
           "discipline": "mma",
           "fighter_a": {
@@ -471,7 +496,7 @@
           ]
         },
         {
-          "id": 3,
+          "id": 4,
           "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -496,7 +521,7 @@
           ]
         },
         {
-          "id": 4,
+          "id": 5,
           "label": "Lightweight",
           "discipline": "mma",
           "fighter_a": {
@@ -521,7 +546,7 @@
           ]
         },
         {
-          "id": 5,
+          "id": 6,
           "label": "Featherweight",
           "discipline": "mma",
           "fighter_a": {
@@ -539,9 +564,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.486,
+          "p_a": 0.484,
           "odds": [
-            1.9,
+            1.92,
             1.8
           ],
           "odds_src": "market",
@@ -551,7 +576,7 @@
           ]
         },
         {
-          "id": 6,
+          "id": 7,
           "label": "Welterweight",
           "discipline": "mma",
           "fighter_a": {
@@ -576,7 +601,7 @@
           ]
         },
         {
-          "id": 7,
+          "id": 8,
           "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -601,7 +626,7 @@
           ]
         },
         {
-          "id": 8,
+          "id": 9,
           "label": "Heavyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -623,31 +648,6 @@
           "odds": [
             1.58,
             2.35
-          ]
-        },
-        {
-          "id": 9,
-          "label": "Bantamweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Aleksandre Topuria",
-            "country": "Georgia",
-            "flag": "🇬🇪",
-            "record": "7-1-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Santiago Luna",
-            "country": "Mexico",
-            "flag": "🇲🇽",
-            "record": "8-1-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.469,
-          "odds": [
-            2.01,
-            1.78
           ]
         }
       ]
@@ -783,10 +783,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.56,
+          "p_a": 0.601,
           "odds": [
-            1.69,
-            2.15
+            1.6,
+            2.41
           ],
           "odds_src": "market",
           "market_for": [
@@ -813,10 +813,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.556,
+          "p_a": 0.566,
           "odds": [
-            1.7,
-            2.13
+            1.67,
+            2.18
           ],
           "odds_src": "market",
           "market_for": [
@@ -1007,9 +1007,9 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.578,
+          "p_a": 0.576,
           "odds": [
-            1.63,
+            1.64,
             2.23
           ],
           "odds_src": "market",
