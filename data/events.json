@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-10T17:22:53Z",
+  "scraped_at": "2026-11-11T17:33:49Z",
   "source": "onefc.com",
   "event_count": 6,
   "events": [
@@ -467,19 +467,18 @@
             "country_src": "profile"
           },
           "fighter_b": {
-            "name": "Elmehdi El Jamari",
-            "country": "Morocco",
-            "flag": "🇲🇦",
-            "profile": "https://www.onefc.com/athletes/elmehdi-el-jamari/",
-            "record": "2-2-0",
-            "finish_rate": 100,
+            "name": "Raichi Nagai",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/raichi-nagai/",
+            "record": "",
             "country_src": "profile"
           },
           "result": null,
-          "p_a": 0.475,
+          "p_a": 0.455,
           "odds": [
-            1.99,
-            1.8
+            2.07,
+            1.73
           ]
         },
         {
