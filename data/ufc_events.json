@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-11T17:33:50Z",
+  "scraped_at": "2026-11-12T17:48:19Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -35,10 +35,10 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.636,
+          "p_a": 0.624,
           "odds": [
-            1.5,
-            2.62
+            1.52,
+            2.52
           ],
           "odds_src": "market",
           "market_for": [
@@ -65,9 +65,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.87,
+          "p_a": 0.871,
           "odds": [
-            1.09,
+            1.08,
             7.3
           ],
           "odds_src": "market",
@@ -95,10 +95,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.577,
+          "p_a": 0.587,
           "odds": [
-            1.65,
-            2.25
+            1.62,
+            2.3
           ],
           "odds_src": "market",
           "market_for": [
@@ -125,10 +125,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.589,
+          "p_a": 0.59,
           "odds": [
             1.61,
-            2.31
+            2.32
           ],
           "odds_src": "market",
           "market_for": [
@@ -155,10 +155,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.626,
+          "p_a": 0.615,
           "odds": [
-            1.52,
-            2.54
+            1.54,
+            2.46
           ],
           "odds_src": "market",
           "market_for": [
@@ -185,10 +185,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.601,
+          "p_a": 0.605,
           "odds": [
-            1.58,
-            2.38
+            1.57,
+            2.4
           ],
           "odds_src": "market",
           "market_for": [
@@ -215,10 +215,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.362,
+          "p_a": 0.357,
           "odds": [
-            2.64,
-            1.5
+            2.65,
+            1.47
           ],
           "odds_src": "market",
           "market_for": [
@@ -245,10 +245,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.412,
+          "p_a": 0.38,
           "odds": [
-            2.3,
-            1.61
+            2.5,
+            1.53
           ],
           "odds_src": "market",
           "market_for": [
@@ -275,10 +275,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.586,
+          "p_a": 0.576,
           "odds": [
-            1.62,
-            2.29
+            1.64,
+            2.23
           ],
           "odds_src": "market",
           "market_for": [
@@ -321,24 +321,24 @@
           "label": "Bantamweight",
           "discipline": "mma",
           "fighter_a": {
-            "name": "Juan Diaz",
-            "country": "Peru",
-            "flag": "🇵🇪",
-            "record": "16-1-1",
-            "profile": ""
-          },
-          "fighter_b": {
             "name": "Alatengheili",
             "country": "China",
             "flag": "🇨🇳",
             "record": "18-10-2",
             "profile": ""
           },
+          "fighter_b": {
+            "name": "Juan Diaz",
+            "country": "Peru",
+            "flag": "🇵🇪",
+            "record": "16-1-1",
+            "profile": ""
+          },
           "result": null,
-          "p_a": 0.678,
+          "p_a": 0.322,
           "odds": [
-            1.39,
-            2.93
+            2.93,
+            1.39
           ]
         },
         {
@@ -360,10 +360,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.302,
+          "p_a": 0.308,
           "odds": [
-            3.1,
-            1.34
+            3.05,
+            1.36
           ],
           "odds_src": "market",
           "market_for": [
@@ -390,9 +390,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.248,
+          "p_a": 0.244,
           "odds": [
-            3.8,
+            3.88,
             1.25
           ],
           "odds_src": "market",
@@ -564,9 +564,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.476,
+          "p_a": 0.474,
           "odds": [
-            1.98,
+            2.0,
             1.8
           ],
           "odds_src": "market",
@@ -708,9 +708,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.605,
+          "p_a": 0.606,
           "odds": [
-            1.57,
+            1.56,
             2.4
           ],
           "odds_src": "market",
@@ -1087,9 +1087,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.64,
+          "p_a": 0.642,
           "odds": [
-            1.46,
+            1.45,
             2.6
           ],
           "odds_src": "market",
