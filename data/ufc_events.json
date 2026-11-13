@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-12T17:48:19Z",
+  "scraped_at": "2026-11-13T17:26:12Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -35,10 +35,10 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.624,
+          "p_a": 0.637,
           "odds": [
-            1.52,
-            2.52
+            1.49,
+            2.62
           ],
           "odds_src": "market",
           "market_for": [
@@ -65,10 +65,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.871,
+          "p_a": 0.87,
           "odds": [
             1.08,
-            7.3
+            7.22
           ],
           "odds_src": "market",
           "market_for": [
@@ -95,9 +95,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.587,
+          "p_a": 0.59,
           "odds": [
-            1.62,
+            1.6,
             2.3
           ],
           "odds_src": "market",
@@ -155,10 +155,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.615,
+          "p_a": 0.606,
           "odds": [
-            1.54,
-            2.46
+            1.56,
+            2.4
           ],
           "odds_src": "market",
           "market_for": [
@@ -168,7 +168,7 @@
         },
         {
           "id": 6,
-          "label": "Middleweight",
+          "label": "Catch Weight",
           "discipline": "mma",
           "fighter_a": {
             "name": "Donte Johnson",
@@ -185,10 +185,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.605,
+          "p_a": 0.62,
           "odds": [
-            1.57,
-            2.4
+            1.53,
+            2.5
           ],
           "odds_src": "market",
           "market_for": [
@@ -215,10 +215,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.357,
+          "p_a": 0.345,
           "odds": [
-            2.65,
-            1.47
+            2.75,
+            1.45
           ],
           "odds_src": "market",
           "market_for": [
@@ -275,9 +275,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.576,
+          "p_a": 0.573,
           "odds": [
-            1.64,
+            1.66,
             2.23
           ],
           "odds_src": "market",
@@ -305,10 +305,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.474,
+          "p_a": 0.482,
           "odds": [
-            2.0,
-            1.8
+            1.97,
+            1.83
           ],
           "odds_src": "market",
           "market_for": [
@@ -360,10 +360,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.308,
+          "p_a": 0.312,
           "odds": [
             3.05,
-            1.36
+            1.38
           ],
           "odds_src": "market",
           "market_for": [
@@ -390,9 +390,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.244,
+          "p_a": 0.24,
           "odds": [
-            3.88,
+            3.95,
             1.25
           ],
           "odds_src": "market",
@@ -434,10 +434,10 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.444,
+          "p_a": 0.439,
           "odds": [
-            2.14,
-            1.71
+            2.15,
+            1.68
           ],
           "odds_src": "market",
           "market_for": [
@@ -464,10 +464,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.469,
+          "p_a": 0.491,
           "odds": [
-            2.01,
-            1.78
+            1.98,
+            1.91
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Aleksandre Topuria",
+            "Santiago Luna"
           ]
         },
         {
@@ -489,10 +494,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.325,
+          "p_a": 0.265,
           "odds": [
-            2.9,
-            1.4
+            3.53,
+            1.27
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jared Cannonier",
+            "Ikram Aliskerov"
           ]
         },
         {
@@ -539,10 +549,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.448,
+          "p_a": 0.591,
           "odds": [
-            2.11,
-            1.71
+            1.59,
+            2.3
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Dan Hooker",
+            "Brian Ortega"
           ]
         },
         {
@@ -594,10 +609,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.422,
+          "p_a": 0.602,
           "odds": [
-            2.24,
-            1.63
+            1.59,
+            2.4
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Jake Matthews",
+            "Tahir Abdullayev"
           ]
         },
         {
@@ -619,10 +639,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.554,
+          "p_a": 0.418,
           "odds": [
-            1.7,
-            2.11
+            2.3,
+            1.65
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Amir Albazi",
+            "Alessandro Costa"
           ]
         },
         {
@@ -644,10 +669,15 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.598,
+          "p_a": 0.664,
           "odds": [
-            1.58,
-            2.35
+            1.44,
+            2.85
+          ],
+          "odds_src": "market",
+          "market_for": [
+            "Shamil Gaziev",
+            "Tallison Teixeira"
           ]
         }
       ]
@@ -708,9 +738,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.606,
+          "p_a": 0.605,
           "odds": [
-            1.56,
+            1.57,
             2.4
           ],
           "odds_src": "market",
@@ -1087,9 +1117,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.642,
+          "p_a": 0.64,
           "odds": [
-            1.45,
+            1.46,
             2.6
           ],
           "odds_src": "market",
