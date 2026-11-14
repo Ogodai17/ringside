@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-13T23:46:46Z",
+  "scraped_at": "2026-11-14T12:49:39Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 6,
@@ -352,7 +352,7 @@
       "url": "https://www.espn.com/mma/fightcenter/_/id/600061665/league/ufc",
       "status": "upcoming",
       "promotion": "UFC",
-      "fight_count": 9,
+      "fight_count": 11,
       "fights": [
         {
           "id": 1,
@@ -507,6 +507,56 @@
         },
         {
           "id": 7,
+          "label": "Light Heavyweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Diyar Nurgozhay",
+            "country": "Kazakhstan",
+            "flag": "🇰🇿",
+            "record": "12-2-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Alik Lorenz",
+            "country": "USA",
+            "flag": "🇺🇸",
+            "record": "8-2-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.598,
+          "odds": [
+            1.58,
+            2.35
+          ]
+        },
+        {
+          "id": 8,
+          "label": "Lightweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Nikolas Motta",
+            "country": "USA",
+            "flag": "🇺🇸",
+            "record": "15-6-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Dom Mar Fan",
+            "country": "Australia",
+            "flag": "🇦🇺",
+            "record": "9-3-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.554,
+          "odds": [
+            1.7,
+            2.11
+          ]
+        },
+        {
+          "id": 9,
           "label": "Welterweight",
           "discipline": "mma",
           "fighter_a": {
@@ -531,7 +581,7 @@
           ]
         },
         {
-          "id": 8,
+          "id": 10,
           "label": "Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -556,7 +606,7 @@
           ]
         },
         {
-          "id": 9,
+          "id": 11,
           "label": "Heavyweight",
           "discipline": "mma",
           "fighter_a": {

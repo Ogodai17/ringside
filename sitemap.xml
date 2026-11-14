@@ -26,11 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-friday-fights-178-the-inner-circle-38.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/ufc-334-gane-vs-hokit.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -51,12 +46,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/one-friday-fights-180-the-inner-circle-40.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/ufc-fight-night-adesanya-vs-magomedov.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/ufc-335-oliveira-vs-lopes.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/one-friday-fights-178-the-inner-circle-38.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -79,21 +84,6 @@
     <loc>https://pickafight.now/previews/ufc-fight-night-moicano-vs-nolan.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/one-friday-fights-176-the-inner-circle-36.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/pek-por-tor-tor-thongtawee-vs-cihan-dogu-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/superlek-jitmuangnon-vs-anar-mammadov-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/ciryl-gane-vs-josh-hokit-prediction.html</loc>
@@ -132,6 +122,16 @@
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/aleksandre-topuria-vs-santiago-luna-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/yodkhunpon-vs-detchawalit-silkmuaythai-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/worapon-lukjaoporongtom-vs-kongklai-sor-sommai-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
