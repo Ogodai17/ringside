@@ -26,11 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/ufc-334-gane-vs-hokit.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/one-samurai-5.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -61,6 +56,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/ufc-334-gane-vs-hokit.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/one-friday-fights-178-the-inner-circle-38.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -84,16 +84,6 @@
     <loc>https://pickafight.now/previews/ufc-fight-night-moicano-vs-nolan.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/ciryl-gane-vs-josh-hokit-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/bilal-hasan-vs-luis-gurule-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/joshua-pacio-vs-keito-yamakita-prediction.html</loc>
