@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-15T16:41:51Z",
+  "scraped_at": "2026-11-16T19:56:17Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 5,
@@ -35,10 +35,10 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.429,
+          "p_a": 0.419,
           "odds": [
-            2.2,
-            1.65
+            2.25,
+            1.62
           ],
           "odds_src": "market",
           "market_for": [
@@ -65,10 +65,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.677,
+          "p_a": 0.692,
           "odds": [
-            1.4,
-            2.94
+            1.36,
+            3.05
           ],
           "odds_src": "market",
           "market_for": [
@@ -95,10 +95,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.261,
+          "p_a": 0.272,
           "odds": [
-            3.6,
-            1.27
+            3.45,
+            1.29
           ],
           "odds_src": "market",
           "market_for": [
@@ -150,10 +150,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.583,
+          "p_a": 0.62,
           "odds": [
-            1.61,
-            2.25
+            1.53,
+            2.5
           ],
           "odds_src": "market",
           "market_for": [
@@ -180,9 +180,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.454,
+          "p_a": 0.452,
           "odds": [
-            2.08,
+            2.1,
             1.73
           ],
           "odds_src": "market",
@@ -242,8 +242,8 @@
           "result": null,
           "p_a": 0.42,
           "odds": [
-            2.25,
-            1.63
+            2.24,
+            1.62
           ],
           "odds_src": "market",
           "market_for": [
@@ -270,10 +270,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.604,
+          "p_a": 0.669,
           "odds": [
-            1.57,
-            2.39
+            1.41,
+            2.85
           ],
           "odds_src": "market",
           "market_for": [
@@ -300,10 +300,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.45,
+          "p_a": 0.478,
           "odds": [
-            2.1,
-            1.72
+            1.98,
+            1.81
           ],
           "odds_src": "market",
           "market_for": [
@@ -330,10 +330,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.66,
+          "p_a": 0.639,
           "odds": [
-            1.44,
-            2.79
+            1.5,
+            2.65
           ],
           "odds_src": "market",
           "market_for": [
@@ -429,9 +429,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.581,
+          "p_a": 0.58,
           "odds": [
-            1.62,
+            1.63,
             2.25
           ],
           "odds_src": "market",
@@ -676,7 +676,7 @@
       "url": "https://www.espn.com/mma/fightcenter/_/id/600061401/league/ufc",
       "status": "upcoming",
       "promotion": "UFC",
-      "fight_count": 6,
+      "fight_count": 5,
       "fights": [
         {
           "id": 1,
@@ -698,10 +698,10 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.576,
+          "p_a": 0.579,
           "odds": [
-            1.64,
-            2.23
+            1.63,
+            2.24
           ],
           "odds_src": "market",
           "market_for": [
@@ -736,31 +736,6 @@
         },
         {
           "id": 3,
-          "label": "Middleweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Joe Pyfer",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "record": "16-3-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Bo Nickal",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "record": "9-1-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.581,
-          "odds": [
-            1.62,
-            2.25
-          ]
-        },
-        {
-          "id": 4,
           "label": "Heavyweight (5 rds)",
           "discipline": "mma",
           "fighter_a": {
@@ -778,9 +753,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.639,
+          "p_a": 0.637,
           "odds": [
-            1.47,
+            1.48,
             2.6
           ],
           "odds_src": "market",
@@ -790,7 +765,7 @@
           ]
         },
         {
-          "id": 5,
+          "id": 4,
           "label": "Women's Flyweight",
           "discipline": "mma",
           "fighter_a": {
@@ -815,7 +790,7 @@
           ]
         },
         {
-          "id": 6,
+          "id": 5,
           "label": "Light Heavyweight",
           "discipline": "mma",
           "fighter_a": {
