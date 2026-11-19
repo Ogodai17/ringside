@@ -26,11 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-samurai-5.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/one-friday-fights-179-the-inner-circle-39.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -46,12 +41,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/one-samurai-6.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/ufc-fight-night-adesanya-vs-magomedov.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/ufc-335-oliveira-vs-lopes.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/one-samurai-5.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -81,16 +86,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/joshua-pacio-vs-keito-yamakita-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/ryujin-nasukawa-vs-raichi-nagai-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/fights/chartpayak-saksatoon-vs-klarob-nuicafeboran-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -117,6 +112,16 @@
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/worapon-lukjaoporongtom-vs-kongklai-sor-sommai-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/chihiro-sawada-vs-anastasia-nikolakakos-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/hiromi-wajima-vs-mohammad-siasarani-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
