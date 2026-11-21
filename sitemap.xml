@@ -36,6 +36,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/one-friday-fights-181-the-inner-circle-41.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/one-samurai-6.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -101,6 +106,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/fights/songchainoi-kiatsongrit-vs-rifdean-masdor-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/panpayak-jitmuangnon-vs-lamnamoonlek-torfunfarm-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/fights/chihiro-sawada-vs-anastasia-nikolakakos-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -126,7 +141,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/damian-pinas-vs-baisangur-susurkaev-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/kyler-phillips-vs-ethyn-ewing-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>

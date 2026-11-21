@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-21T00:06:21Z",
+  "scraped_at": "2026-11-21T13:59:40Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 5,
@@ -671,31 +671,6 @@
         },
         {
           "id": 2,
-          "label": "Middleweight",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Damian Pinas",
-            "country": "Aruba",
-            "flag": "",
-            "record": "11-1-0",
-            "profile": ""
-          },
-          "fighter_b": {
-            "name": "Baisangur Susurkaev",
-            "country": "Russia",
-            "flag": "🇷🇺",
-            "record": "12-0-0",
-            "profile": ""
-          },
-          "result": null,
-          "p_a": 0.434,
-          "odds": [
-            2.18,
-            1.67
-          ]
-        },
-        {
-          "id": 3,
           "label": "Bantamweight",
           "discipline": "mma",
           "fighter_a": {
@@ -717,6 +692,31 @@
           "odds": [
             2.04,
             1.76
+          ]
+        },
+        {
+          "id": 3,
+          "label": "Middleweight",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Damian Pinas",
+            "country": "Aruba",
+            "flag": "",
+            "record": "11-1-0",
+            "profile": ""
+          },
+          "fighter_b": {
+            "name": "Baisangur Susurkaev",
+            "country": "Russia",
+            "flag": "🇷🇺",
+            "record": "12-0-0",
+            "profile": ""
+          },
+          "result": null,
+          "p_a": 0.434,
+          "odds": [
+            2.18,
+            1.67
           ]
         },
         {
