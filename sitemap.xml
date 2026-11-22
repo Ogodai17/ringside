@@ -26,11 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/ufc-fight-night-prochazka-vs-stirling.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/one-friday-fights-180-the-inner-circle-40.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -56,6 +51,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pickafight.now/previews/ufc-fight-night-prochazka-vs-stirling.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pickafight.now/previews/one-friday-fights-179-the-inner-circle-39.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -74,26 +74,6 @@
     <loc>https://pickafight.now/previews/one-friday-fights-178-the-inner-circle-38.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/one-fight-night-49-gabriel-vs-magomedov.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/ufc-fight-night-cortes-acosta-vs-walker.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/jiri-prochazka-vs-navajo-stirling-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/jared-cannonier-vs-ikram-aliskerov-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/yodkhunpon-vs-detchawalit-silkmuaythai-prediction.html</loc>
