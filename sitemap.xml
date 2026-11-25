@@ -31,12 +31,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-friday-fights-181-the-inner-circle-41.html</loc>
+    <loc>https://pickafight.now/previews/one-samurai-6.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/one-samurai-6.html</loc>
+    <loc>https://pickafight.now/previews/one-friday-fights-181-the-inner-circle-41.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -86,16 +86,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/songchainoi-kiatsongrit-vs-rifdean-masdor-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/panpayak-jitmuangnon-vs-lamnamoonlek-torfunfarm-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pickafight.now/previews/fights/chihiro-sawada-vs-anastasia-nikolakakos-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -106,12 +96,22 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/magomed-tuchalov-vs-ion-cutelaba-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/songchainoi-kiatsongrit-vs-rifdean-masdor-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/mairon-santos-vs-akbar-abdullaev-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/panpayak-jitmuangnon-vs-lamnamoonlek-torfunfarm-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/luke-riley-vs-gabriel-santos-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/magomed-tuchalov-vs-ion-cutelaba-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
