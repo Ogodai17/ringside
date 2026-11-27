@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-11-26T19:21:04Z",
+  "scraped_at": "2026-11-27T19:15:07Z",
   "source": "espn.com",
   "promotion": "UFC",
   "event_count": 4,
@@ -35,10 +35,10 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.564,
+          "p_a": 0.559,
           "odds": [
-            1.67,
-            2.16
+            1.69,
+            2.14
           ],
           "odds_src": "market",
           "market_for": [
@@ -65,10 +65,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.616,
+          "p_a": 0.62,
           "odds": [
             1.53,
-            2.45
+            2.5
           ],
           "odds_src": "market",
           "market_for": [
@@ -95,9 +95,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.282,
+          "p_a": 0.284,
           "odds": [
-            3.34,
+            3.3,
             1.31
           ],
           "odds_src": "market",
@@ -210,10 +210,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.593,
+          "p_a": 0.59,
           "odds": [
-            1.59,
-            2.32
+            1.6,
+            2.3
           ],
           "odds_src": "market",
           "market_for": [
@@ -265,10 +265,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.604,
+          "p_a": 0.608,
           "odds": [
             1.56,
-            2.38
+            2.42
           ],
           "odds_src": "market",
           "market_for": [
@@ -295,10 +295,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.435,
+          "p_a": 0.438,
           "odds": [
-            2.17,
-            1.67
+            2.16,
+            1.68
           ],
           "odds_src": "market",
           "market_for": [
@@ -325,10 +325,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.54,
+          "p_a": 0.551,
           "odds": [
-            1.74,
-            2.04
+            1.71,
+            2.1
           ],
           "odds_src": "market",
           "market_for": [
@@ -355,9 +355,9 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.609,
+          "p_a": 0.606,
           "odds": [
-            1.54,
+            1.56,
             2.4
           ],
           "odds_src": "market",
@@ -385,10 +385,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.528,
+          "p_a": 0.53,
           "odds": [
             1.79,
-            2.0
+            2.02
           ],
           "odds_src": "market",
           "market_for": [
@@ -415,10 +415,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.436,
+          "p_a": 0.44,
           "odds": [
-            2.16,
-            1.67
+            2.14,
+            1.68
           ],
           "odds_src": "market",
           "market_for": [
@@ -459,9 +459,9 @@
           },
           "result": null,
           "main_event": true,
-          "p_a": 0.578,
+          "p_a": 0.579,
           "odds": [
-            1.63,
+            1.62,
             2.23
           ],
           "odds_src": "market",
@@ -564,10 +564,10 @@
             "profile": ""
           },
           "result": null,
-          "p_a": 0.364,
+          "p_a": 0.366,
           "odds": [
             2.6,
-            1.49
+            1.5
           ],
           "odds_src": "market",
           "market_for": [

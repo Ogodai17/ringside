@@ -81,12 +81,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/nuatoranee-jitmuangnon-vs-yodchanachai-tor-pitakchai-prediction.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pickafight.now/previews/fights/chihiro-sawada-vs-anastasia-nikolakakos-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/saencherngnoi-tor-muangsema-vs-petthanawat-sor-jaruwan-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -96,12 +91,17 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pickafight.now/previews/fights/songchainoi-kiatsongrit-vs-rifdean-masdor-prediction.html</loc>
+    <loc>https://pickafight.now/previews/fights/taiju-shiratori-vs-shota-tezuka-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pickafight.now/previews/fights/panpayak-jitmuangnon-vs-lamnamoonlek-torfunfarm-prediction.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pickafight.now/previews/fights/yonis-anane-vs-abdessamie-rhenimi-prediction.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
