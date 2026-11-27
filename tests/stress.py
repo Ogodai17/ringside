@@ -1,7 +1,8 @@
 """
 Pick A Fight stress test — runs the real built site in headless Chrome.
 
-Usage: python3 tests/stress.py . [--shots <dir>]   (from the repo root)
+Usage: python3 tests/stress.py . [--shots <dir>] [t_name ...]   (from the repo root)
+       python3 tests/stress.py . --refresh-fixtures   (re-freeze test data from data/)
 Needs: pip install playwright && python -m playwright install chromium
 Copies the site into a temp dir per scenario, serves it on localhost,
 and attacks it. Prints PASS/FAIL/WARN lines and a summary.
@@ -24,6 +25,16 @@ REPO = Path(sys.argv[1]).resolve()
 SHOTS = Path(sys.argv[sys.argv.index("--shots") + 1]) if "--shots" in sys.argv else None
 RESULTS = []
 
+# Most scenarios run on a frozen copy of the fight data (tests/fixtures), not
+# on whatever the scrapers fetched today. Real cards change every day (a card
+# with one bout, a fight-day lock, new results), and tests that leaned on the
+# live data kept failing for reasons that had nothing to do with the site.
+# Dates in the fixtures are moved forward by however many days have passed
+# since "fixture_anchor", so upcoming stays upcoming and finished stays finished.
+# Refresh them after a data format change:  python tests/stress.py . --refresh-fixtures
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+DATA_FILES = ("events.json", "ufc_events.json")
+
 
 def record(status, name, detail=""):
     RESULTS.append((status, name, detail))
@@ -37,7 +48,43 @@ def check(cond, name, detail="", warn=False):
 
 # ---------- site copies + server ----------
 
-def make_site(mutate=None):
+def _shift_day(s, days):
+    """Move a 'YYYY-MM-DD…' string forward by whole days, keeping any time part."""
+    if not isinstance(s, str) or len(s) < 10:
+        return s
+    try:
+        d = date.fromisoformat(s[:10])
+    except ValueError:
+        return s
+    return (d + timedelta(days=days)).isoformat() + s[10:]
+
+
+def use_fixture_data(site):
+    """Swap the site copy's scraped data for the frozen fixtures, dates moved to today."""
+    for fn in DATA_FILES:
+        j = json.loads((FIXTURES / fn).read_text())
+        days = (date.today() - date.fromisoformat(j.pop("fixture_anchor"))).days
+        j["scraped_at"] = _shift_day(j.get("scraped_at"), days)
+        for e in j.get("events", []):
+            for key in ("date", "start"):
+                if key in e:
+                    e[key] = _shift_day(e[key], days)
+        (site / "data" / fn).write_text(json.dumps(j))
+
+
+def refresh_fixtures():
+    """Copy today's scraped data into tests/fixtures, anchored to today."""
+    FIXTURES.mkdir(exist_ok=True)
+    for fn in DATA_FILES:
+        j = json.loads((REPO / "data" / fn).read_text())
+        out = {"fixture_anchor": date.today().isoformat(), **j}
+        (FIXTURES / fn).write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n")
+        print(f"wrote {FIXTURES / fn}")
+
+
+def make_site(mutate=None, real_data=False):
+    """Copy the built site to a temp dir. Uses the frozen fixture data unless
+    real_data=True (for checks that are about today's real output)."""
     d = Path(tempfile.mkdtemp(prefix="rs_"))
     for name in ["index.html", "about.html", "contact.html", "privacy.html", "404.html", "sitemap.xml", "manifest.webmanifest"]:
         if (REPO / name).exists():
@@ -46,6 +93,8 @@ def make_site(mutate=None):
     shutil.copytree(REPO / "previews", d / "previews")
     if (REPO / "assets").exists():
         shutil.copytree(REPO / "assets", d / "assets")
+    if not real_data:
+        use_fixture_data(d)
     if mutate:
         mutate(d)
     return d
@@ -155,7 +204,7 @@ def place_via_ui(pg, stake_text, side="A"):
 # ---------- scenarios ----------
 
 def t_load_and_render(browser):
-    pg = Page(browser, make_site())
+    pg = Page(browser, make_site(real_data=True))
     n_events = pg.js("events.length")
     check(not pg.errors, "Page loads without JS errors", "; ".join(pg.errors[:3]))
     check(n_events >= 2, "Events loaded", f"{n_events} events")
@@ -417,7 +466,7 @@ def t_mobile(browser):
 
 
 def t_pages_links(browser):
-    site = make_site()
+    site = make_site(real_data=True)
     srv, url = serve(site)
     ctx = browser.new_context(); p = ctx.new_page()
     pages = ["index.html", "about.html", "contact.html", "privacy.html", "404.html", "previews/index.html"] + \
@@ -456,7 +505,7 @@ def t_pages_links(browser):
 
 
 def t_odds(browser):
-    pg = Page(browser, make_site())
+    pg = Page(browser, make_site(real_data=True))
     bad = pg.js("""() => events.flatMap(e=>e.fights).filter(f=>!(f.oddsA>1&&f.oddsB>1&&f.oddsA<20&&f.oddsB<20)).map(f=>f.a.name+' '+f.oddsA+'/'+f.oddsB)""")
     check(not bad, "Every fight has sane odds (1.01–20)", str(bad[:4]))
     over = pg.js("() => events.flatMap(e=>e.fights).filter(f=>!f.market).map(f=>1/f.oddsA+1/f.oddsB)")
@@ -523,7 +572,7 @@ def t_share_and_stats(browser):
 
 
 def t_static_and_meta(browser):
-    site = make_site()
+    site = make_site(real_data=True)
     html = (site / "index.html").read_text()
     import re
     static = re.search(r'<div id="fight-cards">(.*?)</div>\s*</div>', html, re.S)
@@ -1010,6 +1059,9 @@ def main():
              t_odds, t_share_and_stats, t_static_and_meta,
              t_scorecard_solo, t_scorecard_one, t_scorecard_community, t_secret_key_guard, t_sign_in_providers, t_one_country, t_password_accounts, t_accounts,
              t_leagues, t_hot_takes, t_badges, t_third_party_stubbed]
+    if "--refresh-fixtures" in sys.argv:
+        refresh_fixtures()
+        return
     only = [a for a in sys.argv[2:] if a.startswith("t_")]
     with sync_playwright() as pw:
         browser = StubbedBrowser(pw.chromium.launch())
