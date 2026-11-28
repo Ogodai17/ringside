@@ -1,394 +1,8 @@
 {
-  "scraped_at": "2026-11-27T19:15:06Z",
+  "scraped_at": "2026-11-28T01:34:29Z",
   "source": "onefc.com",
   "event_count": 6,
   "events": [
-    {
-      "name": "ONE Friday Fights 180 & The Inner Circle 40",
-      "subtitle": "",
-      "date": "2026-11-27",
-      "venue": "Lumpinee Stadium, Bangkok",
-      "url": "https://www.onefc.com/events/one-friday-fights-180/",
-      "status": "upcoming",
-      "fight_count": 13,
-      "fights": [
-        {
-          "id": 1,
-          "label": "Strawweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Denkriangkrai Mavinn Muaythai",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/denkriangkrai-singha-mawynn/",
-            "record": "11-6-0",
-            "finish_rate": 9,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Thway Lin Htet",
-            "country": "Myanmar [Burma]",
-            "flag": "🇲🇲",
-            "profile": "https://www.onefc.com/athletes/thway-lin-htet/",
-            "record": "6-5-0",
-            "finish_rate": 50,
-            "country_src": "profile"
-          },
-          "main_event": true,
-          "result": null,
-          "p_a": 0.609,
-          "odds": [
-            1.55,
-            2.41
-          ]
-        },
-        {
-          "id": 2,
-          "label": "Featherweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Saencherngnoi Tor Muangsema",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/saencherngnoi-tor-muangsema/",
-            "record": "1-0-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Petthanawat Sor Jaruwan",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/petthanawat-sor-jaruwan/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.599,
-          "odds": [
-            1.58,
-            2.35
-          ]
-        },
-        {
-          "id": 3,
-          "label": "Lightweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Jaxson Hayman",
-            "country": "Australia",
-            "flag": "🇦🇺",
-            "profile": "https://www.onefc.com/athletes/jaxson-hayman/",
-            "record": "2-0-0",
-            "finish_rate": 50,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Sixten Larsson",
-            "country": "Sweden",
-            "flag": "🇸🇪",
-            "profile": "https://www.onefc.com/athletes/sixten-larsson/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.669,
-          "odds": [
-            1.41,
-            2.85
-          ]
-        },
-        {
-          "id": 4,
-          "label": "Flyweight MMA",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Alistair Fitzharris",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/alistair-fitzharris/",
-            "record": "1-0-0",
-            "finish_rate": 0
-          },
-          "fighter_b": {
-            "name": "Bhupen Mutum",
-            "country": "India",
-            "flag": "🇮🇳",
-            "profile": "https://www.onefc.com/athletes/bhupen-mutum/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.599,
-          "odds": [
-            1.58,
-            2.35
-          ]
-        },
-        {
-          "id": 5,
-          "label": "Flyweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Panpet Sor Dechapan",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/panpet-sor-dechapan/",
-            "record": "1-0-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Youssef Erraji",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/youssef-erraji/",
-            "record": "0-1-0",
-            "finish_rate": 0
-          },
-          "result": null,
-          "p_a": 0.599,
-          "odds": [
-            1.58,
-            2.35
-          ]
-        },
-        {
-          "id": 6,
-          "label": "Atomweight MMA",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Arti Khatri",
-            "country": "India",
-            "flag": "🇮🇳",
-            "profile": "https://www.onefc.com/athletes/arti-khatri/",
-            "record": "0-2-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Norika Ryu",
-            "country": "Japan",
-            "flag": "🇯🇵",
-            "profile": "https://www.onefc.com/athletes/norika-ryu/",
-            "record": "4-0-0",
-            "finish_rate": 75,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.234,
-          "odds": [
-            4.03,
-            1.23
-          ]
-        },
-        {
-          "id": 7,
-          "label": "Featherweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Efe Caliskan",
-            "country": "Canada / Turkey",
-            "flag": "🇨🇦",
-            "profile": "https://www.onefc.com/athletes/efe-caliskan/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Fuga Onodera",
-            "country": "Japan",
-            "flag": "🇯🇵",
-            "profile": "https://www.onefc.com/athletes/fuga-onodera/",
-            "record": "1-0-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.401,
-          "odds": [
-            2.35,
-            1.58
-          ]
-        },
-        {
-          "id": 8,
-          "label": "Flyweight Kickboxing",
-          "discipline": "kb",
-          "fighter_a": {
-            "name": "Chen Jiayi",
-            "country": "China",
-            "flag": "🇨🇳",
-            "profile": "https://www.onefc.com/athletes/chen-jiayi/",
-            "record": "3-3-0",
-            "finish_rate": 67,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Taku Takaiwa",
-            "country": "Japan",
-            "flag": "🇯🇵",
-            "profile": "https://www.onefc.com/athletes/taku-takaiwa/",
-            "record": "2-0-0",
-            "finish_rate": 50,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.477,
-          "odds": [
-            1.98,
-            1.81
-          ]
-        },
-        {
-          "id": 9,
-          "label": "Bantamweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Yodkhunpon",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/yodkhunpon/",
-            "record": "1-1-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Detchawalit Silkmuaythai",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/detchawalit-silkmuaythai/",
-            "record": "6-0-0",
-            "finish_rate": 83,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.241,
-          "odds": [
-            3.91,
-            1.24
-          ]
-        },
-        {
-          "id": 10,
-          "label": "Bantamweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Worapon Lukjaoporongtom",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/worapon-sor-dechapan/",
-            "record": "9-7-0",
-            "finish_rate": 44,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Kongklai Sor Sommai",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/kongklai/",
-            "record": "7-8-0",
-            "finish_rate": 71,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.569,
-          "odds": [
-            1.66,
-            2.19
-          ]
-        },
-        {
-          "id": 11,
-          "label": "Lightweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Rungrawee Tingnotepadriew PK",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/rungrawee-tingnotepadriew-pk/",
-            "record": "6-5-0",
-            "finish_rate": 17,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Harry Purvis",
-            "country": "",
-            "flag": "",
-            "profile": "https://www.onefc.com/athletes/harry-purvis/",
-            "record": "1-0-0",
-            "finish_rate": 100
-          },
-          "result": null,
-          "p_a": 0.621,
-          "odds": [
-            1.52,
-            2.49
-          ]
-        },
-        {
-          "id": 12,
-          "label": "Featherweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Tom Keogh",
-            "country": "Ireland",
-            "flag": "🇮🇪",
-            "profile": "https://www.onefc.com/athletes/tom-keogh/",
-            "record": "4-0-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Abdelali Zahidi",
-            "country": "Morocco",
-            "flag": "🇲🇦",
-            "profile": "https://www.onefc.com/athletes/abdelali-zahidi/",
-            "record": "1-2-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.709,
-          "odds": [
-            1.33,
-            3.24
-          ]
-        },
-        {
-          "id": 13,
-          "label": "Strawweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Petprapaporn Sor Dechapan",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/petprapaporn-sor-dechapan/",
-            "record": "1-0-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Enzo Clarisse",
-            "country": "France",
-            "flag": "🇫🇷",
-            "profile": "https://www.onefc.com/athletes/enzo-clarisse/",
-            "record": "2-4-0",
-            "finish_rate": 50,
-            "country_src": "profile"
-          },
-          "result": null,
-          "p_a": 0.516,
-          "odds": [
-            1.83,
-            1.95
-          ]
-        }
-      ]
-    },
     {
       "name": "ONE SAMURAI 6",
       "subtitle": "",
@@ -727,6 +341,543 @@
             1.53,
             2.46
           ]
+        }
+      ]
+    },
+    {
+      "name": "ONE Friday Fights 182 & The Inner Circle 42",
+      "subtitle": "",
+      "date": "2026-12-11",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-182/",
+      "status": "upcoming",
+      "fight_count": 3,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Atomweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Songchainoi Kiatsongrit",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/songchainoi-kiatsongrit/",
+            "record": "10-4-0",
+            "finish_rate": 40,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Rifdean Masdor",
+            "country": "Malaysia",
+            "flag": "🇲🇾",
+            "profile": "https://www.onefc.com/athletes/rifdean-masdor/",
+            "record": "7-2-0",
+            "finish_rate": 71,
+            "country_src": "profile"
+          },
+          "main_event": true,
+          "result": null,
+          "p_a": 0.526,
+          "odds": [
+            1.79,
+            1.99
+          ]
+        },
+        {
+          "id": 2,
+          "label": "Flyweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Johan Ghazali",
+            "country": "Malaysia / United States",
+            "flag": "🇲🇾",
+            "profile": "https://www.onefc.com/athletes/johan-ghazali/",
+            "record": "9-5-0",
+            "finish_rate": 67,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Johan Estupinan",
+            "country": "Colombia",
+            "flag": "🇨🇴",
+            "profile": "https://www.onefc.com/athletes/johan-estupinan/",
+            "record": "6-2-0",
+            "finish_rate": 50,
+            "country_src": "profile"
+          },
+          "result": null,
+          "p_a": 0.51,
+          "odds": [
+            1.85,
+            1.93
+          ]
+        },
+        {
+          "id": 3,
+          "label": "Bantamweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Sangarthit Looksaikongdin",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/sangarthit-looksaikongdin/",
+            "record": "3-2-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Zhao Chongyang",
+            "country": "China",
+            "flag": "🇨🇳",
+            "profile": "https://www.onefc.com/athletes/zhao-chongyang/",
+            "record": "1-1-0",
+            "finish_rate": 100,
+            "country_src": "profile"
+          },
+          "result": null,
+          "p_a": 0.593,
+          "odds": [
+            1.59,
+            2.32
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ONE Friday Fights 180 & The Inner Circle 40",
+      "subtitle": "",
+      "date": "2026-11-27",
+      "venue": "Lumpinee Stadium, Bangkok",
+      "url": "https://www.onefc.com/events/one-friday-fights-180/",
+      "status": "completed",
+      "fight_count": 13,
+      "fights": [
+        {
+          "id": 1,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Denkriangkrai Mavinn Muaythai",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/denkriangkrai-singha-mawynn/",
+            "record": "11-6-0",
+            "finish_rate": 9,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Thway Lin Htet",
+            "country": "Myanmar [Burma]",
+            "flag": "🇲🇲",
+            "profile": "https://www.onefc.com/athletes/thway-lin-htet/",
+            "record": "6-5-0",
+            "finish_rate": 50,
+            "country_src": "profile"
+          },
+          "main_event": true,
+          "result": {
+            "winner": "a",
+            "method": "Decision",
+            "round": 3
+          },
+          "odds": [
+            1.55,
+            2.41
+          ],
+          "p_a": 0.609
+        },
+        {
+          "id": 2,
+          "label": "Featherweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Saencherngnoi Tor Muangsema",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/saencherngnoi-tor-muangsema/",
+            "record": "1-0-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Petthanawat Sor Jaruwan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/petthanawat-sor-jaruwan/",
+            "record": "0-1-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "a",
+            "method": "Decision",
+            "round": 3
+          },
+          "odds": [
+            1.58,
+            2.35
+          ],
+          "p_a": 0.599
+        },
+        {
+          "id": 3,
+          "label": "Lightweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Jaxson Hayman",
+            "country": "Australia",
+            "flag": "🇦🇺",
+            "profile": "https://www.onefc.com/athletes/jaxson-hayman/",
+            "record": "2-0-0",
+            "finish_rate": 50,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Sixten Larsson",
+            "country": "Sweden",
+            "flag": "🇸🇪",
+            "profile": "https://www.onefc.com/athletes/sixten-larsson/",
+            "record": "0-1-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 3
+          },
+          "odds": [
+            1.41,
+            2.85
+          ],
+          "p_a": 0.669
+        },
+        {
+          "id": 4,
+          "label": "Flyweight MMA",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Alistair Fitzharris",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/alistair-fitzharris/",
+            "record": "1-0-0",
+            "finish_rate": 0
+          },
+          "fighter_b": {
+            "name": "Bhupen Mutum",
+            "country": "India",
+            "flag": "🇮🇳",
+            "profile": "https://www.onefc.com/athletes/bhupen-mutum/",
+            "record": "0-1-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "a",
+            "method": "Decision",
+            "round": 3
+          },
+          "odds": [
+            1.58,
+            2.35
+          ],
+          "p_a": 0.599
+        },
+        {
+          "id": 5,
+          "label": "Flyweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Panpet Sor Dechapan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/panpet-sor-dechapan/",
+            "record": "1-0-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Youssef Erraji",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/youssef-erraji/",
+            "record": "0-1-0",
+            "finish_rate": 0
+          },
+          "result": {
+            "winner": "a",
+            "method": null,
+            "round": 1
+          },
+          "odds": [
+            1.58,
+            2.35
+          ],
+          "p_a": 0.599
+        },
+        {
+          "id": 6,
+          "label": "Atomweight MMA",
+          "discipline": "mma",
+          "fighter_a": {
+            "name": "Arti Khatri",
+            "country": "India",
+            "flag": "🇮🇳",
+            "profile": "https://www.onefc.com/athletes/arti-khatri/",
+            "record": "0-2-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Norika Ryu",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/norika-ryu/",
+            "record": "4-0-0",
+            "finish_rate": 75,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "b",
+            "method": "Submission",
+            "round": 3
+          },
+          "odds": [
+            4.03,
+            1.23
+          ],
+          "p_a": 0.234
+        },
+        {
+          "id": 7,
+          "label": "Featherweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Efe Caliskan",
+            "country": "Canada / Turkey",
+            "flag": "🇨🇦",
+            "profile": "https://www.onefc.com/athletes/efe-caliskan/",
+            "record": "0-1-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Fuga Onodera",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/fuga-onodera/",
+            "record": "1-0-0",
+            "finish_rate": 100,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "b",
+            "method": "KO/TKO",
+            "round": 2
+          },
+          "odds": [
+            2.35,
+            1.58
+          ],
+          "p_a": 0.401
+        },
+        {
+          "id": 8,
+          "label": "Flyweight Kickboxing",
+          "discipline": "kb",
+          "fighter_a": {
+            "name": "Chen Jiayi",
+            "country": "China",
+            "flag": "🇨🇳",
+            "profile": "https://www.onefc.com/athletes/chen-jiayi/",
+            "record": "3-3-0",
+            "finish_rate": 67,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Taku Takaiwa",
+            "country": "Japan",
+            "flag": "🇯🇵",
+            "profile": "https://www.onefc.com/athletes/taku-takaiwa/",
+            "record": "2-0-0",
+            "finish_rate": 50,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "b",
+            "method": "Decision",
+            "round": 3
+          },
+          "odds": [
+            1.98,
+            1.81
+          ],
+          "p_a": 0.477
+        },
+        {
+          "id": 9,
+          "label": "Bantamweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Yodkhunpon",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/yodkhunpon/",
+            "record": "1-1-0",
+            "finish_rate": 100,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Detchawalit Silkmuaythai",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/detchawalit-silkmuaythai/",
+            "record": "6-0-0",
+            "finish_rate": 83,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "b",
+            "method": "KO/TKO",
+            "round": 2
+          },
+          "odds": [
+            3.91,
+            1.24
+          ],
+          "p_a": 0.241
+        },
+        {
+          "id": 10,
+          "label": "Bantamweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Worapon Lukjaoporongtom",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/worapon-sor-dechapan/",
+            "record": "9-7-0",
+            "finish_rate": 44,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Kongklai Sor Sommai",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/kongklai/",
+            "record": "7-8-0",
+            "finish_rate": 71,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "b",
+            "method": "Decision",
+            "round": 3
+          },
+          "odds": [
+            1.66,
+            2.19
+          ],
+          "p_a": 0.569
+        },
+        {
+          "id": 11,
+          "label": "Lightweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Rungrawee Tingnotepadriew PK",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/rungrawee-tingnotepadriew-pk/",
+            "record": "6-5-0",
+            "finish_rate": 17,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Harry Purvis",
+            "country": "",
+            "flag": "",
+            "profile": "https://www.onefc.com/athletes/harry-purvis/",
+            "record": "1-0-0",
+            "finish_rate": 100
+          },
+          "result": {
+            "winner": "b",
+            "method": "KO/TKO",
+            "round": 3
+          },
+          "odds": [
+            1.52,
+            2.49
+          ],
+          "p_a": 0.621
+        },
+        {
+          "id": 12,
+          "label": "Featherweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Tom Keogh",
+            "country": "Ireland",
+            "flag": "🇮🇪",
+            "profile": "https://www.onefc.com/athletes/tom-keogh/",
+            "record": "4-0-0",
+            "finish_rate": 100,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Abdelali Zahidi",
+            "country": "Morocco",
+            "flag": "🇲🇦",
+            "profile": "https://www.onefc.com/athletes/abdelali-zahidi/",
+            "record": "1-2-0",
+            "finish_rate": 100,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "a",
+            "method": "KO/TKO",
+            "round": 2
+          },
+          "odds": [
+            1.33,
+            3.24
+          ],
+          "p_a": 0.709
+        },
+        {
+          "id": 13,
+          "label": "Strawweight Muay Thai",
+          "discipline": "mt",
+          "fighter_a": {
+            "name": "Petprapaporn Sor Dechapan",
+            "country": "Thailand",
+            "flag": "🇹🇭",
+            "profile": "https://www.onefc.com/athletes/petprapaporn-sor-dechapan/",
+            "record": "1-0-0",
+            "finish_rate": 0,
+            "country_src": "profile"
+          },
+          "fighter_b": {
+            "name": "Enzo Clarisse",
+            "country": "France",
+            "flag": "🇫🇷",
+            "profile": "https://www.onefc.com/athletes/enzo-clarisse/",
+            "record": "2-4-0",
+            "finish_rate": 50,
+            "country_src": "profile"
+          },
+          "result": {
+            "winner": "a",
+            "method": "Decision",
+            "round": 3
+          },
+          "odds": [
+            1.83,
+            1.95
+          ],
+          "p_a": 0.516
         }
       ]
     },
@@ -1542,480 +1693,6 @@
             2.35
           ],
           "p_a": 0.599
-        }
-      ]
-    },
-    {
-      "name": "ONE Friday Fights 178 & The Inner Circle 38",
-      "subtitle": "",
-      "date": "2026-11-13",
-      "venue": "Lumpinee Stadium, Bangkok",
-      "url": "https://www.onefc.com/events/one-friday-fights-178/",
-      "status": "completed",
-      "fight_count": 14,
-      "fights": [
-        {
-          "id": 1,
-          "label": "Atomweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Pek Por Tor Tor Thongtawee",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/pek-por-tor-tor-thongtawee/",
-            "record": "1-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Cihan Dogu",
-            "country": "Turkey",
-            "flag": "🇹🇷",
-            "profile": "https://www.onefc.com/athletes/cihan-dogu/",
-            "record": "1-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "main_event": true,
-          "result": {
-            "winner": "b",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.89,
-            1.89
-          ],
-          "p_a": 0.5
-        },
-        {
-          "id": 2,
-          "label": "Bantamweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Superlek Jitmuangnon",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/superlek-jitmuangnon/",
-            "record": "2-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Anar Mammadov",
-            "country": "Azerbaijan",
-            "flag": "🇦🇿",
-            "profile": "https://www.onefc.com/athletes/anar-mammadov/",
-            "record": "2-2-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "b",
-            "method": "KO/TKO",
-            "round": 1
-          },
-          "odds": [
-            1.8,
-            1.98
-          ],
-          "p_a": 0.524
-        },
-        {
-          "id": 3,
-          "label": "Bantamweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Kyaw Swar Win",
-            "country": "Myanmar [Burma]",
-            "flag": "🇲🇲",
-            "profile": "https://www.onefc.com/athletes/kyaw-swar-win/",
-            "record": "3-2-0",
-            "finish_rate": 33,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Sherzodi Sadullo",
-            "country": "Tajikistan",
-            "flag": "🇹🇯",
-            "profile": "https://www.onefc.com/athletes/sherzodi-sadullo/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.41,
-            2.86
-          ],
-          "p_a": 0.67
-        },
-        {
-          "id": 4,
-          "label": "Strawweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Kumanngern Jitmuangnon",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/kumanngern-jitmuangnon/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Ali Al-Kinani",
-            "country": "Iraq",
-            "flag": "🇮🇶",
-            "profile": "https://www.onefc.com/athletes/ali-al-kinani/",
-            "record": "1-2-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "b",
-            "method": "KO/TKO",
-            "round": 2
-          },
-          "odds": [
-            2.17,
-            1.67
-          ],
-          "p_a": 0.435
-        },
-        {
-          "id": 5,
-          "label": "Strawweight MMA",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Natakorn Kesorn",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/nattakorn-kesorn/",
-            "record": "1-0-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Mathew Gesto",
-            "country": "Philippines",
-            "flag": "🇵🇭",
-            "profile": "https://www.onefc.com/athletes/mathew-gesto/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.58,
-            2.35
-          ],
-          "p_a": 0.599
-        },
-        {
-          "id": 6,
-          "label": "Strawweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Superchamp Wutdychonburipraleasing",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/superchamp-wutdychonburipraleasing/",
-            "record": "2-0-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Superjeng Sor Rungsak",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/superjung-sor-rungsak/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 1
-          },
-          "odds": [
-            1.41,
-            2.85
-          ],
-          "p_a": 0.669
-        },
-        {
-          "id": 7,
-          "label": "Bantamweight MMA",
-          "discipline": "mma",
-          "fighter_a": {
-            "name": "Suhyeon Kim",
-            "country": "South Korea",
-            "flag": "🇰🇷",
-            "profile": "https://www.onefc.com/athletes/suhyeon-kim/",
-            "record": "1-0-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Takumi Fukamachi",
-            "country": "Japan",
-            "flag": "🇯🇵",
-            "profile": "https://www.onefc.com/athletes/takumi-fukamachi/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.58,
-            2.35
-          ],
-          "p_a": 0.599
-        },
-        {
-          "id": 8,
-          "label": "Atomweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Nongnuk Sor Dechapan",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/nongnuk-mor-kor-chor-chaiyaphum/",
-            "record": "3-0-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Giorgia Pieropan",
-            "country": "Italy",
-            "flag": "🇮🇹",
-            "profile": "https://www.onefc.com/athletes/giorgia-pieropan/",
-            "record": "1-2-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.42,
-            2.82
-          ],
-          "p_a": 0.665
-        },
-        {
-          "id": 9,
-          "label": "Flyweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Shimon Yoshinari",
-            "country": "Japan",
-            "flag": "🇯🇵",
-            "profile": "https://www.onefc.com/athletes/shimon-yoshinari/",
-            "record": "7-0-0",
-            "finish_rate": 43,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Ramadan Ondash",
-            "country": "Lebanon",
-            "flag": "🇱🇧",
-            "profile": "https://www.onefc.com/athletes/ramadan-ondash/",
-            "record": "6-2-0",
-            "finish_rate": 33,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.56,
-            2.39
-          ],
-          "p_a": 0.605
-        },
-        {
-          "id": 10,
-          "label": "Flyweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Rodtang Jitmuangnon",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/rodtang/",
-            "record": "17-4-0",
-            "finish_rate": 24,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Nong-O Hama",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/nong-o/",
-            "record": "14-5-0",
-            "finish_rate": 36,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "b",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.64,
-            2.23
-          ],
-          "p_a": 0.577
-        },
-        {
-          "id": 11,
-          "label": "Bantamweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "PTT Apichart Farm",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/ptt-apichart-farm/",
-            "record": "4-2-0",
-            "finish_rate": 50,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Hamza Rachid",
-            "country": "Morocco",
-            "flag": "🇲🇦",
-            "profile": "https://www.onefc.com/athletes/hamza-rachid/",
-            "record": "2-1-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 1
-          },
-          "odds": [
-            1.65,
-            2.21
-          ],
-          "p_a": 0.572
-        },
-        {
-          "id": 12,
-          "label": "Bantamweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Lenny Blasi",
-            "country": "Italy",
-            "flag": "🇮🇹",
-            "profile": "https://www.onefc.com/athletes/lenny-blasi/",
-            "record": "5-2-0",
-            "finish_rate": 20,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Adam Benwarwar",
-            "country": "Morocco",
-            "flag": "🇲🇦",
-            "profile": "https://www.onefc.com/athletes/adam-benwarwar/",
-            "record": "2-2-0",
-            "finish_rate": 100,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            1.49,
-            2.57
-          ],
-          "p_a": 0.634
-        },
-        {
-          "id": 13,
-          "label": "Flyweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Petubon Sor Teanchai",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/petubon-sor-teanchai/",
-            "record": "2-1-0",
-            "finish_rate": 50,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Songpandin Chor Kaewwiset",
-            "country": "Laos",
-            "flag": "🇱🇦",
-            "profile": "https://www.onefc.com/athletes/songpandin-chor-kaewwiset/",
-            "record": "6-3-0",
-            "finish_rate": 33,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "b",
-            "method": "Decision",
-            "round": 3
-          },
-          "odds": [
-            2.47,
-            1.53
-          ],
-          "p_a": 0.382
-        },
-        {
-          "id": 14,
-          "label": "Atomweight Muay Thai",
-          "discipline": "mt",
-          "fighter_a": {
-            "name": "Banluelok Sitwatcharachai",
-            "country": "Thailand",
-            "flag": "🇹🇭",
-            "profile": "https://www.onefc.com/athletes/banluerit-or-atchariya/",
-            "record": "7-1-0",
-            "finish_rate": 71,
-            "country_src": "profile"
-          },
-          "fighter_b": {
-            "name": "Mya Lone Chaw",
-            "country": "Myanmar [Burma]",
-            "flag": "🇲🇲",
-            "profile": "https://www.onefc.com/athletes/mya-lone-chaw/",
-            "record": "0-1-0",
-            "finish_rate": 0,
-            "country_src": "profile"
-          },
-          "result": {
-            "winner": "a",
-            "method": "KO/TKO",
-            "round": 2
-          },
-          "odds": [
-            1.16,
-            5.0
-          ],
-          "p_a": 0.811
         }
       ]
     }
